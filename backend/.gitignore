@@ -41,7 +41,6 @@ vite.config.ts.timestamp-*
 .idea/
 *.tsbuildinfo
 
-package-lock.json
 yarn.lock
 pnpm-lock.yaml
 

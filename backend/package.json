@@ -3,7 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "start": "node --env-file=.env main.js",
+    "dev": "nodemon --watch ./ --exec 'node --env-file=.env app.js'",
+    "start": "node --env-file=.env app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -13,5 +14,8 @@
   "dependencies": {
     "mongodb": "^6.20.0",
     "mongoose": "^8.19.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.10"
   }
 }
