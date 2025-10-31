@@ -9,9 +9,9 @@ function Login() {
     e.preventDefault();
     setSubmitting(true);
     const formData = new FormData(e.target);
-    console.log(Object.fromEntries(formData));
-    await AuthService.login(Object.fromEntries(formData));
-    setSubmitting(false);
+    AuthService.login(Object.fromEntries(formData)).finally(() =>
+      setSubmitting(false)
+    );
     console.log("Login!");
   }
   return <LoginForm onSubmit={handleSubmit} submitting={submitting} />;
