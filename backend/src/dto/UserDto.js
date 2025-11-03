@@ -4,6 +4,7 @@ class UserDto {
     id
     login
     email
+    avatar
     /**
      * @param {User} user
      */
@@ -11,6 +12,7 @@ class UserDto {
         this.id = user.id;
         this.login = user.login;
         this.email = user.email;
+        this.avatar = user.avatar;
     }
 }
 

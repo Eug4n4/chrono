@@ -21,8 +21,6 @@ async function register(req, res) {
         }
         return res.status(500).json({ message: e?.message })
     }
-
-
 }
 
 async function login(req, res) {
