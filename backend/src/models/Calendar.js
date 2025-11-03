@@ -4,7 +4,7 @@ const CalendarSchema = new mongoose.Schema({
     name: String,
     description: String,
     guests: [{ type: mongoose.Schema.Types.ObjectId, ref: "User" }],
-    calendars: [{ type: mongoose.Schema.Types.ObjectId, ref: "Calendar" }],
+    events: [{ type: mongoose.Schema.Types.ObjectId, ref: "Event" }],
 });
 
 const Calendar = mongoose.model("Calendar", CalendarSchema);

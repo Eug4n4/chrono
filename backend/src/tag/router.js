@@ -1,8 +1,8 @@
 import express from 'express';
-import {getHolidays} from './holidays.controller.js';
+import {createTag} from "./tag.controller.js";
 
 const router = express.Router()
 
-router.get('/', getHolidays);
+router.post('/', createTag);
 
 export default router;
