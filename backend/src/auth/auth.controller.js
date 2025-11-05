@@ -15,6 +15,7 @@ async function register(req, res) {
     try {
         const user = await User.create({ login, email, password: hashed })
         const dto = new UserDto(user)
+        EmailManager.getInstance().sendVerificationMail(email);
         return res.json(dto)
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
@@ -47,6 +48,14 @@ async function login(req, res) {
     }
 }
 
+async function verifyEmail(req, res) {
+    const user = await User.findOneAndUpdate({ email: req.tokenPayload.email }, { emailVerified: true });
+    if (user) {
+        return res.json({ message: "Email verified successfully" })
+    }
+    return res.status(400).json({ 'message': 'There is no user with provided credentials' })
+}
+
 async function sendPasswordReset(req, res) {
     const email = matchedData(req)["email"];
     EmailManager.getInstance().sendPasswordResetMail(email);
@@ -65,4 +74,4 @@ async function resetPassword(req, res) {
 }
 
 
-export { register, login, sendPasswordReset, resetPassword }
+export { register, login, verifyEmail, sendPasswordReset, resetPassword }
