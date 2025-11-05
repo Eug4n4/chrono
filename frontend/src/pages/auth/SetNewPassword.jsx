@@ -16,7 +16,7 @@ function SetNewPassword() {
   useEffect(() => {
     try {
       const payload = jwtDecode(token);
-      if (payload.exp - Date.now() < 0) {
+      if (payload.exp * 1000 < Date.now()) {
         setValidToken(false);
         return;
       }
