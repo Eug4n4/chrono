@@ -7,6 +7,7 @@ import UserDto from "../dto/UserDto.js"
 import mongoose from "mongoose";
 import Token from "../models/Token.js";
 import { createTokenPair } from "../utils/generate.tokens.js";
+import EmailManager from "../mail/EmailManager.js";
 
 async function register(req, res) {
     const { login, email, password } = matchedData(req);
@@ -48,5 +49,22 @@ async function login(req, res) {
     }
 }
 
+async function sendPasswordReset(req, res) {
+    const email = matchedData(req)["email"];
+    EmailManager.getInstance().sendPasswordResetMail(email);
+    return res.json({ message: `Email was sent to ${email}` })
+}
 
-export { register, login }
+async function resetPassword(req, res) {
+    const newPassword = matchedData(req)['password']
+    const hashed = await hashPassword(newPassword);
+    const user = await User.findOneAndUpdate({ email: req.tokenPayload.email }, { password: hashed })
+    if (user) {
+        return res.json({ message: "Password reset successfully" })
+    }
+    return res.status(400).json({ 'message': 'There is no user with provided credentials' })
+
+}
+
+
+export { register, login, sendPasswordReset, resetPassword }
