@@ -1,13 +1,17 @@
 import { body } from "express-validator";
 
+
+const emailValidator = body("email").exists().isEmail();
+const passwordValidator = body("password").exists().isLength({ min: 8 }).withMessage("Must be at least 8 characters long");
+
 const common = [
-    body("login").exists().matches(/\w+/).isLength({ max: 20 }).withMessage("Login is too long"),
-    body("password").exists().isLength({ min: 8 }).withMessage("Must be at least 8 characters long")
+    body("login").exists().withMessage("Login is required").matches(/(^[\w.]+@(?:\w{2,}\.)+\w{2,}$)|(^\w+$)/).withMessage("Login is invalid"),
+    passwordValidator
 ]
 
 const registerValidator = [
     ...common,
-    body("email").exists().isEmail(),
+    emailValidator,
     body("repeat_password").exists().custom((value, { req }) => {
         if (value !== req.body.password) {
             throw new Error("Passwords didn't match")
@@ -21,4 +25,4 @@ const loginValidator = [
 ]
 
 
-export { registerValidator, loginValidator }
+export { registerValidator, loginValidator, emailValidator, passwordValidator }

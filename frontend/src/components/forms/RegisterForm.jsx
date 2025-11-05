@@ -13,10 +13,12 @@ function RegisterForm({ onSubmit, submitting }) {
   function handleSubmit(e) {
     e.preventDefault();
     const errors = {};
-    if (!login || /\s/.test(login)) {
+    const isEmail = /^[\w.]+@(?:\w{2,}\.)+\w{2,}$/.test(email);
+    const isLogin = /^\w+$/.test(login);
+    if (!isLogin) {
       errors.login = "Login can't contain whitespaces";
     }
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    if (!isEmail) {
       errors.email = "Invalid email";
     }
     if (password !== repeatPassword) {

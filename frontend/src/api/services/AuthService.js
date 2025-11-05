@@ -9,6 +9,14 @@ class AuthService {
     static async register(data) {
         return api.post("auth/register", data)
     }
+
+    static async sendResetPassword(data) {
+        return api.post("auth/password-reset", data);
+    }
+
+    static async confirmResetPassword(token, newPassword) {
+        return api.post(`auth/password-reset/${token}`, newPassword);
+    }
 }
 
 export default AuthService

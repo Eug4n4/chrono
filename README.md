@@ -22,3 +22,9 @@
 ## КОРИСТУВАЧ
 
 - має логін, пароль, логін
+
+## ENDPOINTS
+
+```
+/api/holidays?country=Ukraine&year=2027
+```
