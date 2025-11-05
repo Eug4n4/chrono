@@ -11,7 +11,9 @@ function LoginForm({ onSubmit, submitting }) {
   function handleSubmit(e) {
     e.preventDefault();
     const errors = {};
-    if (!/(^\w+@(?:\w+\.\w+)$)|(^\w+$)/.test(login)) {
+    const isEmail = /^[\w.]+@(?:\w{2,}\.)+\w{2,}$/.test(login);
+    const isLogin = /^\w+$/.test(login);
+    if (!isEmail && !isLogin) {
       errors.login = "Invalid login or email";
     }
     if (password.length < 8) {
