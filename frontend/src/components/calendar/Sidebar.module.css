@@ -1,0 +1,37 @@
+.sidebar {
+  width: 200px;
+  padding: 16px;
+  border-right: 1px solid #ddd;
+}
+
+.calendarItem {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.collapsibleHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+  font-weight: 500;
+  user-select: none;
+}
+
+.arrow {
+  display: inline-block;
+  transition: transform 0.2s ease-in-out;
+  transform: rotate(-90deg);
+  font-size: 0.8em;
+}
+
+.arrowDown {
+  transform: rotate(0deg);
+}
+
+.collapsibleContent {
+  padding-left: 8px;
+  margin-top: 8px;
+}
