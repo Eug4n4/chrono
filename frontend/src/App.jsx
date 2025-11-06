@@ -4,6 +4,7 @@ import Register from "./pages/auth/Register";
 import NotFound from "./pages/404";
 import SetNewPassword from "./pages/auth/SetNewPassword";
 import PasswordReset from "./pages/auth/PasswordReset";
+import CalendarPage from "./pages/calendar/CalendarPage";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Route path="/register" element={<Register />} />
       <Route path="password-reset/:token" element={<SetNewPassword />} />
       <Route path="password-reset" element={<PasswordReset />} />
+      <Route path="/calendar" element={<CalendarPage />} />
       <Route path="*" element={<NotFound />} />
     </Routes>
   );
