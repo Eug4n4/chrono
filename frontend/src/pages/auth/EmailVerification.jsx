@@ -4,15 +4,14 @@ import AuthService from "../../api/services/AuthService";
 
 function EmailVerification() {
   const { token } = useParams();
-  const [validToken, setValidToken] = useState(true);
+  const [validToken, setValidToken] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    AuthService.verifyEmail(token)
-      .then(() => {
-        setTimeout(() => navigate("/login", { replace: true }), 3000);
-      })
-      .catch(() => setValidToken(false));
+    AuthService.verifyEmail(token).then(() => {
+      setValidToken(true);
+      setTimeout(() => navigate("/login", { replace: true }), 3000);
+    });
   }, [token]);
 
   return (
