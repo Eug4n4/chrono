@@ -5,7 +5,6 @@ const EventSchema = new mongoose.Schema({
     start: Date,
     end: Date,
     type: { type: String, enum: ["meeting", "task", "reminder"] },
-    calendarId: { type: mongoose.Schema.Types.ObjectId, ref: "Calendar" },
     tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
 });
 

@@ -9,6 +9,7 @@ const router = express.Router()
 router.use("/auth", authRouter);
 router.use("/holidays", holidaysRouter);
 router.use("/calendar", calendarRouter);
+router.use("/event", eventRouter);
 router.use("/tag", tagRouter);
 
 export default router;
