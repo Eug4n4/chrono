@@ -1,0 +1,11 @@
+.calendarPage {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: sans-serif;
+}
+
+.mainContent {
+  display: flex;
+  flex-grow: 1;
+}

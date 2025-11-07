@@ -1,0 +1,50 @@
+import React, { useState, useRef, useEffect } from 'react';
+import Header from '../../components/calendar/Header';
+import Sidebar from '../../components/calendar/Sidebar';
+import CalendarView from '../../components/calendar/CalendarView';
+import styles from './CalendarPage.module.css';
+
+const CalendarPage = () => {
+  const [currentView, setCurrentView] = useState('Monthly');
+  const [title, setTitle] = useState('');
+  const calendarRef = useRef(null);
+
+  const viewMap = {
+    Daily: 'timeGridDay',
+    Weekly: 'timeGridWeek',
+    Monthly: 'dayGridMonth',
+    Yearly: 'multiMonthYear',
+  };
+
+  useEffect(() => {
+    const calendarApi = calendarRef.current?.getApi();
+    if (calendarApi) {
+      calendarApi.changeView(viewMap[currentView]);
+    }
+  }, [currentView]);
+
+  const handlePrev = () => calendarRef.current?.getApi().prev();
+  const handleNext = () => calendarRef.current?.getApi().next();
+
+  const handleDatesSet = (arg) => {
+    setTitle(arg.view.title);
+  };
+
+  return (
+    <div className={styles.calendarPage}>
+      <Header
+        currentView={currentView}
+        setCurrentView={setCurrentView}
+        onPrev={handlePrev}
+        onNext={handleNext}
+        title={title}
+      />
+      <div className={styles.mainContent}>
+        <Sidebar />
+        <CalendarView ref={calendarRef} onDatesSet={handleDatesSet} />
+      </div>
+    </div>
+  );
+};
+
+export default CalendarPage;
