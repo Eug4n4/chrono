@@ -17,6 +17,10 @@ class AuthService {
     static async confirmResetPassword(token, newPassword) {
         return api.post(`auth/password-reset/${token}`, newPassword);
     }
+
+    static async verifyEmail(token) {
+        return api.get(`auth/verify/${token}`);
+    }
 }
 
 export default AuthService

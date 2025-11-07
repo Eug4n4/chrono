@@ -26,17 +26,28 @@ class EmailManager {
         return EmailManager.#instance;
     }
 
+    #sendMail(to, subject, html) {
+        this.#transporter.sendMail({
+            from: process.env.EMAIL,
+            to: to,
+            subject: subject,
+            html: html
+        })
+    }
+
     sendPasswordResetMail(email) {
         const expiresMinutes = 30;
         const token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: `${expiresMinutes}m` });
         const link = `${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}/password-reset/${token}`;
-        this.#transporter.sendMail({
-            from: process.env.EMAIL,
-            to: email,
-            subject: "Password reset",
-            html: `<p>Follow this link to reset your password. Link expires in ${expiresMinutes} minutes</p>\n\
-        <p><a href="${link}">link</a></p>`
-        })
+        this.#sendMail(email, "Password reset", `<p>Follow this link to reset your password. Link expires in ${expiresMinutes} minutes</p>\n\
+        <p><a href="${link}">link</a></p>`)
+    }
+
+    sendVerificationMail(email) {
+        const expiresMinutes = 1;
+        const token = jwt.sign({ email: email }, process.env.JWT_SECRET, { expiresIn: `${expiresMinutes}m` })
+        const link = `${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}/verify-email/${token}`
+        this.#sendMail(email, "Email verification", `<p>Please verify your email. Follow this <a href="${link}">link</a></p>`)
     }
 }
 
