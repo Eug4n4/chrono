@@ -6,11 +6,11 @@ import mongoose from "mongoose";
 async function createEvent(req, res) {
     const {name, start, end, type, tags, calendarId} = req.body;
     try {
-        const event = await Event.create({name, start, end, type, tags, calendarId});
+        const event = await Event.create({name, start, end, type});
         const dto = new EventDto(event);
         await Calendar.updateOne(
             {_id: calendarId},
-            {$push: {events: dto._id}},
+            {$addToSet: {events: dto.id}}
         );
         return res.status(200).send({message: "Success", event: dto});
     } catch (e) {

@@ -10,7 +10,7 @@ async function createCalendar(req, res) {
         const dto = new CalendarDto(calendar);
         await User.updateOne(
             {_id: user_id},
-            {$push: {calendarsId: dto._id}},
+            {$addToSet: {calendarsId: dto.id}},
         );
         return res.status(200).send({message: "Success", calendar: dto});
     } catch (e) {

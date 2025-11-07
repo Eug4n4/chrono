@@ -10,7 +10,7 @@ async function createTag(req, res) {
         const dto = new TagDto(tag);
         await User.updateOne(
             {_id: user_id},
-            {$push: {tagsCreatedId: dto._id}},
+            {$addToSet: {tagsCreatedId: dto.id}},
         );
         return res.status(200).send({message: "Success", tag: dto});
     } catch (e) {
