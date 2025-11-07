@@ -33,7 +33,7 @@ out/
 # Logs
 vite.config.ts.timestamp-*
 .vite/
-.env
+../.env
 .env.local
 .env.*.local
 

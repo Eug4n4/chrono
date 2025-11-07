@@ -21,10 +21,10 @@
 
 ## КОРИСТУВАЧ
 
-- має логін, пароль, логін
+- має логін, пароль, пошту
 
 ## ENDPOINTS
 
 ```
-/api/holidays?country=Ukraine&year=2027
+GET  /api/holidays?country=Ukraine&year=2027
 ```

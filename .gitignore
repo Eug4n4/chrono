@@ -28,7 +28,7 @@ out/
 
 vite.config.ts.timestamp-*
 .vite/
-.env
+backend/.env
 .env.local
 .env.*.local
 
