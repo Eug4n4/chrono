@@ -10,10 +10,10 @@ import { createTokenPair } from "../utils/generate.tokens.js";
 import EmailManager from "../mail/EmailManager.js";
 
 async function register(req, res) {
-    const { login, email, password } = matchedData(req);
+    const { login, email, password, countryCode } = matchedData(req);
     const hashed = await hashPassword(password);
     try {
-        const user = await User.create({ login, email, password: hashed })
+        const user = await User.create({ login, email, password: hashed, countryCode })
         const dto = new UserDto(user)
         EmailManager.getInstance().sendVerificationMail(email);
         return res.json(dto)

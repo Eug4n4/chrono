@@ -2,13 +2,21 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import PasswordInput from "../inputs/PasswordInput";
 import Input from "../inputs/Input";
+import CountrySelector from "../selectors/CountrySelector";
 
 function RegisterForm({ onSubmit, submitting }) {
   const [login, setLogin] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
-  const [errors, setErrors] = useState({ password: "", login: "", email: "" });
+  const [selectedCountryCode, setSelectedCountryCode] = useState("");
+  const initialErrorsState = {
+    password: "",
+    login: "",
+    email: "",
+    countryCode: "",
+  };
+  const [errors, setErrors] = useState(initialErrorsState);
 
   function handleSubmit(e) {
     e.preventDefault();
@@ -26,13 +34,19 @@ function RegisterForm({ onSubmit, submitting }) {
     } else if (password.length < 8) {
       errors.password = "Password's length must be at least 8";
     }
+    if (selectedCountryCode.length === 0) {
+      errors.countryCode = "Select country you are from";
+    }
 
     if (Object.keys(errors).length > 0) {
       setErrors(errors);
       return;
+    } else {
+      setErrors(initialErrorsState);
     }
-
-    onSubmit(e);
+    const formData = new FormData(e.target);
+    formData.append("countryCode", selectedCountryCode);
+    onSubmit(formData);
   }
 
   return (
@@ -82,6 +96,13 @@ function RegisterForm({ onSubmit, submitting }) {
           required
         />
         {errors.password && <p>{errors.password}</p>}
+      </div>
+
+      <div>
+        <CountrySelector
+          onChange={(country) => setSelectedCountryCode(country.value)}
+        />
+        {errors.countryCode && <p>{errors.countryCode}</p>}
       </div>
 
       <button type="submit" id="submit_register" disabled={submitting}>
