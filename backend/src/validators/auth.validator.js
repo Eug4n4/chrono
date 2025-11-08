@@ -17,7 +17,8 @@ const registerValidator = [
             throw new Error("Passwords didn't match")
         }
         return true;
-    })
+    }),
+    body("countryCode").exists().isString().isLength({ min: 2, max: 2 }).withMessage("Provide country code value")
 ]
 
 const loginValidator = [
