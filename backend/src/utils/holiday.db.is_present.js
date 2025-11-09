@@ -10,7 +10,7 @@ async function getHolidayAPI(year, code) {
     return await response.json();
 }
 
-async function get_holidays_for_year(year, code) {
+async function getHolidaysForYear(year, code) {
     try {
         let holidays = await Holiday.findOne({year: year, countryCode: code});
         if (!holidays) {
