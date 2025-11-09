@@ -1,11 +1,14 @@
 import jwt from "jsonwebtoken";
 import User from "../models/User.js";
-import {generateAccessToken, generateRefreshToken} from "../utils/generate.tokens.js";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+} from "../utils/generate.tokens.js";
 
 async function verifyToken(token) {
     try {
         const decoded = await jwt.verify(token, process.env.JWT_SECRET);
-        const user = await User.findOne({_id: decoded.id});
+        const user = await User.findOne({ _id: decoded.id });
         if (!user) {
             throw new Error("User not found");
         }
@@ -14,7 +17,6 @@ async function verifyToken(token) {
         throw new Error("Token not found");
     }
 }
-
 
 async function authenticate(req, res, next) {
     const accessToken = req.cookies["access"];
@@ -46,4 +48,4 @@ async function authenticate(req, res, next) {
     }
 }
 
-export {authenticate};
+export { authenticate };

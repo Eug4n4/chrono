@@ -12,19 +12,19 @@ async function getHolidayAPI(year, code) {
 
 async function getHolidaysForYear(year, code) {
     try {
-        let holidays = await Holiday.findOne({year: year, countryCode: code});
+        let holidays = await Holiday.findOne({ year: year, countryCode: code });
         if (!holidays) {
             const holidaysFromAPI = await getHolidayAPI(year, code);
 
-            const holidaysToSave = holidaysFromAPI.map(holiday => ({
+            const holidaysToSave = holidaysFromAPI.map((holiday) => ({
                 name: holiday.name,
-                date: new Date(holiday.date)
+                date: new Date(holiday.date),
             }));
 
             holidays = await Holiday.create({
                 year: year,
                 countryCode: code,
-                holidays: holidaysToSave
+                holidays: holidaysToSave,
             });
         }
         return holidays;
@@ -34,5 +34,4 @@ async function getHolidaysForYear(year, code) {
     }
 }
 
-
-export {get_holidays_for_year};
+export { getHolidaysForYear };

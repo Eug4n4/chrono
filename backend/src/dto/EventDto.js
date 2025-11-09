@@ -1,11 +1,11 @@
 import Event from "../models/Event.js";
 
 class EventDto {
-    id
-    name
-    start
-    end
-    tags
+    id;
+    name;
+    start;
+    end;
+    tags;
 
     /**
      * @param {Event} event

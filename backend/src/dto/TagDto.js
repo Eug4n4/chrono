@@ -1,8 +1,8 @@
 import Tag from "../models/Tag.js";
 
 class TagDto {
-    id
-    name
+    id;
+    name;
 
     /**
      * @param {Tag} tag

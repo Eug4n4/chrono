@@ -1,5 +1,11 @@
 # chrono
 
+## Назви
+
+- кожна функція в camelCase (наприклад: getCalendar)
+- кожен клас PascalCase (наприклад: EmailManager)
+
+
 ## КАЛЕНДАР
 
 - календар має ім'я та опис

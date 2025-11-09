@@ -7,8 +7,10 @@ import Select from "react-select";
  *
  */
 function CountrySelector({ onChange }) {
-  const { countries } = useSelector((state) => state.countriesList);
-  return <Select defaultValue={null} onChange={onChange} options={countries} />;
+    const { countries } = useSelector((state) => state.countriesList);
+    return (
+        <Select defaultValue={null} onChange={onChange} options={countries} />
+    );
 }
 
 export default CountrySelector;

@@ -2,13 +2,13 @@ import mongoose from "mongoose";
 
 const holidaySchema = new mongoose.Schema({
     name: { type: String, required: true },
-    date: { type: Date, required: true }
+    date: { type: Date, required: true },
 });
 
 const HolidaySchema = new mongoose.Schema({
     year: { type: String, required: true },
     countryCode: { type: String, required: true },
-    holidays: [holidaySchema]
+    holidays: [holidaySchema],
 });
 
 const Holiday = mongoose.model("Holiday", HolidaySchema);

@@ -1,10 +1,10 @@
 import User from "../models/User.js";
 
 class UserDto {
-    id
-    login
-    email
-    avatar
+    id;
+    login;
+    email;
+    avatar;
     /**
      * @param {User} user
      */

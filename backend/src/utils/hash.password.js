@@ -1,4 +1,4 @@
-import bcrypt from "bcrypt"
+import bcrypt from "bcrypt";
 
 async function hashPassword(plainText) {
     return bcrypt.hash(plainText, 10);

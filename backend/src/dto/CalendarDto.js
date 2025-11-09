@@ -1,9 +1,9 @@
 import Calendar from "../models/Calendar.js";
 
 class CalendarDto {
-    id
-    name
-    description
+    id;
+    name;
+    description;
 
     /**
      * @param {Calendar} calendar
