@@ -1,12 +1,16 @@
 import { matchedData } from "express-validator";
 import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
 
 import hashPassword from "../utils/hash.password.js";
 import User from "../models/User.js";
 import UserDto from "../dto/UserDto.js";
 import mongoose from "mongoose";
 import Token from "../models/Token.js";
-import { createTokenPair } from "../utils/generate.tokens.js";
+import {
+    generateAccessToken,
+    generateRefreshToken,
+} from "../utils/generate.tokens.js";
 import EmailManager from "../mail/EmailManager.js";
 
 async function register(req, res) {
@@ -44,7 +48,8 @@ async function login(req, res) {
         if (user && bcrypt.compareSync(password, user.password)) {
             const dto = new UserDto(user);
             const oldToken = await Token.findOneAndDelete({ userId: user.id });
-            const { access, refresh } = await createTokenPair(dto);
+            const access = generateAccessToken(dto);
+            const refresh = generateRefreshToken(dto);
             res.cookie("access", access["token"], {
                 expires: new Date(access["expires"]),
             });
@@ -96,4 +101,37 @@ async function resetPassword(req, res) {
         .json({ message: "There is no user with provided credentials" });
 }
 
-export { register, login, verifyEmail, sendPasswordReset, resetPassword };
+async function refresh(req, res) {
+    const refreshToken = req.cookies["refresh"];
+    if (!refreshToken) {
+        return res.status(401).json({ message: "No refresh token" });
+    }
+    try {
+        const decoded = jwt.verify(refreshToken, process.env.JWT_SECRET);
+        const user = await User.findOne({ _id: decoded.id });
+        if (!user) {
+            throw new Error("User not found");
+        }
+        const access = generateAccessToken(user);
+        const newRefresh = generateRefreshToken(user);
+        res.cookie("access", access["token"], {
+            expires: new Date(access["expires"]),
+        });
+        res.cookie("refresh", newRefresh["token"], {
+            httpOnly: true,
+            expires: new Date(newRefresh["expires"]),
+        });
+        return res.json({ accessToken: access["token"] });
+    } catch (err) {
+        return res.status(403).json({ message: "Invalid refresh token" });
+    }
+}
+
+export {
+    register,
+    login,
+    verifyEmail,
+    sendPasswordReset,
+    resetPassword,
+    refresh,
+};
