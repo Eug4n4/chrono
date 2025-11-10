@@ -1,8 +1,15 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
+import { useDispatch } from 'react-redux';
+import { logout } from '../../features/state/authSlice';
 
 const Header = ({ currentView, setCurrentView, onNext, onPrev, title }) => {
+    const dispatch = useDispatch();
     const [showCreateMenu, setShowCreateMenu] = useState(false);
+
+    const handleLogout = () => {
+        dispatch(logout());
+    };
 
     return (
         <header className={styles.header}>
@@ -31,6 +38,9 @@ const Header = ({ currentView, setCurrentView, onNext, onPrev, title }) => {
                 </button>
             </div>
             <div className={styles.headerRight}>
+                <button className={styles.button} onClick={handleLogout}>
+                    Logout
+                </button>
                 <div className={styles.createMenu}>
                     <button
                         className={styles.button}
