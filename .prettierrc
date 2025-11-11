@@ -19,5 +19,13 @@
   "requirePragma": false,
   "tabWidth": 4,
   "useTabs": false,
-  "embeddedLanguageFormatting": "auto"
+  "embeddedLanguageFormatting": "auto",
+  "overrides": [
+    {
+      "files": ["frontend/**/*.html"],
+      "options": {
+        "tabWidth": 2
+      }
+    }
+  ]
 }
