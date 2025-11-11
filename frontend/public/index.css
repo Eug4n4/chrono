@@ -1,0 +1,20 @@
+:root {
+    --cerulean-blue: #3951d3;
+    --bg-color: #0e1d33;
+    --border-color: #0e1d33;
+    --malibu: #99c0f8;
+    --mariner: #236fd1;
+    --surface-color: #193457;
+    --steel-blue: #5983c0;
+    --chambray: #344c95;
+    --text-main: #ccd6f6;
+    --font-family: Inter, sans-serif;
+    --text-muted: #8892b0;
+    --accent-primary: #64ffda;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
