@@ -6,7 +6,7 @@
 
 .password_input svg {
     position: absolute;
-    right: 0;
+    right: 10px;
     top: 50%;
     transform: translateY(-50%);
     cursor: pointer;

@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PasswordInput from "../inputs/PasswordInput";
 import Input from "../inputs/Input";
 import CountrySelector from "../selectors/CountrySelector";
+import r from "./register.form.module.css";
 
 function RegisterForm({ onSubmit, submitting }) {
     const [login, setLogin] = useState("");
@@ -50,75 +51,99 @@ function RegisterForm({ onSubmit, submitting }) {
     }
 
     return (
-        <form id="register_form" onSubmit={handleSubmit}>
-            <h2>Sign Up</h2>
-            <div>
-                <Input
-                    type="text"
-                    name="login"
-                    id="login"
-                    placeholder="Login"
-                    onChange={(e) => setLogin(e.target.value)}
-                    required
-                />
-                {errors.login && <p>{errors.login}</p>}
-            </div>
+        <div className={r.register_container}>
+            <div className={r.register_card}>
+                <form id={r.register_form} onSubmit={handleSubmit}>
+                    <div className={r.wrapper}>
+                        <h2>Create Account</h2>
+                    </div>
+                    <div className={r.wrapper}>
+                        <Input
+                            type="text"
+                            name="login"
+                            id="login"
+                            placeholder=""
+                            onChange={(e) => setLogin(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="login">Login</label>
+                        {errors.login && <p>{errors.login}</p>}
+                    </div>
 
-            <div>
-                <Input
-                    type="email"
-                    name="email"
-                    id="email"
-                    placeholder="Email"
-                    onChange={(e) => setEmail(e.target.value)}
-                    required
-                />
-                {errors.email && <p>{errors.email}</p>}
-            </div>
+                    <div className={r.wrapper}>
+                        <Input
+                            type="email"
+                            name="email"
+                            id="email"
+                            placeholder=""
+                            onChange={(e) => setEmail(e.target.value)}
+                            required
+                        />
+                        <label htmlFor="email">Email</label>
 
-            <div>
-                <PasswordInput
-                    name="password"
-                    id="password"
-                    placeholder="Password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    required
-                />
-                {errors.password && <p>{errors.password}</p>}
-            </div>
+                        {errors.email && <p>{errors.email}</p>}
+                    </div>
 
-            <div>
-                <PasswordInput
-                    name="repeat_password"
-                    id="repeat_password"
-                    placeholder="Repeat password"
-                    onChange={(e) => setRepeatPassword(e.target.value)}
-                    required
-                />
-                {errors.password && <p>{errors.password}</p>}
-            </div>
+                    <div className={r.wrapper}>
+                        <PasswordInput
+                            name="password"
+                            id={r.password}
+                            placeholder=""
+                            onChange={(e) => setPassword(e.target.value)}
+                            required
+                        />
+                        <label htmlFor={r.password}>Password</label>
 
-            <div>
-                <CountrySelector
-                    onChange={(country) =>
-                        setSelectedCountryCode(country.value)
-                    }
-                />
-                {errors.countryCode && <p>{errors.countryCode}</p>}
-            </div>
+                        {errors.password && <p>{errors.password}</p>}
+                    </div>
 
-            <button type="submit" id="submit_register" disabled={submitting}>
-                {submitting ? "Submitting..." : "Register now"}
-            </button>
+                    <div className={r.wrapper}>
+                        <PasswordInput
+                            name="repeat_password"
+                            id={r.repeat_password}
+                            placeholder=""
+                            onChange={(e) => setRepeatPassword(e.target.value)}
+                            required
+                        />
+                        <label htmlFor={r.repeat_password}>
+                            Repeat password
+                        </label>
 
-            <div id="to_login">
-                <p>
-                    Already have an account?
-                    <br />
-                    <Link to={"/login"}>Sign In</Link>
-                </p>
+                        {errors.password && <p>{errors.password}</p>}
+                    </div>
+                    <div className={r.wrapper}>
+                        <div>
+                            <CountrySelector
+                                onChange={(country) =>
+                                    setSelectedCountryCode(country.value)
+                                }
+                                classNamePrefix={r.react_select}
+                            />
+                            {errors.countryCode && <p>{errors.countryCode}</p>}
+                        </div>
+                    </div>
+
+                    <div className={r.wrapper}>
+                        <button
+                            type="submit"
+                            className={r.submit_register}
+                            disabled={submitting}
+                        >
+                            {submitting ? "Submitting..." : "Register now"}
+                        </button>
+                    </div>
+                    <div className={r.wrapper}>
+                        <div className={r.to_login}>
+                            <p>
+                                Already have an account?
+                                <br />
+                                <Link to={"/login"}>Sign In</Link>
+                            </p>
+                        </div>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     );
 }
 
