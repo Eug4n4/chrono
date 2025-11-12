@@ -26,7 +26,11 @@ async function authenticate(req, res, next) {
         if (accessToken) {
             const user = await verifyToken(accessToken);
             const newAccess = generateAccessToken(user);
-            res.cookie("access", newAccess);
+            res.cookie("access", newAccess, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+            });
             return next();
         }
         throw new Error("No access token");
@@ -40,7 +44,7 @@ async function authenticate(req, res, next) {
             const newAccess = generateAccessToken(user);
             const newRefresh = generateRefreshToken(user);
             res.cookie("access", newAccess);
-            res.cookie("refresh", newRefresh);
+            res.cookie("refresh", newRefresh, { httpOnly: true });
             return next();
         } catch {
             return res.status(401).json({ message: "Unauthorized" });

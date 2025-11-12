@@ -5,6 +5,7 @@ import {
     resetPassword,
     sendPasswordReset,
     verifyEmail,
+    refresh,
 } from "./auth.controller.js";
 import {
     emailValidator,
@@ -19,6 +20,7 @@ const router = express.Router();
 
 router.post("/login", ...loginValidator, validationErrors, login);
 router.post("/register", ...registerValidator, validationErrors, register);
+router.post("/refresh", refresh);
 router.post(
     "/password-reset",
     emailValidator,
