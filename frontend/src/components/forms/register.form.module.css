@@ -8,7 +8,7 @@
 
 }
 .register_card {
-    padding: calc(1% + 150px)
+    padding: calc(8% + 100px)
 }
 
 .wrapper {
@@ -20,11 +20,12 @@
 
 .wrapper > input, input#password, input#repeat_password {
     min-height: 38px;
-    background-color: var(--chambray);
+    background-color: var(--input-bg-color);
     padding: 0.5rem;
     border: 2px solid var(--border-color);
     outline: none;
     color: var(--text-main);
+    font-size: inherit;
 }
 
 .wrapper > input:focus ~ label, 
@@ -57,7 +58,7 @@ input#password, input#repeat_password {
 }
 
 .to_login a {
-    color: var(--mariner);
+    color: var(--link-color);
 }
 
 .submit_register {
@@ -65,6 +66,7 @@ input#password, input#repeat_password {
     margin-left: auto;
     padding: 0.75rem 2rem;
     border-radius: 8px;
-    background-color: var(--accent-primary);
+    background-color: var(--btn-bg-color);
+    font-size: inherit;
     cursor: pointer;
 }
