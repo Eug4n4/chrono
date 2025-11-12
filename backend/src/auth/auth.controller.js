@@ -112,8 +112,9 @@ async function refresh(req, res) {
         if (!user) {
             throw new Error("User not found");
         }
-        const access = generateAccessToken(user);
-        const newRefresh = generateRefreshToken(user);
+        const dto = new UserDto(user);
+        const access = generateAccessToken(dto);
+        const newRefresh = generateRefreshToken(dto);
         res.cookie("access", access["token"], {
             expires: new Date(access["expires"]),
         });
