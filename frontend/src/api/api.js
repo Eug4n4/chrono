@@ -23,8 +23,10 @@ api.interceptors.response.use(
     (response) => response,
     async (error) => {
         const originalRequest = error.config;
-        if (error.response?.status === 401 && !originalRequest._retry) {
-            originalRequest._retry = true;
+        if (
+            error.response?.status === 401 &&
+            originalRequest.url !== "auth/refresh"
+        ) {
             try {
                 const refreshResponse = await axios.post(
                     `${import.meta.env.VITE_API_URL}/api/auth/refresh`,
@@ -37,10 +39,9 @@ api.interceptors.response.use(
                 if (newToken) {
                     originalRequest.headers.Authorization = `Bearer ${newToken}`;
                 }
-                return api(originalRequest);
+                return api.request(originalRequest);
             } catch (refreshError) {
                 store.dispatch(logout());
-                window.location.href = "/login";
                 return Promise.reject(refreshError);
             }
         }

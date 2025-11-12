@@ -10,55 +10,65 @@ import AppInitializer from "./components/AppInitializer";
 import ProtectedRoute from "./components/accessRoutes/ProtectedRoute";
 import GuestRoute from "./components/accessRoutes/GuestRoute";
 
+function Layout() {
+    return (
+        <div className="app">
+            <Outlet />
+        </div>
+    );
+}
+
 function App() {
     return (
         <AppInitializer>
             <Routes>
-                <Route
-                    path="/login"
-                    element={
-                        <GuestRoute>
-                            <Login />
-                        </GuestRoute>
-                    }
-                />
-                <Route
-                    path="/register"
-                    element={
-                        <GuestRoute>
-                            <Register />
-                        </GuestRoute>
-                    }
-                />
-                <Route
-                    path="password-reset/:token"
-                    element={
-                        <GuestRoute>
-                            <SetNewPassword />
-                        </GuestRoute>
-                    }
-                />
-                <Route
-                    path="password-reset"
-                    element={
-                        <GuestRoute>
-                            <PasswordReset />
-                        </GuestRoute>
-                    }
-                />
-                <Route
-                    path="/verify-email/:token"
-                    element={<EmailVerification />}
-                />
-                <Route
-                    path="/calendar"
-                    element={
-                        <ProtectedRoute>
-                            <CalendarPage />
-                        </ProtectedRoute>
-                    }
-                />
-                <Route path="*" element={<NotFound />} />
+                <Route element={<Layout />}>
+                    <Route
+                        path="/login"
+                        element={
+                            <GuestRoute>
+                                <Login />
+                            </GuestRoute>
+                        }
+                    />
+                    <Route
+                        path="/register"
+                        element={
+                            <GuestRoute>
+                                <Register />
+                            </GuestRoute>
+                        }
+                    />
+                    <Route
+                        path="password-reset/:token"
+                        element={
+                            <GuestRoute>
+                                <SetNewPassword />
+                            </GuestRoute>
+                        }
+                    />
+                    <Route
+                        path="password-reset"
+                        element={
+                            <GuestRoute>
+                                <PasswordReset />
+                            </GuestRoute>
+                        }
+                    />
+                    <Route
+                        path="/verify-email/:token"
+                        element={<EmailVerification />}
+                    />
+                    <Route
+                        path="/calendar"
+                        element={
+                            <ProtectedRoute>
+                                <CalendarPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route path="*" element={<NotFound />} />
+                </Route>
             </Routes>
         </AppInitializer>
     );

@@ -1,0 +1,72 @@
+.register_container {
+    background-color: var(--surface-color);
+    max-width: 720px;
+    border-radius: 24px;
+    margin: auto;
+    color: var(--text-main);
+    font-family: var(--font-family);
+
+}
+.register_card {
+    padding: calc(8% + 100px)
+}
+
+.wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-bottom: 28px;
+}
+
+.wrapper > input, input#password, input#repeat_password {
+    min-height: 38px;
+    background-color: var(--input-bg-color);
+    padding: 0.5rem;
+    border: 2px solid var(--border-color);
+    outline: none;
+    color: var(--text-main);
+    font-size: inherit;
+}
+
+.wrapper > input:focus ~ label, 
+.wrapper > input:not(:placeholder-shown) ~ label, 
+.wrapper div:has(input:focus) ~ label, 
+.wrapper div:has(input:not(:placeholder-shown)) ~ label {
+    top: -0.5rem;
+    left: 0.8rem;
+    font-size: 0.8rem;
+} 
+
+.wrapper > label {
+    position: absolute;
+    left: 1rem;
+    top: 0.6rem;
+    cursor: text;
+    transition: top 200ms ease-in,left 200ms ease-in, font-size 200ms ease-in;
+}
+
+.wrapper > div {
+    width: 100%;
+}
+input#password, input#repeat_password {
+    width: 100%;
+}
+
+#register_form {
+    display: flex;
+    flex-direction: column;
+}
+
+.to_login a {
+    color: var(--link-color);
+}
+
+.submit_register {
+    display: block;
+    margin-left: auto;
+    padding: 0.75rem 2rem;
+    border-radius: 8px;
+    background-color: var(--btn-bg-color);
+    font-size: inherit;
+    cursor: pointer;
+}
