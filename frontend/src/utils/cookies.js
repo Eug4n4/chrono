@@ -1,7 +1,5 @@
-// frontend/src/utils/cookies.js
+import Cookie from "js-cookie";
+
 export const getCookie = (name) => {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-    return null;
+    return Cookie.get(name);
 };
