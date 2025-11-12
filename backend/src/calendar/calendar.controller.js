@@ -2,14 +2,16 @@ import Calendar from "../models/Calendar.js";
 import CalendarDto from "../dto/CalendarDto.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 async function createCalendar(req, res) {
-    const { user_id, name, description } = req.body;
+    const user = req.user;
+    const { name, description } = req.body;
     try {
         const calendar = await Calendar.create({ name, description });
         const dto = new CalendarDto(calendar);
         await User.updateOne(
-            { _id: user_id },
+            { _id: user.id },
             { $addToSet: { calendarsId: dto.id } },
         );
         return res.status(200).send({ message: "Success", calendar: dto });
@@ -21,4 +23,89 @@ async function createCalendar(req, res) {
     }
 }
 
-export { createCalendar };
+async function getCalendar(req, res) {
+    try {
+        const year = parseInt(req.query.year) || 2025;
+        const user = req.user;
+        console.log(user);
+        const startDate = new Date(`${year}-01-01T00:00:00Z`);
+        const endDate = new Date(`${year + 1}-01-01T00:00:00Z`);
+
+        const calendars = await User.aggregate([
+            { $match: { _id: new ObjectId(user.id) } },
+            {
+                $set: {
+                    calendarsId: {
+                        $map: {
+                            input: "$calendarsId",
+                            as: "cal",
+                            in: { $toObjectId: "$$cal" },
+                        },
+                    },
+                },
+            },
+            {
+                $lookup: {
+                    from: "calendars",
+                    localField: "calendarsId",
+                    foreignField: "_id",
+                    as: "calendars",
+                },
+            },
+
+            { $unwind: "$calendars" },
+            {
+                $lookup: {
+                    from: "events",
+                    let: { eventIds: "$calendars.events" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $in: ["$_id", "$$eventIds"] },
+                                        { $gte: ["$start", startDate] },
+                                        { $lt: ["$end", endDate] },
+                                    ],
+                                },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "tags",
+                                localField: "tags",
+                                foreignField: "_id",
+                                as: "tags",
+                            },
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                start: 1,
+                                end: 1,
+                                "tags._id": 1,
+                                "tags.name": 1,
+                            },
+                        },
+                    ],
+                    as: "events",
+                },
+            },
+            {
+                $project: {
+                    _id: "$calendars._id",
+                    name: "$calendars.name",
+                    events: "$events",
+                },
+            },
+        ]);
+
+        return res.status(200).json({ calendars: calendars });
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to get calendar" });
+    }
+}
+
+export { createCalendar, getCalendar };
