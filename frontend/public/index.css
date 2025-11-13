@@ -22,4 +22,5 @@
 .app {
     min-height: 100vh;
     background-color: var(--bg-color);
+    font-family: var(--font-family);
 }
