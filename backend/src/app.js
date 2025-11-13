@@ -3,9 +3,12 @@ import cookieParser from "cookie-parser";
 import express from "express";
 import router from "./router.js";
 import connectDB from "./db/connection.js";
+import path, { dirname } from "path";
+import { fileURLToPath } from "url";
 
 const HOST = "http://localhost";
 const PORT = 5000;
+const __dirname = dirname(fileURLToPath(import.meta.url));
 
 function main() {
     const app = express();
@@ -17,9 +20,13 @@ function main() {
     );
     app.use(express.json());
     app.use(cookieParser());
+    app.use(
+        "/storage/",
+        express.static(path.join(__dirname, "..", "storage/")),
+    );
     app.use("/api", router);
 
-    app.use("/{*splat}", async (req, res) => {
+    app.use("/{*splat}", (req, res) => {
         res.status(404).json({ message: "Cant find this route" });
     });
 

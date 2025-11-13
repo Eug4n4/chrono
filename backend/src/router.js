@@ -4,10 +4,12 @@ import holidaysRouter from "./holidays/router.js";
 import calendarRouter from "./calendar/router.js";
 import tagRouter from "./tag/router.js";
 import eventRouter from "./event/router.js";
+import usersRouter from "./users/router.js";
 
 const router = express.Router();
 
 router.use("/auth", authRouter);
+router.use("/users", usersRouter);
 router.use("/holidays", holidaysRouter);
 router.use("/calendar", calendarRouter);
 router.use("/event", eventRouter);
