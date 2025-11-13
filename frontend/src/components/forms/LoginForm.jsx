@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import PasswordInput from "../inputs/PasswordInput";
 import Input from "../inputs/Input";
+import l from "./login.form.module.css";
 
 function LoginForm({ onSubmit, submitting }) {
     const [login, setLogin] = useState("");
@@ -28,42 +29,50 @@ function LoginForm({ onSubmit, submitting }) {
     }
 
     return (
-        <form method="get" id="login_form" onSubmit={handleSubmit}>
-            <h2>Sign In</h2>
-            <div>
-                <Input
-                    type="text"
-                    placeholder="Login or email"
-                    name="login"
-                    id="login"
-                    required
-                    onChange={(e) => setLogin(e.target.value)}
-                />
-                {errors.login && <p>{errors.login}</p>}
-            </div>
-            <div>
-                <PasswordInput
-                    placeholder="Password"
-                    name="password"
-                    id="password"
-                    required
-                    onChange={(e) => setPassword(e.target.value)}
-                />
-                {errors.password && <p>{errors.password}</p>}
-            </div>
+        <div className={l.login_container}>
+            <div className={l.login_card}>
+                <form className={l.login_form} method="get" id="login_form" onSubmit={handleSubmit}>
+                    <div className={l.wrapper}>
+                        <h2>Sign In</h2>
+                    </div>
+                    <div className={l.wrapper}>
+                        <Input
+                            type="text"
+                            placeholder=""
+                            name="login"
+                            id="login"
+                            required
+                            onChange={(e) => setLogin(e.target.value)}
+                        />
+                        <label htmlFor="login">Login or email</label>
+                        {errors.login && <p>{errors.login}</p>}
+                    </div>
+                    <div style={{ gap: "15px" }} className={l.wrapper}>
+                        <PasswordInput
+                            placeholder=""
+                            name="password"
+                            id={l.password}
+                            required
+                            onChange={(e) => setPassword(e.target.value)}
+                        />
+                        <label htmlFor={l.password}>Password</label>
+                        {errors.password && <p>{errors.password}</p>}
+                        <Link to={"/password-reset"}>Forgot password?</Link>
+                    </div>
 
-            <button type="submit" id="submit_login" disabled={submitting}>
-                {submitting ? "Submitting..." : "Sign In"}
-            </button>
-            <div id="to_register">
-                <p>
-                    New here?
-                    <br />
-                    <Link to={"/register"}>Sign Up</Link>
-                </p>
-                <Link to={"/password-reset"}>Forgot password?</Link>
+                    <button type="submit" id="submit_login" disabled={submitting} className={l.submit_login}>
+                        {submitting ? "Submitting..." : "Sign In"}
+                    </button>
+                    <div id={l.to_register}>
+                        <p>
+                            New here?
+                            <br />
+                            <Link to={"/register"}>Sign Up</Link>
+                        </p>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     );
 }
 
