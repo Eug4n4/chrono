@@ -6,7 +6,9 @@ const Sidebar = ({ isOpen = true }) => {
     const [isDefaultOpen, setIsDefaultOpen] = useState(true);
 
     return (
-        <aside className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
+        <aside
+            className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}
+        >
             <div
                 className={styles.collapsibleHeader}
                 onClick={() => setIsOwnOpen(!isOwnOpen)}
