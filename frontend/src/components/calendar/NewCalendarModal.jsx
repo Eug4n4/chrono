@@ -6,7 +6,7 @@ import {
     showSuccessToast,
     showErrorToast,
     extractErrorMessage,
-} from "../../utils/toast";
+} from "../../utils/toast.jsx";
 
 const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
     const [name, setName] = useState("");

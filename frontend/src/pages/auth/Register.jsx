@@ -5,7 +5,7 @@ import {
     showSuccessToast,
     showErrorToast,
     extractErrorMessage,
-} from "../../utils/toast";
+} from "../../utils/toast.jsx";
 
 function Register() {
     const [submitting, setSubmitting] = useState(false);

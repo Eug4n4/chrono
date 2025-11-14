@@ -9,8 +9,9 @@ import { jwtDecode } from "jwt-decode";
 import {
     showSuccessToast,
     showErrorToast,
+    showActionToast,
     extractErrorMessage,
-} from "../../utils/toast";
+} from "../../utils/toast.jsx";
 
 function Login() {
     const dispatch = useDispatch();
@@ -32,11 +33,43 @@ function Login() {
             showSuccessToast("Login successful!");
             navigate("/calendar");
         } catch (error) {
-            const errorMessage = extractErrorMessage(error);
-            showErrorToast(errorMessage);
+            if (
+                error.response?.status === 403 &&
+                error.response?.data?.code === "EMAIL_NOT_VERIFIED"
+            ) {
+                const errorMessage =
+                    error.response?.data?.message ||
+                    "Please verify your email before logging in";
+                showErrorToast(errorMessage);
+
+                setTimeout(() => {
+                    showActionToast(
+                        "Do you want to send verification email?",
+                        () =>
+                            handleResendVerification(error.response.data.email),
+                        () => console.log("Cancelled"),
+                        "Send",
+                        "Cancel",
+                    );
+                }, 500);
+            } else {
+                const errorMessage = extractErrorMessage(error);
+                showErrorToast(errorMessage);
+            }
             console.error("Login failed:", error);
         } finally {
             dispatch(setLoading(false));
+        }
+    }
+
+    async function handleResendVerification(email) {
+        try {
+            await AuthService.resendVerificationEmail(email);
+            showSuccessToast("Verification email sent! Check your inbox.");
+        } catch (error) {
+            const errorMessage = extractErrorMessage(error);
+            showErrorToast(errorMessage);
+            console.error("Resend verification failed:", error);
         }
     }
 

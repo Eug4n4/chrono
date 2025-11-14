@@ -46,6 +46,14 @@ async function login(req, res) {
             $or: [{ login: login }, { email: login }],
         });
         if (user && bcrypt.compareSync(password, user.password)) {
+            if (!user.emailVerified) {
+                return res.status(403).json({
+                    code: "EMAIL_NOT_VERIFIED",
+                    message: "Please verify your email before logging in",
+                    email: user.email,
+                });
+            }
+
             const dto = new UserDto(user);
             const oldToken = await Token.findOneAndDelete({ userId: user.id });
             const access = generateAccessToken(dto);
@@ -128,6 +136,27 @@ async function refresh(req, res) {
     }
 }
 
+async function resendVerificationEmail(req, res) {
+    const { email } = matchedData(req);
+    try {
+        const user = await User.findOne({ email });
+        if (!user) {
+            return res
+                .status(404)
+                .json({ message: "User with this email not found" });
+        }
+        if (user.emailVerified) {
+            return res
+                .status(400)
+                .json({ message: "Email is already verified" });
+        }
+        EmailManager.getInstance().sendVerificationMail(email);
+        return res.json({ message: `Verification email sent to ${email}` });
+    } catch (e) {
+        return res.status(500).json({ message: e?.message });
+    }
+}
+
 export {
     register,
     login,
@@ -135,4 +164,5 @@ export {
     sendPasswordReset,
     resetPassword,
     refresh,
+    resendVerificationEmail,
 };

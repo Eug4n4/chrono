@@ -5,7 +5,7 @@ import {
     showSuccessToast,
     showErrorToast,
     extractErrorMessage,
-} from "../../utils/toast";
+} from "../../utils/toast.jsx";
 
 function EmailVerification() {
     const { token } = useParams();
@@ -13,18 +13,31 @@ function EmailVerification() {
     const navigate = useNavigate();
 
     useEffect(() => {
+        let isMounted = true;
+
         AuthService.verifyEmail(token)
             .then(() => {
-                setValidToken(true);
-                showSuccessToast("Email verified successfully!");
-                setTimeout(() => navigate("/login", { replace: true }), 3000);
+                if (isMounted) {
+                    setValidToken(true);
+                    showSuccessToast("Email verified successfully!");
+                    setTimeout(
+                        () => navigate("/login", { replace: true }),
+                        3000,
+                    );
+                }
             })
             .catch((error) => {
-                const errorMessage = extractErrorMessage(error);
-                showErrorToast(errorMessage);
-                console.error("Email verification failed:", error);
+                if (isMounted) {
+                    const errorMessage = extractErrorMessage(error);
+                    showErrorToast(errorMessage);
+                    console.error("Email verification failed:", error);
+                }
             });
-    }, [token]);
+
+        return () => {
+            isMounted = false;
+        };
+    }, [token, navigate]);
 
     return (
         <div>

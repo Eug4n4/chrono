@@ -7,7 +7,7 @@ import {
     showSuccessToast,
     showErrorToast,
     extractErrorMessage,
-} from "../../utils/toast";
+} from "../../utils/toast.jsx";
 
 function SetNewPassword() {
     const { token } = useParams();
