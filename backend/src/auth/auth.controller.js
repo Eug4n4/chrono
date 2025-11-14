@@ -12,6 +12,7 @@ import {
     generateRefreshToken,
 } from "../utils/generate.tokens.js";
 import EmailManager from "../mail/EmailManager.js";
+import { createCalendarFunction } from "../calendar/create.calendar.js";
 
 async function register(req, res) {
     const { login, email, password, countryCode } = matchedData(req);
@@ -25,6 +26,7 @@ async function register(req, res) {
         });
         const dto = new UserDto(user);
         EmailManager.getInstance().sendVerificationMail(email);
+        await createCalendarFunction(user.id, "My Calendar", "");
         return res.json(dto);
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
