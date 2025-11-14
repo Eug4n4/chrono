@@ -1,6 +1,7 @@
 import AuthService from "../../api/services/AuthService";
 import { useState } from "react";
 import LoginForm from "../../components/forms/LoginForm";
+import FeatureShowcase from "../../components/auth/FeatureShowcase";
 import { useDispatch, useSelector } from "react-redux";
 import { loginSuccess, setLoading } from "../../features/state/authSlice";
 import { useNavigate } from "react-router-dom";
@@ -12,6 +13,7 @@ import {
     showActionToast,
     extractErrorMessage,
 } from "../../utils/toast.jsx";
+import styles from "./Auth.module.css";
 
 function Login() {
     const dispatch = useDispatch();
@@ -73,7 +75,25 @@ function Login() {
         }
     }
 
-    return <LoginForm onSubmit={handleSubmit} submitting={loading} />;
+    return (
+        <div className={styles.authContainer}>
+            <div className={styles.headerSection}>
+                <h1 className={styles.appTitle}>Chronos</h1>
+                <p className={styles.appSubtitle}>Your Personal Calendar & Task Manager</p>
+                <p className={styles.appDescription}>
+                    Stay organized and manage your time effectively with our modern calendar application
+                </p>
+            </div>
+            <div className={styles.contentWrapper}>
+                <div className={styles.showcaseSection}>
+                    <FeatureShowcase />
+                </div>
+                <div className={styles.formSection}>
+                    <LoginForm onSubmit={handleSubmit} submitting={loading} />
+                </div>
+            </div>
+        </div>
+    );
 }
 
 export default Login;
