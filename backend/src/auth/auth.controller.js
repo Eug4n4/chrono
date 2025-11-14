@@ -12,7 +12,7 @@ import {
     generateRefreshToken,
 } from "../utils/generate.tokens.js";
 import EmailManager from "../mail/EmailManager.js";
-import { createCalendarFunction } from "../calendar/create.calendar.js";
+import { createCalendarFunction } from "../calendar/calendar.utils.js";
 
 async function register(req, res) {
     const { login, email, password, countryCode } = matchedData(req);

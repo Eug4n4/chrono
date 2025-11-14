@@ -1,7 +1,8 @@
-import { createCalendarFunction } from "./create.calendar.js";
+import { createCalendarFunction } from "./calendar.utils.js";
 import User from "../models/User.js";
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
+import Calendar from "../models/Calendar.js";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -102,4 +103,29 @@ async function getCalendar(req, res) {
     }
 }
 
-export { createCalendar, getCalendar };
+async function deleteCalendar(req, res) {
+    try {
+        const user = req.user;
+        const calendar_id = req.params.calendar_id;
+        const calendars = await User
+            .findOne({ _id: new ObjectId(user.id) });
+        if (!calendars) {
+            return res.status(404).json({ message: "Calendar not found" });
+        }
+        if (calendars.calendarsId[0].toString() === calendar_id.toString()) {
+            return res.status(404).json({ message: "It's default calendar" });
+        }
+        await Calendar.deleteOne({ _id: new ObjectId(calendar_id) });
+        await User.updateOne(
+            { _id: new ObjectId(user.id) },
+            { $pull: { calendarsId: new ObjectId(calendar_id) } },
+        );
+
+        return res.status(200).send({ message: "Successfully deleted calendar" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ error: "Failed to delete calendar" });
+    }
+}
+
+export { createCalendar, getCalendar, deleteCalendar };
