@@ -6,6 +6,7 @@ import {
     sendPasswordReset,
     verifyEmail,
     refresh,
+    resendVerificationEmail,
 } from "./auth.controller.js";
 import {
     emailValidator,
@@ -35,5 +36,11 @@ router.post(
     resetPassword,
 );
 router.get("/verify/:token", tokenMustBeValid("token"), verifyEmail);
+router.post(
+    "/resend-verification",
+    emailValidator,
+    validationErrors,
+    resendVerificationEmail,
+);
 
 export default router;

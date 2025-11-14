@@ -9,6 +9,8 @@ import CalendarPage from "./pages/calendar/CalendarPage";
 import AppInitializer from "./components/AppInitializer";
 import ProtectedRoute from "./components/accessRoutes/ProtectedRoute";
 import GuestRoute from "./components/accessRoutes/GuestRoute";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function Layout() {
     return (
@@ -70,6 +72,7 @@ function App() {
                     <Route path="*" element={<NotFound />} />
                 </Route>
             </Routes>
+            <ToastContainer theme="dark" />
         </AppInitializer>
     );
 }

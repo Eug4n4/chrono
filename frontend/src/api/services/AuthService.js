@@ -20,6 +20,10 @@ class AuthService {
     static async verifyEmail(token) {
         return api.get(`auth/verify/${token}`);
     }
+
+    static async resendVerificationEmail(email) {
+        return api.post("auth/resend-verification", { email });
+    }
 }
 
 export default AuthService;
