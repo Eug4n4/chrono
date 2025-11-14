@@ -79,9 +79,12 @@ function Login() {
         <div className={styles.authContainer}>
             <div className={styles.headerSection}>
                 <h1 className={styles.appTitle}>Chronos</h1>
-                <p className={styles.appSubtitle}>Your Personal Calendar & Task Manager</p>
+                <p className={styles.appSubtitle}>
+                    Your Personal Calendar & Task Manager
+                </p>
                 <p className={styles.appDescription}>
-                    Stay organized and manage your time effectively with our modern calendar application
+                    Stay organized and manage your time effectively with our
+                    modern calendar application
                 </p>
             </div>
             <div className={styles.contentWrapper}>

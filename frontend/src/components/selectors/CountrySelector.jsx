@@ -5,12 +5,16 @@ const colorStyles = {
     control: (styles, state) => ({
         ...styles,
         background: "rgba(52, 76, 149, 0.4)",
-        border: state.isFocused ? "2px solid #64ffda" : "2px solid rgba(100, 255, 218, 0.2)",
+        border: state.isFocused
+            ? "2px solid #64ffda"
+            : "2px solid rgba(100, 255, 218, 0.2)",
         borderRadius: "8px",
         color: "#ccd6f6",
         minHeight: "44px",
         fontSize: "14px",
-        boxShadow: state.isFocused ? "0 0 12px rgba(100, 255, 218, 0.2)" : "none",
+        boxShadow: state.isFocused
+            ? "0 0 12px rgba(100, 255, 218, 0.2)"
+            : "none",
         transition: "all 0.3s ease",
     }),
     menuList: (styles) => ({
@@ -31,7 +35,9 @@ const colorStyles = {
     }),
     option: (styles, state) => ({
         ...styles,
-        backgroundColor: state.isFocused ? "rgba(100, 255, 218, 0.15)" : "#193457",
+        backgroundColor: state.isFocused
+            ? "rgba(100, 255, 218, 0.15)"
+            : "#193457",
         color: state.isSelected ? "#64ffda" : "#ccd6f6",
         cursor: "pointer",
         padding: "12px 14px",

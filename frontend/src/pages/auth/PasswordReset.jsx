@@ -48,9 +48,12 @@ function PasswordReset() {
         <div className={styles.authContainer}>
             <div className={styles.headerSection}>
                 <h1 className={styles.appTitle}>Chronos</h1>
-                <p className={styles.appSubtitle}>Your Personal Calendar & Task Manager</p>
+                <p className={styles.appSubtitle}>
+                    Your Personal Calendar & Task Manager
+                </p>
                 <p className={styles.appDescription}>
-                    Stay organized and manage your time effectively with our modern calendar application
+                    Stay organized and manage your time effectively with our
+                    modern calendar application
                 </p>
             </div>
             <div className={styles.contentWrapper}>
@@ -71,22 +74,31 @@ function PasswordReset() {
                                         id="email"
                                         placeholder=""
                                         required
-                                        onChange={(e) => setEmail(e.target.value)}
+                                        onChange={(e) =>
+                                            setEmail(e.target.value)
+                                        }
                                     />
                                     <label htmlFor="email">Email</label>
                                     {errors.email && <p>{errors.email}</p>}
                                 </div>
 
-                                <button 
-                                    type="submit" 
+                                <button
+                                    type="submit"
                                     disabled={submitting}
                                     className={formStyles.submit_login}
                                 >
-                                    {submitting ? "Submitting..." : "Send recovery email"}
+                                    {submitting
+                                        ? "Submitting..."
+                                        : "Send recovery email"}
                                 </button>
                                 {success && (
                                     <div className={formStyles.wrapper}>
-                                        <p style={{ color: '#10b981', margin: '16px 0 0 0' }}>
+                                        <p
+                                            style={{
+                                                color: "#10b981",
+                                                margin: "16px 0 0 0",
+                                            }}
+                                        >
                                             Email was successfully sent!
                                         </p>
                                     </div>
