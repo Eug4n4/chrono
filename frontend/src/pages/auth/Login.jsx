@@ -6,6 +6,11 @@ import { loginSuccess, setLoading } from "../../features/state/authSlice";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookies";
 import { jwtDecode } from "jwt-decode";
+import {
+    showSuccessToast,
+    showErrorToast,
+    extractErrorMessage,
+} from "../../utils/toast";
 
 function Login() {
     const dispatch = useDispatch();
@@ -24,8 +29,11 @@ function Login() {
                 dispatch(loginSuccess({ user: decoded }));
             }
 
+            showSuccessToast("Login successful!");
             navigate("/calendar");
         } catch (error) {
+            const errorMessage = extractErrorMessage(error);
+            showErrorToast(errorMessage);
             console.error("Login failed:", error);
         } finally {
             dispatch(setLoading(false));

@@ -2,6 +2,11 @@ import React, { useState } from "react";
 import Modal from "../common/Modal";
 import CalendarService from "../../api/services/CalendarService";
 import styles from "./NewCalendarModal.module.css";
+import {
+    showSuccessToast,
+    showErrorToast,
+    extractErrorMessage,
+} from "../../utils/toast";
 
 const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
     const [name, setName] = useState("");
@@ -23,14 +28,16 @@ const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
                 name: name.trim(),
                 description: description.trim(),
             });
+            showSuccessToast("Calendar created successfully!");
             onSuccess();
             onClose();
             setName("");
             setDescription("");
         } catch (err) {
-            setError(
-                err.response?.data?.message || "Failed to create calendar",
-            );
+            const errorMessage = extractErrorMessage(err);
+            showErrorToast(errorMessage);
+            setError(errorMessage);
+            console.error("Calendar creation failed:", err);
         } finally {
             setLoading(false);
         }
