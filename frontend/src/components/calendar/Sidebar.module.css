@@ -2,6 +2,21 @@
   width: 200px;
   padding: 16px;
   border-right: 1px solid #ddd;
+  transition: all 0.3s ease-in-out;
+  overflow: hidden;
+}
+
+.sidebar.open {
+  width: 200px;
+  opacity: 1;
+  padding: 16px;
+}
+
+.sidebar.closed {
+  width: 0;
+  opacity: 0;
+  padding: 0;
+  border-right: none;
 }
 
 .calendarItem {

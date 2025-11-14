@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
 
-const Sidebar = () => {
+const Sidebar = ({ isOpen = true }) => {
     const [isOwnOpen, setIsOwnOpen] = useState(true);
     const [isDefaultOpen, setIsDefaultOpen] = useState(true);
 
     return (
-        <aside className={styles.sidebar}>
+        <aside className={`${styles.sidebar} ${isOpen ? styles.open : styles.closed}`}>
             <div
                 className={styles.collapsibleHeader}
                 onClick={() => setIsOwnOpen(!isOwnOpen)}

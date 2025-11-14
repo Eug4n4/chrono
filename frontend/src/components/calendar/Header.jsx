@@ -4,7 +4,7 @@ import { useDispatch } from "react-redux";
 import { logout } from "../../features/state/authSlice";
 import NewCalendarModal from "./NewCalendarModal";
 
-const Header = ({ currentView, setCurrentView, onNext, onPrev, title }) => {
+const Header = ({ currentView, setCurrentView, onNext, onPrev, title, onToggleSidebar }) => {
     const dispatch = useDispatch();
     const [showCreateMenu, setShowCreateMenu] = useState(false);
     const [isNewCalendarModalOpen, setIsNewCalendarModalOpen] = useState(false);
@@ -22,7 +22,13 @@ const Header = ({ currentView, setCurrentView, onNext, onPrev, title }) => {
         <>
             <header className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <button className={styles.button}>☰</button>
+                    <button 
+                        className={styles.button}
+                        onClick={onToggleSidebar}
+                        title="Toggle sidebar"
+                    >
+                        ☰
+                    </button>
                     <button className={styles.button}>Today</button>
                     <h2 className={styles.headerTitle}>{title}</h2>
                     <button className={styles.navButton} onClick={onPrev}>

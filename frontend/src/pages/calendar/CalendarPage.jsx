@@ -7,6 +7,7 @@ import styles from './CalendarPage.module.css';
 const CalendarPage = () => {
   const [currentView, setCurrentView] = useState('Monthly');
   const [title, setTitle] = useState('');
+  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const calendarRef = useRef(null);
 
   const viewMap = {
@@ -30,6 +31,10 @@ const CalendarPage = () => {
     setTitle(arg.view.title);
   };
 
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
+
   return (
     <div className={styles.calendarPage}>
       <Header
@@ -38,9 +43,10 @@ const CalendarPage = () => {
         onPrev={handlePrev}
         onNext={handleNext}
         title={title}
+        onToggleSidebar={toggleSidebar}
       />
       <div className={styles.mainContent}>
-        <Sidebar />
+        <Sidebar isOpen={isSidebarOpen} />
         <CalendarView ref={calendarRef} onDatesSet={handleDatesSet} />
       </div>
     </div>
