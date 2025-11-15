@@ -7,6 +7,7 @@ import {
     verifyEmail,
     refresh,
     resendVerificationEmail,
+    logout,
 } from "./auth.controller.js";
 import {
     emailValidator,
@@ -20,6 +21,7 @@ import { tokenMustBeValid } from "../validators/token.validator.js";
 const router = express.Router();
 
 router.post("/login", ...loginValidator, validationErrors, login);
+router.post("/logout", logout);
 router.post("/register", ...registerValidator, validationErrors, register);
 router.post("/refresh", refresh);
 router.post(

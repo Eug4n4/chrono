@@ -5,6 +5,10 @@ class AuthService {
         return api.post("auth/login", data);
     }
 
+    static async logout() {
+        return api.post("auth/logout");
+    }
+
     static async register(data) {
         return api.post("auth/register", data);
     }
