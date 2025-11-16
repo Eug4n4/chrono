@@ -77,6 +77,12 @@ async function login(req, res) {
     }
 }
 
+function logout(req, res) {
+    res.clearCookie("access");
+    res.clearCookie("refresh");
+    res.json({ message: "Logged out" });
+}
+
 async function verifyEmail(req, res) {
     const user = await User.findOneAndUpdate(
         { email: req.tokenPayload.email },
@@ -162,6 +168,7 @@ async function resendVerificationEmail(req, res) {
 export {
     register,
     login,
+    logout,
     verifyEmail,
     sendPasswordReset,
     resetPassword,
