@@ -45,7 +45,7 @@ button.nav_link,
     color: var(--btn-bg-color);
 }
 
-.nav_link:hover {
+.nav_link:hover, .nav_link:focus {
     transform: scale(1.05);
 }
 

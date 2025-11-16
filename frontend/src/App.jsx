@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
-import NotFound from "./pages/404";
+import NotFound from "./pages/404/404";
 import SetNewPassword from "./pages/auth/SetNewPassword";
 import PasswordReset from "./pages/auth/PasswordReset";
 import EmailVerification from "./pages/auth/EmailVerification";
