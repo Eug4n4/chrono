@@ -2,12 +2,13 @@ import Input from "../inputs/Input.jsx";
 import DateInput from "../inputs/DateInput.jsx";
 import { useState } from "react";
 import TypeSelector from "../selectors/TypeSelector.jsx";
-import TagsSelectorComponent from "../tags/TagsSelectorComponent.jsx";
+import TagsSelectors from "../selector/TagsSelectors.jsx";
 
 const EventCreateForm = () => {
     const [startDate, setStartDate] = useState({ date: "", time: "" });
     const [endDate, setEndDate] = useState({ date: "", time: "" });
     const [type, setType] = useState("meeting");
+    const [tags, setTags] = useState([]);
     return (
         <div>
             <div>
@@ -39,10 +40,13 @@ const EventCreateForm = () => {
                     onChange={setEndDate}
                     id="end"
                 />
-                <label htmlFor="end">Start date</label>
+                <label htmlFor="end">End date</label>
             </div>
             <div>
-                <TagsSelectorComponent/>
+                Tag:
+                <TagsSelectors
+                    onChange={setTags}
+                />
             </div>
         </div>
     );

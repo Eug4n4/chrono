@@ -1,30 +1,34 @@
-import Select from "react-select/base";
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
+import Select from "react-select";
 
-function TagsSelectors() {
-    const [tags] = useState([
-        { value: "home", label: "home" },
-        { value: "live", label: "live" }
-    ]);
-    const [loading] = useState(false);
+const options = [
+    { value: "home", label: "home" },
+    { value: "work", label: "work" },
+    { value: "holiday", label: "holiday" },
+];
 
-    const options = tags.map(tag => ({
-        value: tag,
-        label: tag
-    }));
+function TagsSelectors({ onChange }) {
+    const [selectedOptions, setSelectedOptions] = useState([]);
+
+    useEffect(() => {
+        const defaultValues = [];
+        setSelectedOptions(defaultValues);
+        onChange && onChange(defaultValues);
+    }, [onChange]);
+
+    const handleChange = (selected) => {
+        setSelectedOptions(selected);
+        onChange && onChange(selected);
+    };
+
     return (
-        <div>
-            <Select
-                defaultValue={options[0]}
-                options={options}
-                isLoading={loading}
-                placeholder="Select tags..."
-                onMenuOpen={() => {}}
-                onInputChange={() => {}}
-            />
-        </div>
+        <Select
+            options={options}
+            isMulti
+            value={selectedOptions}
+            onChange={handleChange}
+        />
     );
 }
-
 
 export default TagsSelectors;
