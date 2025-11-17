@@ -5,10 +5,19 @@ import TypeSelector from "../selectors/TypeSelector.jsx";
 import TagsSelectors from "../selector/TagsSelectors.jsx";
 
 const EventCreateForm = () => {
+    const [name, setName] = useState("");
     const [startDate, setStartDate] = useState({ date: "", time: "" });
     const [endDate, setEndDate] = useState({ date: "", time: "" });
     const [type, setType] = useState("meeting");
     const [tags, setTags] = useState([]);
+    const handleCreate = () => {
+        console.log("handleCreate");
+        console.log("Name", name);
+        console.log("start date: ", startDate);
+        console.log("end date: ", endDate);
+        console.log("type: ", type);
+        console.log("tags: ", tags);
+    };
     return (
         <div>
             <div>
@@ -17,6 +26,7 @@ const EventCreateForm = () => {
                     name="name"
                     id="name"
                     required
+                    onChange={(e) => setName(e.target.value)}
                 />
                 <label htmlFor="name">Name</label>
             </div>
@@ -43,10 +53,13 @@ const EventCreateForm = () => {
                 <label htmlFor="end">End date</label>
             </div>
             <div>
-                Tag:
+                Tags:
                 <TagsSelectors
                     onChange={setTags}
                 />
+            </div>
+            <div>
+                <button onClick={handleCreate}>Create</button>
             </div>
         </div>
     );
