@@ -13,6 +13,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/common/Header";
 import LandingPage from "./pages/Landing";
+import CreateEventPage from "./pages/event/CreateEventPage.jsx";
 
 function Layout() {
     return (
@@ -82,6 +83,14 @@ function App() {
                         element={
                             <ProtectedRoute>
                                 <CalendarPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/create-event"
+                        element={
+                            <ProtectedRoute>
+                                <CreateEventPage />
                             </ProtectedRoute>
                         }
                     />

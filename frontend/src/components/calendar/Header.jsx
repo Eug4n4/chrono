@@ -3,6 +3,7 @@ import styles from "./Header.module.css";
 import { useDispatch } from "react-redux";
 import { logout } from "../../features/state/authSlice";
 import NewCalendarModal from "./NewCalendarModal";
+import { useNavigate } from "react-router-dom";
 
 const Header = ({
     currentView,
@@ -12,6 +13,7 @@ const Header = ({
     title,
     onToggleSidebar,
 }) => {
+    const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showCreateMenu, setShowCreateMenu] = useState(false);
     const [isNewCalendarModalOpen, setIsNewCalendarModalOpen] = useState(false);
@@ -23,6 +25,9 @@ const Header = ({
     const handleCalendarCreated = () => {
         // TODO: Refresh calendar list
         console.log("Calendar created successfully");
+    };
+    const handleClick = () => {
+        navigate("/create-event");
     };
 
     return (
@@ -68,7 +73,9 @@ const Header = ({
                         </button>
                         {showCreateMenu && (
                             <div className={styles.createDropdown}>
-                                <div>New event</div>
+                                <div onClick={handleClick} style={{ cursor: "pointer" }}>
+                                    New event
+                                </div>
                                 <div
                                     onClick={() => {
                                         setIsNewCalendarModalOpen(true);
