@@ -45,74 +45,155 @@ async function deleteCalendar(req, res) {
 
 async function getCalendars(req, res) {
     const user = req.user;
-    const calendars = await User.aggregate([
-        { $match: { _id: new ObjectId(user.id) } },
-        {
-            $set: {
-                calendarsId: {
-                    $map: {
-                        input: "$calendarsId",
-                        as: "cal",
-                        in: { $toObjectId: "$$cal" },
+    try {
+        const calendars = await User.aggregate([
+            { $match: { _id: new ObjectId(user.id) } },
+            {
+                $set: {
+                    calendarsId: {
+                        $map: {
+                            input: "$calendarsId",
+                            as: "cal",
+                            in: { $toObjectId: "$$cal" },
+                        },
                     },
                 },
             },
-        },
-        {
-            $lookup: {
-                from: "calendars",
-                localField: "calendarsId",
-                foreignField: "_id",
-                as: "calendars",
+            {
+                $lookup: {
+                    from: "calendars",
+                    localField: "calendarsId",
+                    foreignField: "_id",
+                    as: "calendars",
+                },
             },
-        },
-        { $unwind: "$calendars" },
-        {
-            $project: {
-                _id: "$calendars._id",
-                name: "$calendars.name",
-                description: "$calendars.description",
+            { $unwind: "$calendars" },
+            {
+                $project: {
+                    _id: "$calendars._id",
+                    name: "$calendars.name",
+                    description: "$calendars.description",
+                },
             },
-        },
-    ]);
+        ]);
 
-    const calendarsGuests = await User.aggregate([
-        { $match: { _id: new ObjectId(user.id) } },
-        {
-            $set: {
-                calendarsId: {
-                    $map: {
-                        input: "$calendarsGuestsId",
-                        as: "cal",
-                        in: { $toObjectId: "$$cal" },
+        const calendarsGuests = await User.aggregate([
+            { $match: { _id: new ObjectId(user.id) } },
+            {
+                $set: {
+                    calendarsId: {
+                        $map: {
+                            input: "$calendarsGuestsId",
+                            as: "cal",
+                            in: { $toObjectId: "$$cal" },
+                        },
                     },
                 },
             },
-        },
-        {
-            $lookup: {
-                from: "calendars",
-                localField: "calendarsGuestsId",
-                foreignField: "_id",
-                as: "calendarsGuest",
+            {
+                $lookup: {
+                    from: "calendars",
+                    localField: "calendarsGuestsId",
+                    foreignField: "_id",
+                    as: "calendarsGuest",
+                },
             },
-        },
-        { $unwind: "$calendars" },
-        {
-            $project: {
-                _id: "$calendars._id",
-                name: "$calendars.name",
-                description: "$calendars.description",
+            { $unwind: "$calendars" },
+            {
+                $project: {
+                    _id: "$calendars._id",
+                    name: "$calendars.name",
+                    description: "$calendars.description",
+                },
             },
-        },
-    ]);
-    return res.status(200).send({ calendars: calendars, guestsCalendars: calendarsGuests });
+        ]);
+        return res.status(200).send({ calendars: calendars, guestsCalendars: calendarsGuests });
+    } catch (e) {
+        if (e instanceof mongoose.Error.ValidationError) {
+            return res.status(400).json({ message: e.message });
+        }
+        return res.status(500).json({ message: e?.message });
+    }
 }
 
 async function getCalendarsEvents(req, res) {
-    const user = req.user;
-    const year = req.query.year;
-    const calendarId = req.params.calendar_id;
+    try {
+        const year = parseInt(req.query.year) || 2025;
+        const user = req.user;
+        const calendarId = new ObjectId(req.params.calendar_id);
+
+        const startDate = new Date(`${year}-01-01T00:00:00Z`);
+        const endDate = new Date(`${year + 1}-01-01T00:00:00Z`);
+        const findCalendar = await User.aggregate([
+            {
+                $match: {
+                    _id: new mongoose.Types.ObjectId(user._id),
+                    $or: [
+                        { calendars: new mongoose.Types.ObjectId(calendarId) },
+                        { shared_calendars: new mongoose.Types.ObjectId(calendarId) },
+                    ],
+                },
+            },
+        ]);
+
+        if (findCalendar.length === 0) {
+            return res.status(403).json({ message: "You don't have access to this calendar" });
+        }
+
+        const events = await Calendar.aggregate([
+            { $match: { _id: calendarId } },
+            {
+                $lookup: {
+                    from: "events",
+                    let: { eventIds: "$events" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: {
+                                    $and: [
+                                        { $in: ["$_id", "$$eventIds"] },
+                                        { $gte: ["$start", startDate] },
+                                        { $lt: ["$end", endDate] },
+                                    ],
+                                },
+                            },
+                        },
+                        {
+                            $lookup: {
+                                from: "tags",
+                                localField: "tags",
+                                foreignField: "_id",
+                                as: "tags",
+                            },
+                        },
+                        {
+                            $project: {
+                                _id: 1,
+                                name: 1,
+                                start: 1,
+                                end: 1,
+                                "tags._id": 1,
+                                "tags.name": 1,
+                            },
+                        },
+                    ],
+                    as: "events",
+                },
+            },
+            {
+                $project: {
+                    _id: 0,
+                    events: 1,
+                },
+            },
+        ]);
+
+        return res.status(200).json({ events: events[0]?.events || [] });
+
+    } catch (err) {
+        console.error(err);
+        return res.status(500).json({ error: "Failed to get calendar events" });
+    }
 }
 
 export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents };
