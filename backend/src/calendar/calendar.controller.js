@@ -109,4 +109,10 @@ async function getCalendars(req, res) {
     return res.status(200).send({ calendars: calendars, guestsCalendars: calendarsGuests });
 }
 
-export { createCalendar, deleteCalendar, getCalendars };
+async function getCalendarsEvents(req, res) {
+    const user = req.user;
+    const year = req.query.year;
+    const calendarId = req.params.calendar_id;
+}
+
+export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents };
