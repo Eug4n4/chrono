@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { loginSuccess, logout } from "../features/state/authSlice";
+import { loginSuccess, logout } from "../features/state/auth.slice";
 import { jwtDecode } from "jwt-decode";
 import { getCookie } from "../utils/cookies";
 import api from "../api/api";

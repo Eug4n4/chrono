@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/state/authSlice";
+import { logout } from "../../features/state/auth.slice";
+import { fetchCalendars } from "../../features/state/calendar.slice";
 import NewCalendarModal from "./NewCalendarModal";
 import { useNavigate } from "react-router-dom";
 
@@ -23,8 +24,7 @@ const Header = ({
     };
 
     const handleCalendarCreated = () => {
-        // TODO: Refresh calendar list
-        console.log("Calendar created successfully");
+        dispatch(fetchCalendars());
     };
     const handleClick = () => {
         navigate("/create-event");
@@ -73,7 +73,10 @@ const Header = ({
                         </button>
                         {showCreateMenu && (
                             <div className={styles.createDropdown}>
-                                <div onClick={handleClick} style={{ cursor: "pointer" }}>
+                                <div
+                                    onClick={handleClick}
+                                    style={{ cursor: "pointer" }}
+                                >
                                     New event
                                 </div>
                                 <div

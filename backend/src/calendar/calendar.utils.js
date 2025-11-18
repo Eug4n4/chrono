@@ -7,7 +7,7 @@ async function createCalendarFunction(id, name, description) {
     const dto = new CalendarDto(calendar);
     await User.updateOne(
         { _id: id },
-        { $addToSet: { calendarsId: dto.id } },
+        { $addToSet: { calendarsId: calendar._id } },
     );
     return dto;
 }
