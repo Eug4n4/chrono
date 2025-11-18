@@ -1,0 +1,75 @@
+.hero {
+    font-family: inherit;
+    color: var(--text-main);
+    min-height: 90vh;
+    display: flex;
+}
+
+.hero h1 {
+    font-size: 3rem;
+}
+
+.padding {
+    padding: 0 2.5rem;
+}
+
+.container {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin: 0 auto;
+}
+
+
+.container .left div {
+    color: var(--text-muted);
+    padding-top: 2rem;
+    max-width: 80%;
+    line-height: 1.5;
+}
+
+.left {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.right {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-height: 254px;
+}
+
+.right img {
+    width: 100%; 
+    vertical-align: middle; 
+    max-height: inherit;
+}
+
+
+ .button {
+    color: var(--bg-color);
+    font-size: inherit;
+    font-family: inherit;
+    font-weight: 500;
+    padding: 10px;
+    background-color: var(--btn-bg-color);
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.button:hover, .button:focus {
+    transform: scale(1.05);
+}
+
+
+@media screen and (width <= 829px) {
+    .container {
+        justify-content: center;
+        flex-direction: column;
+    }
+}

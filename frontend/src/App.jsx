@@ -12,7 +12,7 @@ import GuestRoute from "./components/accessRoutes/GuestRoute";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Header from "./components/common/Header";
-import LandingPage from "./pages/Landing";
+import LandingPage from "./pages/landing/Landing";
 import CreateEventPage from "./pages/event/CreateEventPage.jsx";
 
 function Layout() {
@@ -27,7 +27,7 @@ function SecondLayout() {
     return (
         <>
             <Header />
-            {Layout()}
+            <Outlet />
         </>
     );
 }

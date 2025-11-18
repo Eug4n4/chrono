@@ -1,7 +1,7 @@
 .error_page {
     color: var(--text-main);
     font-family: inherit;
-    min-height: inherit;
+    min-height: 80vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
