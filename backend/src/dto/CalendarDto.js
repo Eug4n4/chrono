@@ -1,7 +1,7 @@
 import Calendar from "../models/Calendar.js";
 
 class CalendarDto {
-    id;
+    _id;
     name;
     description;
 
@@ -9,7 +9,7 @@ class CalendarDto {
      * @param {Calendar} calendar
      */
     constructor(calendar) {
-        this.id = calendar.id;
+        this._id = calendar._id || calendar.id;
         this.name = calendar.name;
         this.description = calendar.description;
     }
