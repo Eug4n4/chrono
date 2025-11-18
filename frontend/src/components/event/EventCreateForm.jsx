@@ -1,22 +1,29 @@
 import Input from "../inputs/Input.jsx";
-import DateInput from "../inputs/DateInput.jsx";
 import { useState } from "react";
 import TypeSelector from "../selectors/TypeSelector.jsx";
-import TagsSelectors from "../selector/TagsSelectors.jsx";
+import TagsSelectors from "../selectors/TagsSelectors.jsx";
+import TaskForm from "./TaskForm.jsx";
+import ArrangementForm from "./ArrangementForm.jsx";
+import ReminderForm from "./ReminderForm.jsx";
 
 const EventCreateForm = () => {
     const [name, setName] = useState("");
-    const [startDate, setStartDate] = useState({ date: "", time: "" });
-    const [endDate, setEndDate] = useState({ date: "", time: "" });
+    const [date, setDate] = useState({
+        start: { date: "", time: "" },
+        end: { date: "", time: "" },
+        reminder: { date: "", time: "" },
+    });
     const [type, setType] = useState("meeting");
     const [tags, setTags] = useState([]);
+    const [description, setDescription] = useState("");
     const handleCreate = () => {
         console.log("handleCreate");
         console.log("Name", name);
-        console.log("start date: ", startDate);
-        console.log("end date: ", endDate);
+        console.log("start date: ", date.start);
+        console.log("end date: ", date.end);
         console.log("type: ", type);
         console.log("tags: ", tags);
+        console.log("description: ", description);
     };
     return (
         <div>
@@ -34,24 +41,14 @@ const EventCreateForm = () => {
                 value={type}
                 onChange={(e) => setType(e.target.value)}
             />
-            <div>
-                <DateInput
-                    dateValue={startDate.date}
-                    timeValue={startDate.time}
-                    onChange={setStartDate}
-                    id="start"
-                />
-                <label htmlFor="start">Start date</label>
-            </div>
-            <div>
-                <DateInput
-                    dateValue={endDate.date}
-                    timeValue={endDate.time}
-                    onChange={setEndDate}
-                    id="end"
-                />
-                <label htmlFor="end">End date</label>
-            </div>
+            {type === "task" && (
+                <TaskForm date={date} setDate={setDate} />)}
+            {type === "arrangement" && (
+                <ArrangementForm date={date} setDate={setDate} setDescription={setDescription} />
+            )}
+            {type === "reminder" && (
+                <ReminderForm date={date} setDate={setDate}/>
+            )}
             <div>
                 Tags:
                 <TagsSelectors

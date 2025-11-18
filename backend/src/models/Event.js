@@ -6,6 +6,7 @@ const EventSchema = new mongoose.Schema(
     {
         name: String,
         start: Date,
+        color: String,
         tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
     },
     options,
