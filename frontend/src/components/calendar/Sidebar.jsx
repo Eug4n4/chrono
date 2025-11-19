@@ -1,9 +1,15 @@
 import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleCalendar } from "../../features/state/calendar.slice";
 
 const Sidebar = ({ isOpen = true }) => {
     const [isOwnOpen, setIsOwnOpen] = useState(true);
-    const [isDefaultOpen, setIsDefaultOpen] = useState(true);
+    const [isGuestOpen, setIsGuestOpen] = useState(true);
+    const dispatch = useDispatch();
+    const { calendars, guestCalendars, activeCalendars } = useSelector(
+        (state) => state.calendars,
+    );
 
     return (
         <aside
@@ -13,7 +19,7 @@ const Sidebar = ({ isOpen = true }) => {
                 className={styles.collapsibleHeader}
                 onClick={() => setIsOwnOpen(!isOwnOpen)}
             >
-                <span>Own</span>
+                <span>My Calendars</span>
                 <span
                     className={`${styles.arrow} ${isOwnOpen ? styles.arrowDown : ""}`}
                 >
@@ -23,10 +29,26 @@ const Sidebar = ({ isOpen = true }) => {
 
             {isOwnOpen && (
                 <div className={styles.collapsibleContent}>
-                    <div className={styles.calendarItem}>
-                        <input type="checkbox" id="own" defaultChecked />
-                        <label htmlFor="own">My Calendar</label>
-                    </div>
+                    {calendars.map((calendar) => (
+                        <div className={styles.calendarItem} key={calendar._id}>
+                            <input
+                                type="checkbox"
+                                id={`cal-${calendar._id}`}
+                                checked={activeCalendars.includes(calendar._id)}
+                                onChange={() =>
+                                    dispatch(toggleCalendar(calendar._id))
+                                }
+                            />
+                            <label htmlFor={`cal-${calendar._id}`}>
+                                {calendar.name}
+                            </label>
+                        </div>
+                    ))}
+                    {calendars.length === 0 && (
+                        <div className={styles.emptyState}>
+                            No calendars found
+                        </div>
+                    )}
                 </div>
             )}
 
@@ -34,22 +56,38 @@ const Sidebar = ({ isOpen = true }) => {
 
             <div
                 className={styles.collapsibleHeader}
-                onClick={() => setIsDefaultOpen(!isDefaultOpen)}
+                onClick={() => setIsGuestOpen(!isGuestOpen)}
             >
-                <span>Default</span>
+                <span>Shared Calendars</span>
                 <span
-                    className={`${styles.arrow} ${isDefaultOpen ? styles.arrowDown : ""}`}
+                    className={`${styles.arrow} ${isGuestOpen ? styles.arrowDown : ""}`}
                 >
                     ▼
                 </span>
             </div>
 
-            {isDefaultOpen && (
+            {isGuestOpen && (
                 <div className={styles.collapsibleContent}>
-                    <div className={styles.calendarItem}>
-                        <input type="checkbox" id="holidays" defaultChecked />
-                        <label htmlFor="holidays">Holidays</label>
-                    </div>
+                    {guestCalendars.map((calendar) => (
+                        <div className={styles.calendarItem} key={calendar._id}>
+                            <input
+                                type="checkbox"
+                                id={`cal-${calendar._id}`}
+                                checked={activeCalendars.includes(calendar._id)}
+                                onChange={() =>
+                                    dispatch(toggleCalendar(calendar._id))
+                                }
+                            />
+                            <label htmlFor={`cal-${calendar._id}`}>
+                                {calendar.name}
+                            </label>
+                        </div>
+                    ))}
+                    {guestCalendars.length === 0 && (
+                        <div className={styles.emptyState}>
+                            No shared calendars
+                        </div>
+                    )}
                 </div>
             )}
         </aside>

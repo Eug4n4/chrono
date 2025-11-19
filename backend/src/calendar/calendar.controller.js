@@ -22,8 +22,7 @@ async function deleteCalendar(req, res) {
     try {
         const user = req.user;
         const calendar_id = req.params.calendar_id;
-        const calendars = await User
-            .findOne({ _id: new ObjectId(user.id) });
+        const calendars = await User.findOne({ _id: new ObjectId(user.id) });
         if (!calendars) {
             return res.status(404).json({ message: "Calendar not found" });
         }
@@ -36,7 +35,9 @@ async function deleteCalendar(req, res) {
             { $pull: { calendarsId: new ObjectId(calendar_id) } },
         );
 
-        return res.status(200).send({ message: "Successfully deleted calendar" });
+        return res
+            .status(200)
+            .send({ message: "Successfully deleted calendar" });
     } catch (e) {
         console.error(e);
         return res.status(500).json({ error: "Failed to delete calendar" });
@@ -81,7 +82,7 @@ async function getCalendars(req, res) {
             { $match: { _id: new ObjectId(user.id) } },
             {
                 $set: {
-                    calendarsId: {
+                    calendarsGuestsId: {
                         $map: {
                             input: "$calendarsGuestsId",
                             as: "cal",
@@ -98,16 +99,18 @@ async function getCalendars(req, res) {
                     as: "calendarsGuest",
                 },
             },
-            { $unwind: "$calendars" },
+            { $unwind: "$calendarsGuest" },
             {
                 $project: {
-                    _id: "$calendars._id",
-                    name: "$calendars.name",
-                    description: "$calendars.description",
+                    _id: "$calendarsGuest._id",
+                    name: "$calendarsGuest.name",
+                    description: "$calendarsGuest.description",
                 },
             },
         ]);
-        return res.status(200).send({ calendars: calendars, guestsCalendars: calendarsGuests });
+        return res
+            .status(200)
+            .send({ calendars: calendars, guestsCalendars: calendarsGuests });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(400).json({ message: e.message });
@@ -124,20 +127,18 @@ async function getCalendarsEvents(req, res) {
 
         const startDate = new Date(`${year}-01-01T00:00:00Z`);
         const endDate = new Date(`${year + 1}-01-01T00:00:00Z`);
-        const findCalendar = await User.aggregate([
-            {
-                $match: {
-                    _id: new mongoose.Types.ObjectId(user._id),
-                    $or: [
-                        { calendars: new mongoose.Types.ObjectId(calendarId) },
-                        { shared_calendars: new mongoose.Types.ObjectId(calendarId) },
-                    ],
-                },
-            },
-        ]);
+        const findCalendar = await User.findOne({
+            _id: new mongoose.Types.ObjectId(user.id),
+            $or: [
+                { calendarsId: calendarId },
+                { calendarsGuestsId: calendarId },
+            ],
+        });
 
-        if (findCalendar.length === 0) {
-            return res.status(403).json({ message: "You don't have access to this calendar" });
+        if (!findCalendar) {
+            return res
+                .status(403)
+                .json({ message: "You don't have access to this calendar" });
         }
 
         const events = await Calendar.aggregate([
@@ -189,7 +190,6 @@ async function getCalendarsEvents(req, res) {
         ]);
 
         return res.status(200).json({ events: events[0]?.events || [] });
-
     } catch (err) {
         console.error(err);
         return res.status(500).json({ error: "Failed to get calendar events" });
