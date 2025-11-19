@@ -8,8 +8,15 @@ class TagDto {
      * @param {Tag} tag
      */
     constructor(tag) {
-        this.id = tag.id;
+        this.id = tag._id;
         this.name = tag.name;
+    }
+
+    toSelect() {
+        return {
+            id: this.id,
+            name: this.name,
+        };
     }
 }
 

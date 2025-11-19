@@ -19,8 +19,10 @@ async function getTags(req, res) {
             },
             { $project: { _id: 0, tags: 1 } },
         ]);
-        console.log(tags[0]);
-        res.status(200).json({ tags: tags[0]?.tags || [] });
+        const dtoList = tags[0].tags.map(t => new TagDto(t));
+        const selectOptions = dtoList.map(dto => dto.toSelect());
+        console.log(selectOptions);
+        res.status(200).json({ tags: selectOptions || [] });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(400).json({ message: e.message });

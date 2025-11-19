@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import CreatableSelect from "react-select/creatable";
-import CreateEventService from "../../api/services/CreateEventService.js";
+import CreateEventService from "../../api/services/TagService.js";
 
 const colorStyles = {
     control: (styles, state) => ({
@@ -51,22 +51,23 @@ const colorStyles = {
     }),
 };
 
-// const options = [
-//     { value: "home", label: "home" },
-//     { value: "work", label: "work" },
-//     { value: "holiday", label: "holiday" },
-// ];
-
 function TagsSelectors({ onChange }) {
     const [selectedOptions, setSelectedOptions] = useState([]);
     const [options, setOptions] = useState([]);
 
-    useEffect(async () => {
-        const tags = await CreateEventService.getAllTags();
-        setOptions(tags);
-        const defaultValues = [];
-        setSelectedOptions(defaultValues);
-        onChange && onChange(defaultValues);
+    useEffect(() => {
+        (async () => {
+            const res = await CreateEventService.getAllTags();
+            const formatted = res.data.tags.map(tag => ({
+                label: tag.name,
+                value: tag.id.toString(),
+            }));
+
+            setOptions(formatted);
+            const defaultValues = [];
+            setSelectedOptions(defaultValues);
+            onChange && onChange(defaultValues);
+        })();
     }, [onChange]);
 
     const handleChange = (selected) => {
@@ -77,15 +78,17 @@ function TagsSelectors({ onChange }) {
     };
 
     const handleCreateTag = (inputValue) => {
-        const newOption = { label: inputValue, value: inputValue };
-
         if (selectedOptions.length >= 3) return;
+
+        const newOption = {
+            label: inputValue,
+            value: inputValue,
+        };
 
         const updated = [...selectedOptions, newOption];
         setSelectedOptions(updated);
         onChange && onChange(updated);
     };
-
 
     return (
         <CreatableSelect
