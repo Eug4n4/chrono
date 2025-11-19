@@ -1,7 +1,7 @@
 import express from "express";
 import { getHolidays } from "./holidays.controller.js";
-import validationErrors from "../validators/catch.errors.js";
-import { authenticate } from "../middleware/auth.middleware.js";
+import validationErrors from "../../shared/validators/catch.errors.js";
+import { authenticate } from "../auth/auth.middleware.js";
 
 const router = express.Router();
 

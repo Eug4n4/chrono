@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
-import Token from "../models/Token.js";
+import Token from "../../db/models/Token.js";
+import bcrypt from "bcrypt";
 
 const generateAccessToken = (user) => {
     const expires = Date.now() + 10 * 60 * 1000;
@@ -29,4 +30,12 @@ const createTokenPair = async (user) => {
     return { access, refresh };
 };
 
-export { generateAccessToken, generateRefreshToken, createTokenPair };
+
+
+async function hashPassword(plainText) {
+    return bcrypt.hash(plainText, 10);
+}
+
+export default hashPassword;
+
+export { generateAccessToken, generateRefreshToken, createTokenPair, hashPassword };

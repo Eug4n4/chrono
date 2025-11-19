@@ -14,9 +14,9 @@ import {
     loginValidator,
     passwordValidator,
     registerValidator,
-} from "../validators/auth.validator.js";
-import validationErrors from "../validators/catch.errors.js";
-import { tokenMustBeValid } from "../validators/token.validator.js";
+    tokenMustBeValid,
+} from "./auth.validator.js";
+import validationErrors from "../../shared/validators/catch.errors.js";
 
 const router = express.Router();
 

@@ -1,14 +1,19 @@
-import Calendar from "../models/Calendar.js";
-import EventDto from "../dto/EventDto.js";
-import Event from "../models/Event.js";
+import Calendar from "../../db/models/Calendar.js";
+import EventDto from "../../db/dto/EventDto.js";
+import Event from "../../db/models/Event.js";
 import mongoose from "mongoose";
 
 async function createEvent(req, res) {
-    const calendarId = req.params.calendar_id;
-    const body = req.body;
+    const { name, start, end, type, tags, calendarId } = req.body;
     try {
-        const tagIds = (tags || []).map(tag => new mongoose.Types.ObjectId(tag._id));
-        const event = await Event.create(body);
+        //const tagIds = (tags || []).map(tag => new mongoose.Types.ObjectId(tag._id));
+        const event = await Event.create({
+            name,
+            start,
+            end,
+            type,
+            //tags: tagIds,
+        });
         const dto = new EventDto(event);
         await Calendar.updateOne(
             { _id: calendarId },

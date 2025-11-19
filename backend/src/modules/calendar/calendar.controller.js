@@ -1,8 +1,8 @@
-import { createCalendarFunction } from "./calendar.utils.js";
-import User from "../models/User.js";
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
-import Calendar from "../models/Calendar.js";
+import { createCalendarFunction } from "./calendar.utils.js";
+import User from "../../db/models/User.js";
+import Calendar from "../../db/models/Calendar.js";
 
 async function createCalendar(req, res) {
     const user = req.user;

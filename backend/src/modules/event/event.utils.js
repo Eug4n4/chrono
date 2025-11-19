@@ -1,6 +1,6 @@
-import Tag from "../models/Tag.js";
-import TagDto from "../dto/TagDto.js";
-import User from "../models/User.js";
+import Tag from "../../db/models/Tag.js";
+import TagDto from "../../db/dto/TagDto.js";
+import User from "../../db/models/User.js";
 
 async function createTag(user_id, name) {
     try {

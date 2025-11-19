@@ -1,4 +1,4 @@
-import { getHolidaysForYear } from "../utils/holiday.db.is_present.js";
+import { getHolidaysForYear } from "./holidays.utils.js";
 
 async function getHolidays(req, res) {
     const country = req.query.country;
