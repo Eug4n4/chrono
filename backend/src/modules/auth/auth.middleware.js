@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import User from "../models/User.js";
-import UserDto from "../dto/UserDto.js";
+import User from "../../db/models/User.js";
+import UserDto from "../../db/dto/UserDto.js";
 
 async function verifyToken(token) {
     try {

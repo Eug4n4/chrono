@@ -1,5 +1,5 @@
-import User from "../models/User.js";
-import UserDto from "../dto/UserDto.js";
+import User from "../../db/models/User.js";
+import UserDto from "../../db/dto/UserDto.js";
 
 async function uploadAvatar(req, res) {
     if (!req.file) {

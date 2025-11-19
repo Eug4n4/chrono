@@ -1,4 +1,5 @@
 import { body } from "express-validator";
+import jwt from "jsonwebtoken";
 
 const emailValidator = body("email").exists().isEmail();
 const passwordValidator = body("password")
@@ -35,4 +36,23 @@ const registerValidator = [
 
 const loginValidator = [...common];
 
-export { registerValidator, loginValidator, emailValidator, passwordValidator };
+
+
+function tokenMustBeValid(paramName) {
+    return (req, res, next) => {
+        if (paramName) {
+            try {
+                const payload = jwt.verify(
+                    req.params[paramName],
+                    process.env.JWT_SECRET,
+                );
+                req.tokenPayload = payload;
+                next();
+            } catch (e) {
+                return res.status(400).json({ message: "Token is invalid" });
+            }
+        }
+    };
+}
+
+export { registerValidator, loginValidator, emailValidator, passwordValidator, tokenMustBeValid };

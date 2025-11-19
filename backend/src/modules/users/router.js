@@ -1,5 +1,5 @@
 import express from "express";
-import { authenticate } from "../middleware/auth.middleware.js";
+import { authenticate } from "../auth/auth.middleware.js";
 import upload from "./avatars.js";
 import { uploadAvatar } from "./users.controller.js";
 

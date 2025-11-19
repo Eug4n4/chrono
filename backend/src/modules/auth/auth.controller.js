@@ -1,16 +1,16 @@
 import { matchedData } from "express-validator";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-
-import hashPassword from "../utils/hash.password.js";
-import User from "../models/User.js";
-import UserDto from "../dto/UserDto.js";
 import mongoose from "mongoose";
-import Token from "../models/Token.js";
+
+import { hashPassword } from "./auth.utils.js";
+import User from "../../db/models/User.js";
+import UserDto from "../../db/dto/UserDto.js";
+import Token from "../../db/models/Token.js";
 import {
     generateAccessToken,
     generateRefreshToken,
-} from "../utils/generate.tokens.js";
+} from "./auth.utils.js";
 import EmailManager from "../mail/EmailManager.js";
 import { createCalendarFunction } from "../calendar/calendar.utils.js";
 

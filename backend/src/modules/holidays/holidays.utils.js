@@ -1,4 +1,4 @@
-import Holiday from "../models/Holiday.js";
+import Holiday from "../../db/models/Holiday.js";
 
 async function getHolidayAPI(year, code) {
     const url = `https://api.11holidays.com/v1/holidays?country=${encodeURIComponent(code)}&year=${encodeURIComponent(year)}`;

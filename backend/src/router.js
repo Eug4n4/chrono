@@ -1,10 +1,10 @@
 import express from "express";
-import authRouter from "./auth/router.js";
-import holidaysRouter from "./holidays/router.js";
-import calendarRouter from "./calendar/router.js";
-import tagRouter from "./tag/router.js";
-import eventRouter from "./event/router.js";
-import usersRouter from "./users/router.js";
+import authRouter from "./modules/auth/router.js";
+import holidaysRouter from "./modules/holidays/router.js";
+import calendarRouter from "./modules/calendar/router.js";
+import tagRouter from "./modules/tag/router.js";
+import eventRouter from "./modules/event/router.js";
+import usersRouter from "./modules/users/router.js";
 
 const router = express.Router();
 
