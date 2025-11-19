@@ -5,6 +5,6 @@ import { authenticate } from "../middleware/auth.middleware.js";
 
 const router = express.Router();
 
-router.post("/", authenticate, validationErrors, createEvent);
+router.post("/:calendar_id", authenticate, validationErrors, createEvent);
 
 export default router;

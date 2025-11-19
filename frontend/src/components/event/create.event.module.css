@@ -1,0 +1,117 @@
+.createContainer {
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.create_container {
+    width: 100%;
+    max-width: 100%;
+    padding: 32px;
+    background-color: var(--surface-color);
+    border-radius: 16px;
+    border: 1px solid rgba(100, 255, 218, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.wrapper > input,
+.wrapper > textarea,
+.wrapper > select {
+    min-height: 44px;
+    background-color: rgba(52, 76, 149, 0.4);
+    padding: 12px 14px;
+    border: 2px solid rgba(100, 255, 218, 0.2);
+    border-radius: 8px;
+    outline: none;
+    color: var(--text-main);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+}
+
+.wrapper > input[type="date"],
+.wrapper > input[type="time"] {
+    min-height: 44px;
+    background-color: rgba(52, 76, 149, 0.4);
+    padding: 12px 14px;
+    border: 2px solid rgba(100, 255, 218, 0.2);
+    border-radius: 8px;
+    outline: none;
+    color: var(--text-main);
+    font-size: 14px;
+    font-family: inherit;
+    transition: all 0.3s ease;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+
+.wrapper > input:focus,
+.wrapper > textarea:focus,
+.wrapper > select:focus,
+.wrapper > input[type="date"]:focus,
+.wrapper > input[type="time"]:focus {
+    background-color: rgba(52, 76, 149, 0.6);
+    border-color: var(--btn-bg-color);
+    box-shadow: 0 0 12px rgba(100, 255, 218, 0.2);
+}
+
+.wrapper > div {
+    width: 100%;
+}
+
+.react_select__control {
+    background-color: rgba(52, 76, 149, 0.4) !important;
+    border: 2px solid rgba(100, 255, 218, 0.2) !important;
+    border-radius: 8px !important;
+    color: var(--text-main) !important;
+}
+
+.react_select__control:focus-within {
+    border-color: var(--btn-bg-color) !important;
+    box-shadow: 0 0 12px rgba(100, 255, 218, 0.2) !important;
+}
+
+.react_select__option {
+    color: var(--text-main) !important;
+}
+
+.react_select__menu {
+    background-color: var(--surface-color) !important;
+}
+
+.send_create {
+    padding: 12px 28px;
+    border-radius: 8px;
+    background-color: var(--btn-bg-color);
+    color: var(--bg-color);
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+.wrapper > label {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    cursor: text;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    font-size: 14px;
+    pointer-events: none;
+}

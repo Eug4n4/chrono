@@ -1,4 +1,6 @@
-function DateInput({ onChange, dateValue, timeValue, className, placeholder }) {
+import styles from "../event/create.event.module.css";
+
+function DateInput({ onChange, dateValue, timeValue, placeholder }) {
     const handleDateChange = (e) => {
         onChange?.({ date: e.target.value, time: timeValue });
     };
@@ -8,7 +10,7 @@ function DateInput({ onChange, dateValue, timeValue, className, placeholder }) {
     };
 
     return (
-        <div className={className}>
+        <div className={styles.wrapper}>
             <input
                 type="date"
                 value={dateValue}
