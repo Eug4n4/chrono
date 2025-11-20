@@ -5,6 +5,8 @@ import TagsSelectors from "../selectors/TagsSelectors.jsx";
 import TaskForm from "./TaskForm.jsx";
 import ArrangementForm from "./ArrangementForm.jsx";
 import ReminderForm from "./ReminderForm.jsx";
+import ColorChosen from "./ColorChosen.jsx";
+import styles from "./create.event.module.css";
 
 const EventCreateForm = () => {
     const [name, setName] = useState("");
@@ -13,8 +15,9 @@ const EventCreateForm = () => {
         end: { date: "", time: "" },
         reminder: { date: "", time: "" },
     });
-    const [type, setType] = useState("meeting");
+    const [type, setType] = useState("task");
     const [tags, setTags] = useState([]);
+    const [color, setColor] = useState("");
     const [description, setDescription] = useState("");
     const handleCreate = () => {
         console.log("handleCreate");
@@ -24,39 +27,47 @@ const EventCreateForm = () => {
         console.log("type: ", type);
         console.log("tags: ", tags);
         console.log("description: ", description);
+        console.log("color: ", color);
     };
     return (
         <div>
-            <div>
-                <Input
-                    placeholder=""
-                    name="name"
-                    id="name"
-                    required
-                    onChange={(e) => setName(e.target.value)}
+            <div className={styles.create_container}>
+                <div className={styles.wrapper}>
+                    <Input
+                        placeholder=""
+                        name="name"
+                        id="name"
+                        required
+                        onChange={(e) => setName(e.target.value)}
+                    />
+                    <label htmlFor="name">Name</label>
+                </div>
+                <TypeSelector
+                    value={type}
+                    onChange={(e) => setType(e.target.value)}
                 />
-                <label htmlFor="name">Name</label>
-            </div>
-            <TypeSelector
-                value={type}
-                onChange={(e) => setType(e.target.value)}
-            />
-            {type === "task" && (
-                <TaskForm date={date} setDate={setDate} />)}
-            {type === "arrangement" && (
-                <ArrangementForm date={date} setDate={setDate} setDescription={setDescription} />
-            )}
-            {type === "reminder" && (
-                <ReminderForm date={date} setDate={setDate}/>
-            )}
-            <div>
-                Tags:
-                <TagsSelectors
-                    onChange={setTags}
-                />
-            </div>
-            <div>
-                <button onClick={handleCreate}>Create</button>
+                {type === "task" && (
+                    <TaskForm date={date} setDate={setDate} />)}
+                {type === "arrangement" && (
+                    <ArrangementForm date={date} setDate={setDate} setDescription={setDescription} />
+                )}
+                {type === "reminder" && (
+                    <ReminderForm date={date} setDate={setDate} />
+                )}
+                <div className={styles.wrapper}>
+                    Tags:
+                    <TagsSelectors
+                        onChange={setTags}
+                    />
+                </div>
+                <div className={styles.wrapper}>
+                    Color:
+                    <ColorChosen setColor={setColor} />
+                </div>
+
+                <div className={styles.wrapper}>
+                    <button className={styles.send_create} onClick={handleCreate}>Create</button>
+                </div>
             </div>
         </div>
     );

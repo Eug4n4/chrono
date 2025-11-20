@@ -1,0 +1,21 @@
+import api from "../api";
+
+class EventService {
+    static async getEventsForCalendar(calendarId) {
+        return api.get(`/calendar/${calendarId}/events`);
+    }
+
+    static async createEvent(calendarId, data) {
+        return api.post(`/calendar/${calendarId}/events`, data);
+    }
+
+    static async updateEvent(eventId, data) {
+        return api.put(`/event/${eventId}`, data);
+    }
+
+    static async deleteEvent(eventId) {
+        return api.delete(`/event/${eventId}`);
+    }
+}
+
+export default EventService;

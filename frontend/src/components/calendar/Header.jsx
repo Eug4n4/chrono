@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
 import { useDispatch } from "react-redux";
-import { logout } from "../../features/state/authSlice";
+import { logout } from "../../features/state/auth.slice";
+import { fetchCalendars } from "../../features/state/calendar.slice";
 import NewCalendarModal from "./NewCalendarModal";
 import { useNavigate } from "react-router-dom";
 
@@ -10,6 +11,7 @@ const Header = ({
     setCurrentView,
     onNext,
     onPrev,
+    onToday,
     title,
     onToggleSidebar,
 }) => {
@@ -23,8 +25,7 @@ const Header = ({
     };
 
     const handleCalendarCreated = () => {
-        // TODO: Refresh calendar list
-        console.log("Calendar created successfully");
+        dispatch(fetchCalendars());
     };
     const handleClick = () => {
         navigate("/create-event");
@@ -41,7 +42,9 @@ const Header = ({
                     >
                         ☰
                     </button>
-                    <button className={styles.button}>Today</button>
+                    <button className={styles.button} onClick={onToday}>
+                        Today
+                    </button>
                     <h2 className={styles.headerTitle}>{title}</h2>
                     <button className={styles.navButton} onClick={onPrev}>
                         &lt;
@@ -73,7 +76,10 @@ const Header = ({
                         </button>
                         {showCreateMenu && (
                             <div className={styles.createDropdown}>
-                                <div onClick={handleClick} style={{ cursor: "pointer" }}>
+                                <div
+                                    onClick={handleClick}
+                                    style={{ cursor: "pointer" }}
+                                >
                                     New event
                                 </div>
                                 <div

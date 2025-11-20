@@ -1,6 +1,8 @@
+import styles from "../event/create.event.module.css";
+
 function TypeSelector({ value, onChange }) {
     return (
-        <div>
+        <div className={styles.wrapper}>
             <select value={value} onChange={onChange}>
                 <option value="arrangement">arrangement</option>
                 <option value="task">task</option>

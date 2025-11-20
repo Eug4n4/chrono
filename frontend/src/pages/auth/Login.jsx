@@ -1,9 +1,8 @@
 import AuthService from "../../api/services/AuthService";
-import { useState } from "react";
 import LoginForm from "../../components/forms/LoginForm";
 import FeatureShowcase from "../../components/auth/FeatureShowcase";
 import { useDispatch, useSelector } from "react-redux";
-import { loginSuccess, setLoading } from "../../features/state/authSlice";
+import { loginSuccess, setLoading } from "../../features/state/auth.slice";
 import { useNavigate } from "react-router-dom";
 import { getCookie } from "../../utils/cookies";
 import { jwtDecode } from "jwt-decode";

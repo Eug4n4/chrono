@@ -1,6 +1,7 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import Modal from "../common/Modal";
-import CalendarService from "../../api/services/CalendarService";
+import { createCalendar } from "../../features/state/calendar.slice";
 import styles from "./NewCalendarModal.module.css";
 import {
     showSuccessToast,
@@ -13,6 +14,7 @@ const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
     const [description, setDescription] = useState("");
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState("");
+    const dispatch = useDispatch();
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -24,17 +26,21 @@ const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
         setLoading(true);
         setError("");
         try {
-            await CalendarService.createCalendar({
-                name: name.trim(),
-                description: description.trim(),
-            });
+            await dispatch(
+                createCalendar({
+                    name: name.trim(),
+                    description: description.trim(),
+                }),
+            ).unwrap();
+
             showSuccessToast("Calendar created successfully!");
             onSuccess();
             onClose();
             setName("");
             setDescription("");
         } catch (err) {
-            const errorMessage = extractErrorMessage(err);
+            const errorMessage =
+                typeof err === "string" ? err : extractErrorMessage(err);
             showErrorToast(errorMessage);
             setError(errorMessage);
             console.error("Calendar creation failed:", err);

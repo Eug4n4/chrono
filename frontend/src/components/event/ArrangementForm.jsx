@@ -1,4 +1,5 @@
 import DateInput from "../inputs/DateInput.jsx";
+import styles from "./create.event.module.css";
 
 const ArrangementForm = ({ date, setDate }) => {
     const handleStartChange = (newValue) => {
@@ -11,7 +12,7 @@ const ArrangementForm = ({ date, setDate }) => {
 
     return (
         <div>
-            <div>
+            <div className={styles.wrapper}>
                 <DateInput
                     dateValue={date.start.date}
                     timeValue={date.start.time}
@@ -21,7 +22,7 @@ const ArrangementForm = ({ date, setDate }) => {
                 <label htmlFor="start">Start date</label>
             </div>
 
-            <div>
+            <div className={styles.wrapper}>
                 <DateInput
                     dateValue={date.end.date}
                     timeValue={date.end.time}

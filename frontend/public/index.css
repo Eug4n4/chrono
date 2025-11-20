@@ -12,6 +12,9 @@
     --text-main: #ccd6f6;
     --font-family: Inter, sans-serif;
     --text-muted: #8892b0;
+    --color-pick-royal-blue: #6043ee;
+    --color-pick-purple-heart: #7949d0;
+    --color-pick-cerulean: #01abdb;
 }
 
 * {
