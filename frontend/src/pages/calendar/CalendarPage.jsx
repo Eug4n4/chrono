@@ -33,6 +33,7 @@ const CalendarPage = () => {
 
     const handlePrev = () => calendarRef.current?.getApi().prev();
     const handleNext = () => calendarRef.current?.getApi().next();
+    const handleToday = () => calendarRef.current?.getApi().today();
 
     const handleDatesSet = (arg) => {
         setTitle(arg.view.title);
@@ -49,6 +50,7 @@ const CalendarPage = () => {
                 setCurrentView={setCurrentView}
                 onPrev={handlePrev}
                 onNext={handleNext}
+                onToday={handleToday}
                 title={title}
                 onToggleSidebar={toggleSidebar}
             />

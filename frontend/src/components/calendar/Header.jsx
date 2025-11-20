@@ -11,6 +11,7 @@ const Header = ({
     setCurrentView,
     onNext,
     onPrev,
+    onToday,
     title,
     onToggleSidebar,
 }) => {
@@ -41,7 +42,9 @@ const Header = ({
                     >
                         ☰
                     </button>
-                    <button className={styles.button}>Today</button>
+                    <button className={styles.button} onClick={onToday}>
+                        Today
+                    </button>
                     <h2 className={styles.headerTitle}>{title}</h2>
                     <button className={styles.navButton} onClick={onPrev}>
                         &lt;

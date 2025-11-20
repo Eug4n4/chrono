@@ -30,12 +30,15 @@ const createTokenPair = async (user) => {
     return { access, refresh };
 };
 
-
-
 async function hashPassword(plainText) {
     return bcrypt.hash(plainText, 10);
 }
 
 export default hashPassword;
 
-export { generateAccessToken, generateRefreshToken, createTokenPair, hashPassword };
+export {
+    generateAccessToken,
+    generateRefreshToken,
+    createTokenPair,
+    hashPassword,
+};

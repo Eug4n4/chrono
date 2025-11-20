@@ -7,10 +7,7 @@ import { hashPassword } from "./auth.utils.js";
 import User from "../../db/models/User.js";
 import UserDto from "../../db/dto/UserDto.js";
 import Token from "../../db/models/Token.js";
-import {
-    generateAccessToken,
-    generateRefreshToken,
-} from "./auth.utils.js";
+import { generateAccessToken, generateRefreshToken } from "./auth.utils.js";
 import EmailManager from "../mail/EmailManager.js";
 import { createCalendarFunction } from "../calendar/calendar.utils.js";
 

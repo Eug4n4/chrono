@@ -49,10 +49,14 @@ const calendarSlice = createSlice({
         calendars: [],
         guestCalendars: [],
         activeCalendars: [],
+        showHolidays: true,
         loading: false,
         error: null,
     },
     reducers: {
+        toggleHolidays: (state) => {
+            state.showHolidays = !state.showHolidays;
+        },
         toggleCalendar: (state, action) => {
             const calendarId = action.payload;
             if (state.activeCalendars.includes(calendarId)) {
@@ -109,5 +113,6 @@ const calendarSlice = createSlice({
     },
 });
 
-export const { toggleCalendar, setActiveCalendars } = calendarSlice.actions;
+export const { toggleCalendar, setActiveCalendars, toggleHolidays } =
+    calendarSlice.actions;
 export default calendarSlice.reducer;
