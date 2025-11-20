@@ -13,23 +13,22 @@ const ArrangementForm = ({ date, setDate }) => {
     return (
         <div>
             <div className={styles.wrapper}>
+                <p>Start date:</p>
                 <DateInput
                     dateValue={date.start.date}
                     timeValue={date.start.time}
                     onChange={handleStartChange}
                     id="start"
                 />
-                <label htmlFor="start">Start date</label>
             </div>
-
             <div className={styles.wrapper}>
+                <p>End date</p>
                 <DateInput
                     dateValue={date.end.date}
                     timeValue={date.end.time}
                     onChange={handleEndChange}
                     id="end"
                 />
-                <label htmlFor="end">End date</label>
             </div>
         </div>
     );

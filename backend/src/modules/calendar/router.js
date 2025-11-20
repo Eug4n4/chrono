@@ -1,6 +1,7 @@
 import express from "express";
 import {
     createCalendar,
+    createEventToCalendar,
     deleteCalendar,
     getCalendars,
     getCalendarsEvents,
@@ -19,6 +20,7 @@ router.get(
 );
 
 router.post("/", authenticate, validationErrors, createCalendar);
+router.post("/:calendar_id/events", authenticate, validationErrors, createEventToCalendar);
 
 router.delete("/:calendar_id", authenticate, validationErrors, deleteCalendar);
 

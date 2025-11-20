@@ -13,23 +13,23 @@ const ReminderForm = ({ date, setDate }) => {
     return (
         <div>
             <div className={styles.wrapper}>
+                <p>Start date</p>
                 <DateInput
                     dateValue={date.start.date}
                     timeValue={date.start.time}
                     onChange={handleStartChange}
                     id="start"
                 />
-                <label htmlFor="start">Start date</label>
             </div>
 
             <div className={styles.wrapper}>
+                <p>Reminder date</p>
                 <DateInput
                     dateValue={date.reminder.date}
                     timeValue={date.reminder.time}
                     onChange={handleEndChange}
                     id="reminder"
                 />
-                <label htmlFor="reminder">Reminder date</label>
             </div>
         </div>
     );

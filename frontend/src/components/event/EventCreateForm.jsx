@@ -1,5 +1,5 @@
 import Input from "../inputs/Input.jsx";
-import { useState } from "react";
+import React, { useState } from "react";
 import TypeSelector from "../selectors/TypeSelector.jsx";
 import TagsSelectors from "../selectors/TagsSelectors.jsx";
 import TaskForm from "./TaskForm.jsx";
@@ -7,8 +7,14 @@ import ArrangementForm from "./ArrangementForm.jsx";
 import ReminderForm from "./ReminderForm.jsx";
 import ColorChosen from "./ColorChosen.jsx";
 import styles from "./create.event.module.css";
+import { showErrorToast, showSuccessToast } from "../../utils/toast.jsx";
+import { useDispatch } from "react-redux";
+import { createEvent } from "../../features/state/event.slice.js";
+import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
 
 const EventCreateForm = () => {
+    const [calendarId, setCalendarId] = useState("");
+    const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [date, setDate] = useState({
         start: { date: "", time: "" },
@@ -19,19 +25,36 @@ const EventCreateForm = () => {
     const [tags, setTags] = useState([]);
     const [color, setColor] = useState("");
     const [description, setDescription] = useState("");
-    const handleCreate = () => {
-        console.log("handleCreate");
-        console.log("Name", name);
-        console.log("start date: ", date.start);
-        console.log("end date: ", date.end);
-        console.log("type: ", type);
-        console.log("tags: ", tags);
-        console.log("description: ", description);
-        console.log("color: ", color);
+    const [loading, setLoading] = useState(false);
+
+    const handleCreate = async (e) => {
+        e.preventDefault();
+        setLoading(true);
+        try {
+            const start = new Date(`${date.start.date}T${date.start.time}`);
+            let eventData = { name, type, color, tags, start };
+            if (type === "task") {
+                eventData.description = description;
+                eventData.end = new Date(`${date.end.date}T${date.end.time}`);
+            } else if (type === "reminder") {
+                eventData.reminder = new Date(`${date.reminder.date}T${date.reminder.time}`);
+            } else {
+                eventData.end = new Date(`${date.end.date}T${date.end.time}`);
+            }
+            console.log("calendar id: ",calendarId);
+            await dispatch(createEvent({ calendarId, eventData })).unwrap();
+            showSuccessToast("Event created successfully");
+        } catch (error) {
+            showErrorToast(error || "Failed to save event");
+        } finally {
+            setLoading(false);
+        }
     };
     return (
         <div>
             <div className={styles.create_container}>
+                <h2>Create event</h2>
+                <CalendarsSelector value={calendarId} onChange={setCalendarId} />
                 <div className={styles.wrapper}>
                     <Input
                         placeholder=""
@@ -47,26 +70,28 @@ const EventCreateForm = () => {
                     onChange={(e) => setType(e.target.value)}
                 />
                 {type === "task" && (
-                    <TaskForm date={date} setDate={setDate} />)}
+                    <TaskForm date={date} setDate={setDate} setDescription={setDescription}/>)}
                 {type === "arrangement" && (
-                    <ArrangementForm date={date} setDate={setDate} setDescription={setDescription} />
+                    <ArrangementForm date={date} setDate={setDate}/>
                 )}
                 {type === "reminder" && (
                     <ReminderForm date={date} setDate={setDate} />
                 )}
                 <div className={styles.wrapper}>
-                    Tags:
+                    <p>Tags:</p>
                     <TagsSelectors
                         onChange={setTags}
                     />
                 </div>
                 <div className={styles.wrapper}>
-                    Color:
+                    <p>Color:</p>
                     <ColorChosen setColor={setColor} />
                 </div>
 
                 <div className={styles.wrapper}>
-                    <button className={styles.send_create} onClick={handleCreate}>Create</button>
+                    <button className={styles.send_create} onClick={handleCreate}>
+                        {loading ? "Saving..." : "Save"}
+                    </button>
                 </div>
             </div>
         </div>

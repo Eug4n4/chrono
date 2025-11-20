@@ -19,7 +19,6 @@ async function getTags(req, res) {
             },
             { $project: { _id: 0, tags: 1 } },
         ]);
-        console.log(tags[0]);
         res.status(200).json({ tags: tags[0]?.tags || [] });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {

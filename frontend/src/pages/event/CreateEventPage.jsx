@@ -6,7 +6,6 @@ const CreateEventPage = () => {
 
     return (
         <div className={styles.createContainer}>
-            <h2>Create event</h2>
             <EventCreateForm/>
         </div>
     );

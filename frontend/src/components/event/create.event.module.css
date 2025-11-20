@@ -26,19 +26,7 @@
 
 .wrapper > input,
 .wrapper > textarea,
-.wrapper > select {
-    min-height: 44px;
-    background-color: rgba(52, 76, 149, 0.4);
-    padding: 12px 14px;
-    border: 2px solid rgba(100, 255, 218, 0.2);
-    border-radius: 8px;
-    outline: none;
-    color: var(--text-main);
-    font-size: 14px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-}
-
+.wrapper > select,
 .wrapper > input[type="date"],
 .wrapper > input[type="time"] {
     min-height: 44px;
@@ -51,11 +39,7 @@
     font-size: 14px;
     font-family: inherit;
     transition: all 0.3s ease;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
 }
-
 
 .wrapper > input:focus,
 .wrapper > textarea:focus,
@@ -65,6 +49,22 @@
     background-color: rgba(52, 76, 149, 0.6);
     border-color: var(--btn-bg-color);
     box-shadow: 0 0 12px rgba(100, 255, 218, 0.2);
+}
+
+.wrapper > input:focus ~ label,
+.wrapper > input:not(:placeholder-shown) ~ label,
+.wrapper div:has(input:focus) ~ label,
+.wrapper div:has(input:not(:placeholder-shown)) ~ label,
+.wrapper > textarea:focus ~ label,
+.wrapper > textarea:not(:placeholder-shown) ~ label,
+.wrapper div:has(input:focus) ~ label,
+.wrapper div:has(input:not(:placeholder-shown)) ~ label {
+    top: -12px;
+    left: 12px;
+    font-size: 12px;
+    background-color: var(--surface-color);
+    padding: 0 4px;
+    color: var(--btn-bg-color);
 }
 
 .wrapper > div {
@@ -105,6 +105,7 @@
     margin-bottom: 16px;
     width: 100%;
 }
+
 .wrapper > label {
     position: absolute;
     left: 14px;
@@ -114,4 +115,15 @@
     color: var(--text-muted);
     font-size: 14px;
     pointer-events: none;
+}
+
+.wrapper > p {
+    color: var(--text-muted);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+h2 {
+    color: var(--text-main);
+    margin: 8px;
 }

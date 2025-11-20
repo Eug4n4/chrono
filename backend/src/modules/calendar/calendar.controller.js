@@ -3,6 +3,11 @@ import { ObjectId } from "mongodb";
 import { createCalendarFunction } from "./calendar.utils.js";
 import User from "../../db/models/User.js";
 import Calendar from "../../db/models/Calendar.js";
+import Event from "../../db/models/Event.js";
+import { createTag } from "../event/event.utils.js";
+import TagDto from "../../db/dto/TagDto.js";
+import EventDto from "../../db/dto/EventDto.js";
+import Tag from "../../db/models/Tag.js";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -196,4 +201,34 @@ async function getCalendarsEvents(req, res) {
     }
 }
 
-export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents };
+async function createEventToCalendar(req, res) {
+    const calendarId = req.params.calendar_id;
+    const user = req.user;
+    const body = req.body;
+    try {
+        const tags = await Promise.all(body.tags.map(async (tag) => {
+            if (tag.value === tag.label) {
+                const tagInDB = await createTag(user.id, tag.value);
+                return tagInDB.id;
+            } else {
+                return tag.value;
+            }
+        }));
+        body.tags = tags;
+        const event = await Event.create(body);
+        const dto = new EventDto(event);
+        await Calendar.updateOne(
+            { _id: calendarId },
+            { $addToSet: { events: dto.id } },
+        );
+        return res.status(200).send({ message: "Success" });
+    } catch (e) {
+        if (e instanceof mongoose.Error.ValidationError) {
+            return res.status(400).json({ message: e.message });
+        }
+        return res.status(500).json({ message: e?.message });
+    }
+    return res.status(200).send({ message: "Success" });
+}
+
+export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents, createEventToCalendar };

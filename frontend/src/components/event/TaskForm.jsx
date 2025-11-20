@@ -1,4 +1,3 @@
-import Input from "../inputs/Input.jsx";
 import DateInput from "../inputs/DateInput.jsx";
 import styles from "./create.event.module.css";
 
@@ -23,16 +22,17 @@ const TaskForm = ({ date, setDate, setDescription }) => {
                 <label htmlFor="description">Description</label>
             </div>
             <div className={styles.wrapper}>
+                <p>Start date:</p>
                 <DateInput
                     dateValue={date.start.date}
                     timeValue={date.start.time}
                     onChange={handleStartChange}
                     id="start"
                 />
-                <label htmlFor="start">Start date</label>
             </div>
 
             <div className={styles.wrapper}>
+                <p>End date:</p>
                 <DateInput
                     dateValue={date.end.date}
                     timeValue={date.end.time}
@@ -40,7 +40,6 @@ const TaskForm = ({ date, setDate, setDescription }) => {
                     className={styles.wrapper}
                     id="end"
                 />
-                <label htmlFor="end">End date</label>
             </div>
         </div>
     );
