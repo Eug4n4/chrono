@@ -167,21 +167,14 @@ async function getCalendarsEvents(req, res) {
                         {
                             $lookup: {
                                 from: "tags",
-                                localField: "tags",
-                                foreignField: "_id",
-                                as: "tags",
-                            },
-                        },
-                        {
-                            $project: {
-                                _id: 1,
-                                name: 1,
-                                start: 1,
-                                end: 1,
-                                "tags._id": 1,
-                                "tags.name": 1,
-                            },
-                        },
+                                let: { tagIds: "$tags" },
+                                pipeline: [
+                                    { $match: { $expr: { $in: ["$_id", "$$tagIds"] } } },
+                                    { $project: { _id: 1, name: 1 } }
+                                ],
+                                as: "tags"
+                            }
+                        }
                     ],
                     as: "events",
                 },
