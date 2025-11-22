@@ -1,5 +1,6 @@
 import React from "react";
 import styles from "./Modal.module.css";
+import { X } from "lucide-react";
 
 const Modal = ({ isOpen, onClose, children }) => {
     if (!isOpen) return null;
@@ -8,7 +9,7 @@ const Modal = ({ isOpen, onClose, children }) => {
         <div className={styles.overlay} onClick={onClose}>
             <div className={styles.modal} onClick={(e) => e.stopPropagation()}>
                 <button className={styles.closeButton} onClick={onClose}>
-                    &times;
+                    <X />
                 </button>
                 {children}
             </div>
