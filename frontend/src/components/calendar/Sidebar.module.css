@@ -50,3 +50,7 @@
   padding-left: 8px;
   margin-top: 8px;
 }
+
+.calendar_details {
+    cursor: pointer;
+}

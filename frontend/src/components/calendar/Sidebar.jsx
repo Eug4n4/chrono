@@ -1,15 +1,18 @@
 import React, { useState } from "react";
 import styles from "./Sidebar.module.css";
 import { useDispatch, useSelector } from "react-redux";
+import { Settings } from "lucide-react";
 import {
     toggleCalendar,
     toggleHolidays,
 } from "../../features/state/calendar.slice";
+import CalendarDetailsModal from "./details/CalendarDetailsModal";
 
 const Sidebar = ({ isOpen = true }) => {
     const [isOwnOpen, setIsOwnOpen] = useState(true);
     const [isGuestOpen, setIsGuestOpen] = useState(true);
     const [isDefaultOpen, setIsDefaultOpen] = useState(true);
+    const [isCalendarDetailsOpen, setIsCalendarDetailsOpen] = useState(false);
     const dispatch = useDispatch();
     const { calendars, guestCalendars, activeCalendars, showHolidays } =
         useSelector((state) => state.calendars);
@@ -46,6 +49,15 @@ const Sidebar = ({ isOpen = true }) => {
                             <label htmlFor={`cal-${calendar._id}`}>
                                 {calendar.name}
                             </label>
+                            <Settings
+                                className={styles.calendar_details}
+                                onClick={() => setIsCalendarDetailsOpen(true)}
+                            />
+                            <CalendarDetailsModal
+                                calendar={calendar}
+                                isOpen={isCalendarDetailsOpen}
+                                onClose={() => setIsCalendarDetailsOpen(false)}
+                            />
                         </div>
                     ))}
                     {calendars.length === 0 && (

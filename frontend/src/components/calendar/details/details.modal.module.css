@@ -1,0 +1,38 @@
+.content {
+    display: flex;
+    gap: 3rem;
+}
+
+.details_sidebar {
+    display: flex;
+    flex-direction: column;
+}
+
+.details_section {
+    flex: 1;
+}
+
+.details_sidebar button {
+    color: inherit;
+    outline: none;
+    text-align: left;
+    background-color: transparent;
+    border: 0;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 10px;
+    border-radius: 0 10px 10px 0;
+}
+.details_sidebar button:hover,
+.details_sidebar button:focus,
+.details_sidebar button.active {
+    background-color: var(--input-bg-color-hover);
+}
+
+
+.invite_form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
