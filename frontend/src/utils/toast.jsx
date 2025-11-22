@@ -18,6 +18,10 @@ export const showErrorToast = (message) => {
     toast.error(message, toastConfig);
 };
 
+export const showWarningToast = (message) => {
+    toast.warning(message, toastConfig);
+};
+
 export const showActionToast = (
     message,
     onConfirm,
