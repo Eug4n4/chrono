@@ -1,15 +1,19 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import AuthService from "../../api/services/AuthService";
 import {
     showSuccessToast,
     showErrorToast,
     extractErrorMessage,
 } from "../../utils/toast.jsx";
+import { CircleCheckBig, CircleAlert } from "lucide-react";
+
+import s from "./email.verify.module.css";
+import h from "../../components/common/header.module.css";
 
 function EmailVerification() {
     const { token } = useParams();
-    const [validToken, setValidToken] = useState(false);
+    const [status, setStatus] = useState("loading");
     const navigate = useNavigate();
 
     useEffect(() => {
@@ -18,7 +22,7 @@ function EmailVerification() {
         AuthService.verifyEmail(token)
             .then(() => {
                 if (isMounted) {
-                    setValidToken(true);
+                    setStatus("success");
                     showSuccessToast("Email verified successfully!");
                     setTimeout(
                         () => navigate("/login", { replace: true }),
@@ -29,6 +33,7 @@ function EmailVerification() {
             .catch((error) => {
                 if (isMounted) {
                     const errorMessage = extractErrorMessage(error);
+                    setStatus("error");
                     showErrorToast(errorMessage);
                     console.error("Email verification failed:", error);
                 }
@@ -39,27 +44,41 @@ function EmailVerification() {
         };
     }, [token, navigate]);
 
-    return (
-        <div>
-            {validToken && (
-                <>
-                    <h2>Success</h2>
+    if (status === "loading") return null;
+
+    if (status === "success") {
+        return (
+            <div className={s.email_verify_page}>
+                <div className={s.verify_email_wrapper}>
                     <div>
-                        <p>Your email has been verified</p>
+                        <h2>Success</h2>
+                        <CircleCheckBig />
+                    </div>
+                    <div className={s.verify_email_subtext}>
+                        <p>Your email has been verified!</p>
                         <p>
-                            Wait a bit utill we redirect you to the login page
+                            Wait a bit until we redirect you to the login page
                         </p>
                     </div>
-                </>
-            )}
-            {!validToken && (
-                <>
+                </div>
+            </div>
+        );
+    }
+
+    return (
+        <div className={s.email_verify_page}>
+            <div className={s.verify_email_wrapper}>
+                <div>
                     <h2>Error</h2>
-                    <div>
-                        <p>Error while verifying your email</p>
-                    </div>
-                </>
-            )}
+                    <CircleAlert />
+                </div>
+                <div className={s.verify_email_subtext}>
+                    <p>Error while verifying your email</p>
+                    <Link className={`${h.nav_link} ${h.register}`} to="/login">
+                        Go to login
+                    </Link>
+                </div>
+            </div>
         </div>
     );
 }

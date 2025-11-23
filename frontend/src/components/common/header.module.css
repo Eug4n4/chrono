@@ -52,6 +52,7 @@ button.nav_link,
 .nav_link.register {
     background-color: var(--btn-bg-color);
     color: var(--bg-color);
+    text-align: center;
 }
 
 .avatar {
