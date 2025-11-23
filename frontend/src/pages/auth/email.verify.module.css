@@ -1,5 +1,5 @@
 .email_verify_page {
-    min-height: calc(100vh - 4rem);
+    min-height: 90vh;
     display: flex;
     flex-direction: column;
     justify-content: center;
