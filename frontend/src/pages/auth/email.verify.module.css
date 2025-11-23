@@ -1,0 +1,28 @@
+.email_verify_page {
+    min-height: calc(100vh - 4rem);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.verify_email_wrapper {
+    padding: calc(8% + 10px);
+    border-radius: 8px;
+    background-color: var(--surface-color);
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.5);
+}
+
+.verify_email_wrapper > :first-child {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.verify_email_wrapper p {
+    margin: 8px;
+}
+.verify_email_subtext {
+    display: flex;
+    flex-direction: column;
+}
