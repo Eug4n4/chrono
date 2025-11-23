@@ -76,7 +76,7 @@ const EventCreateForm = () => {
                 }
                 eventData.reminder = new Date(`${date.reminder.date}T${date.reminder.time}`);
             } else {
-                if (!date.reminder.date || !date.reminder.time) {
+                if (!date.end.date || !date.end.time) {
                     showWarningToast("Input end date!");
                     setLoading(false);
                     return;
