@@ -4,9 +4,10 @@ import Input from "../../inputs/Input";
 import l from "../../forms/login.form.module.css";
 import s from "./details.modal.module.css";
 
-function Invitations() {
+function InvitationsForm({ onSubmit, invitationError }) {
     const [email, setEmail] = useState("");
-    const [errors, setErrors] = useState({ email: "" });
+    const initialErrors = { email: "" };
+    const [errors, setErrors] = useState(initialErrors);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -19,6 +20,8 @@ function Invitations() {
             setErrors(errors);
             return;
         }
+        setErrors(initialErrors);
+        onSubmit(Object.fromEntries(new FormData(e.target)));
     }
 
     return (
@@ -35,10 +38,13 @@ function Invitations() {
                 />
                 <label htmlFor="email">Email</label>
                 {errors.email && <p>{errors.email}</p>}
+                {invitationError.invitation && (
+                    <p>{invitationError.invitation}</p>
+                )}
             </div>
             <button className={l.submit_login}>Invite</button>
         </form>
     );
 }
 
-export default Invitations;
+export default InvitationsForm;

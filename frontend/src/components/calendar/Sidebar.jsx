@@ -6,7 +6,8 @@ import {
     toggleCalendar,
     toggleHolidays,
 } from "../../features/state/calendar.slice";
-import CalendarDetailsModal from "./details/CalendarDetailsModal";
+import DetailsModal from "../common/details/DetailsModal";
+import { calendarDetailsAvailableViews } from "../common/details/available.views";
 
 const Sidebar = ({ isOpen = true }) => {
     const [isOwnOpen, setIsOwnOpen] = useState(true);
@@ -53,8 +54,9 @@ const Sidebar = ({ isOpen = true }) => {
                                 className={styles.calendar_details}
                                 onClick={() => setIsCalendarDetailsOpen(true)}
                             />
-                            <CalendarDetailsModal
-                                calendar={calendar}
+                            <DetailsModal
+                                views={calendarDetailsAvailableViews}
+                                purpose={calendar}
                                 isOpen={isCalendarDetailsOpen}
                                 onClose={() => setIsCalendarDetailsOpen(false)}
                             />
