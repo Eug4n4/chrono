@@ -6,4 +6,4 @@ class TagService {
     }
 }
 
-export default new TagService;
+export default new TagService();

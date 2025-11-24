@@ -13,6 +13,10 @@ class CalendarService {
     static async deleteCalendar(calendarId) {
         return api.delete(`/calendar/${calendarId}`);
     }
+
+    static async addSharedEvent(calendarId, eventId) {
+        return api.post("/calendar/add-shared-event", { calendarId, eventId });
+    }
 }
 
 export default CalendarService;
