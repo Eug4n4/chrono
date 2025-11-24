@@ -1,8 +1,8 @@
 import api from "../api";
 
 class EventService {
-    static async getEventsForCalendar(calendarId) {
-        return api.get(`/calendar/${calendarId}/events`);
+    static async getEventsForCalendar(calendarId, year) {
+        return api.get(`/calendar/${calendarId}/events`, { params: { year } });
     }
 
     static async createEvent(calendarId, data) {

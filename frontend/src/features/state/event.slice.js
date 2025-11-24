@@ -3,10 +3,10 @@ import EventService from "../../api/services/EventService";
 
 export const fetchEventsForCalendars = createAsyncThunk(
     "events/fetchEventsForCalendars",
-    async (calendarIds, { rejectWithValue }) => {
+    async ({ calendarIds, year }, { rejectWithValue }) => {
         try {
             const promises = calendarIds.map((id) =>
-                EventService.getEventsForCalendar(id),
+                EventService.getEventsForCalendar(id, year),
             );
             const responses = await Promise.all(promises);
 
@@ -86,7 +86,26 @@ const eventSlice = createSlice({
             })
             .addCase(fetchEventsForCalendars.fulfilled, (state, action) => {
                 state.loading = false;
-                state.eventsByCalendar = action.payload;
+                const newEventsByCalendar = action.payload;
+                Object.keys(newEventsByCalendar).forEach((calendarId) => {
+                    if (!state.eventsByCalendar[calendarId]) {
+                        state.eventsByCalendar[calendarId] = [];
+                    }
+                    const existingEvents = state.eventsByCalendar[calendarId];
+                    const newEvents = newEventsByCalendar[calendarId];
+
+                    const existingEventMap = new Map(
+                        existingEvents.map((e) => [e._id, e]),
+                    );
+
+                    newEvents.forEach((event) => {
+                        existingEventMap.set(event._id, event);
+                    });
+
+                    state.eventsByCalendar[calendarId] = Array.from(
+                        existingEventMap.values(),
+                    );
+                });
             })
             .addCase(fetchEventsForCalendars.rejected, (state, action) => {
                 state.loading = false;
