@@ -13,7 +13,6 @@ function EventInvitations({ purpose }) {
             })
             .catch((reason) => {
                 setError({ invitation: `${reason.response.data?.message}` });
-                setSuccessMessage("");
             });
     }
     return <InvitationsForm onSubmit={handleSubmit} invitationError={error} />;
