@@ -9,6 +9,7 @@ import styles from "./CalendarView.module.css";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchEventsForCalendars } from "../../features/state/event.slice";
 import { fetchHolidays } from "../../api/services/HolidayService";
+import { Bell, CheckSquare, Calendar as CalendarIcon } from "lucide-react";
 
 const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const containerRef = useRef(null);
@@ -19,6 +20,7 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const { user } = useSelector((state) => state.auth);
     const [holidayEvents, setHolidayEvents] = useState([]);
     const fetchedYears = useRef(new Set());
+    const fetchedEventKeys = useRef(new Set());
 
     useEffect(() => {
         const container = containerRef.current;
@@ -76,18 +78,55 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
         }
     };
 
+    const fetchEventsForYears = (years) => {
+        const allCalendarIds = [
+            ...calendars.map((c) => c._id),
+            ...guestCalendars.map((c) => c._id),
+        ];
+        const validCalendarIds = activeCalendars.filter(
+            (id) => allCalendarIds.includes(id) && id && typeof id === "string",
+        );
+
+        if (validCalendarIds.length === 0) return;
+
+        years.forEach((year) => {
+            const calendarsToFetch = validCalendarIds.filter(
+                (calId) => !fetchedEventKeys.current.has(`${year}-${calId}`),
+            );
+
+            if (calendarsToFetch.length > 0) {
+                dispatch(
+                    fetchEventsForCalendars({
+                        calendarIds: calendarsToFetch,
+                        year,
+                    }),
+                );
+                calendarsToFetch.forEach((calId) =>
+                    fetchedEventKeys.current.add(`${year}-${calId}`),
+                );
+            }
+        });
+    };
+
     const handleDatesSet = (arg) => {
         if (onDatesSet) onDatesSet(arg);
 
+        const startYear = arg.start.getFullYear();
+        const endYear = new Date(arg.end.getTime() - 1).getFullYear();
+        const years = [];
+        for (let y = startYear; y <= endYear; y++) {
+            years.push(y);
+        }
+
         if (showHolidays) {
-            const startYear = arg.start.getFullYear();
-            const endYear = new Date(arg.end.getTime() - 1).getFullYear();
-            const years = [];
-            for (let y = startYear; y <= endYear; y++) {
-                years.push(y);
-            }
             fetchHolidaysForYears(years);
         }
+        fetchEventsForYears(years);
+    };
+
+    const handleDateClick = (info) => {
+        const api = ref.current.getApi();
+        api.changeView("timeGridDay", info.dateStr);
     };
 
     useEffect(() => {
@@ -107,27 +146,89 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     }, [showHolidays, user]);
 
     useEffect(() => {
-        if (activeCalendars.length > 0) {
-            const allCalendarIds = [
-                ...calendars.map((c) => c._id),
-                ...guestCalendars.map((c) => c._id),
-            ];
-
-            const validCalendarIds = activeCalendars.filter(
-                (id) =>
-                    allCalendarIds.includes(id) && id && typeof id === "string",
-            );
-
-            if (validCalendarIds.length > 0) {
-                dispatch(fetchEventsForCalendars(validCalendarIds));
+        if (activeCalendars.length > 0 && ref.current) {
+            const api = ref.current.getApi();
+            const startYear = api.view.currentStart.getFullYear();
+            const endYear = api.view.currentEnd.getFullYear();
+            const years = [];
+            for (let y = startYear; y <= endYear; y++) {
+                years.push(y);
             }
+            fetchEventsForYears(years);
         }
     }, [activeCalendars, dispatch, calendars, guestCalendars]);
 
-    const combinedEvents = activeCalendars.flatMap(
-        (calendarId) => eventsByCalendar[calendarId] || [],
-    );
+    const combinedEvents = activeCalendars
+        .flatMap((calendarId) => eventsByCalendar[calendarId] || [])
+        .map((event) => ({
+            id: event._id,
+            title: event.name,
+            start: event.start,
+            end: event.end,
+            color: event.color,
+            extendedProps: { ...event, isHoliday: false },
+        }));
     const allEvents = [...combinedEvents, ...holidayEvents];
+
+    const renderEventContent = (arg) => {
+        const { event, view } = arg;
+        const { type, isHoliday } = event.extendedProps;
+
+        if (isHoliday) {
+            return (
+                <div
+                    style={{
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                        whiteSpace: "nowrap",
+                        fontSize: "0.85em",
+                    }}
+                    title={event.title}
+                >
+                    {event.title}
+                </div>
+            );
+        }
+
+        let Icon = null;
+        switch (type) {
+            case "reminder":
+                Icon = Bell;
+                break;
+            case "task":
+                Icon = CheckSquare;
+                break;
+            case "arrangement":
+                Icon = CalendarIcon;
+                break;
+        }
+
+        const isMonthView =
+            view.type === "dayGridMonth" || view.type === "multiMonthYear";
+
+        const style = {
+            display: "flex",
+            alignItems: "center",
+            gap: "4px",
+            overflow: "hidden",
+            textOverflow: "ellipsis",
+            whiteSpace: "nowrap",
+        };
+
+        if (isMonthView && !event.allDay) {
+            style.backgroundColor = event.backgroundColor;
+            style.color = "#fff";
+            style.padding = "1px 4px";
+            style.borderRadius = "3px";
+        }
+
+        return (
+            <div style={style} title={event.title}>
+                {Icon && <Icon size={14} style={{ minWidth: "14px" }} />}
+                <span>{event.title}</span>
+            </div>
+        );
+    };
 
     return (
         <main className={styles.calendarView} ref={containerRef}>
@@ -144,30 +245,14 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
                 height="100%"
                 events={allEvents}
                 datesSet={handleDatesSet}
+                dateClick={handleDateClick}
                 views={{
                     multiMonthYear: {
                         type: "multiMonth",
                         duration: { years: 1 },
                     },
                 }}
-                eventContent={(arg) => {
-                    if (arg.event.extendedProps.isHoliday) {
-                        return (
-                            <div
-                                style={{
-                                    overflow: "hidden",
-                                    textOverflow: "ellipsis",
-                                    whiteSpace: "nowrap",
-                                    fontSize: "0.85em",
-                                }}
-                                title={arg.event.title}
-                            >
-                                {arg.event.title}
-                            </div>
-                        );
-                    }
-                    return arg.event.title;
-                }}
+                eventContent={renderEventContent}
             />
         </main>
     );

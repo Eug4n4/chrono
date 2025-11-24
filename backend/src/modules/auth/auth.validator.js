@@ -36,8 +36,6 @@ const registerValidator = [
 
 const loginValidator = [...common];
 
-
-
 function tokenMustBeValid(paramName) {
     return (req, res, next) => {
         if (paramName) {
@@ -55,4 +53,10 @@ function tokenMustBeValid(paramName) {
     };
 }
 
-export { registerValidator, loginValidator, emailValidator, passwordValidator, tokenMustBeValid };
+export {
+    registerValidator,
+    loginValidator,
+    emailValidator,
+    passwordValidator,
+    tokenMustBeValid,
+};

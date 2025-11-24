@@ -24,10 +24,21 @@ const CalendarPage = () => {
         Yearly: "multiMonthYear",
     };
 
+    const reverseViewMap = {
+        timeGridDay: "Daily",
+        timeGridWeek: "Weekly",
+        dayGridMonth: "Monthly",
+        multiMonthYear: "Yearly",
+    };
+
     useEffect(() => {
         const calendarApi = calendarRef.current?.getApi();
         if (calendarApi) {
-            calendarApi.changeView(viewMap[currentView]);
+            const currentApiView = calendarApi.view.type;
+            const targetView = viewMap[currentView];
+            if (currentApiView !== targetView) {
+                calendarApi.changeView(targetView);
+            }
         }
     }, [currentView]);
 
@@ -37,6 +48,10 @@ const CalendarPage = () => {
 
     const handleDatesSet = (arg) => {
         setTitle(arg.view.title);
+        const newView = reverseViewMap[arg.view.type];
+        if (newView && newView !== currentView) {
+            setCurrentView(newView);
+        }
     };
 
     const toggleSidebar = () => {

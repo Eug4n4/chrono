@@ -34,7 +34,9 @@ const UserSchema = new mongoose.Schema({
     avatar: { type: String, required: true, default: "storage/avatar.png" },
     createdAt: { type: Date, default: Date.now },
     calendarsId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Calendar" }],
-    calendarsGuestsId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Calendar" }],
+    calendarsGuestsId: [
+        { type: mongoose.Schema.Types.ObjectId, ref: "Calendar" },
+    ],
     tagsCreatedId: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
     countryCode: { type: String, required: true },
 });

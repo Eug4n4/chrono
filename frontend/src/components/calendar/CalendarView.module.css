@@ -1,5 +1,20 @@
 .calendarView {
-  flex-grow: 1;
-  padding: 16px;
-  min-width: 0;
+    flex-grow: 1;
+    padding: 16px;
+    min-width: 0;
+}
+
+.calendarView :global(.fc-dayGridMonth-view .fc-day:hover),
+.calendarView :global(.fc-multiMonthYear-view .fc-day:hover) {
+    background-color: var(--surface-color);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.calendarView :global(.fc-timeGridWeek-view .fc-col-header-cell:hover),
+.calendarView :global(.fc-timeGridWeek-view .fc-daygrid-day:hover),
+.calendarView :global(.fc-timeGridWeek-view .fc-timegrid-col:hover) {
+    background-color: rgba(255, 255, 255, 0.05);
+    cursor: pointer;
+    transition: background-color 0.2s ease;
 }
