@@ -9,6 +9,10 @@ class EventService {
         return api.post(`/calendar/${calendarId}/events`, data);
     }
 
+    static async sendInvite(email, eventId) {
+        return api.post(`event/invite`, { email: email, eventId: eventId });
+    }
+
     static async updateEvent(eventId, data) {
         return api.put(`/event/${eventId}`, data);
     }

@@ -60,6 +60,15 @@ class EmailManager {
             `<p>Please verify your email. Follow this <a href="${link}">link</a></p>`,
         );
     }
+
+    sendEventInvitation(link, email) {
+        this.#sendMail(
+            email,
+            "Event invitation",
+            `<h2>You have been invited to participate in an event!</h2>\
+        <p>Follow this <a href="${link}">link</a> to accept this invite</p>`,
+        );
+    }
 }
 
 export default EmailManager;

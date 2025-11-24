@@ -4,7 +4,7 @@ import Input from "../../inputs/Input";
 import l from "../../forms/login.form.module.css";
 import s from "./details.modal.module.css";
 
-function InvitationsForm({ onSubmit }) {
+function InvitationsForm({ onSubmit, invitationError }) {
     const [email, setEmail] = useState("");
     const initialErrors = { email: "" };
     const [errors, setErrors] = useState(initialErrors);
@@ -38,6 +38,9 @@ function InvitationsForm({ onSubmit }) {
                 />
                 <label htmlFor="email">Email</label>
                 {errors.email && <p>{errors.email}</p>}
+                {invitationError.invitation && (
+                    <p>{invitationError.invitation}</p>
+                )}
             </div>
             <button className={l.submit_login}>Invite</button>
         </form>
