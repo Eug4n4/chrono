@@ -10,6 +10,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { fetchEventsForCalendars } from "../../features/state/event.slice";
 import { fetchHolidays } from "../../api/services/HolidayService";
 import { Bell, CheckSquare, Calendar as CalendarIcon } from "lucide-react";
+import DetailsModal from "../common/details/DetailsModal";
+import { eventDetailsAvailableViews } from "../common/details/available.views";
 
 const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const containerRef = useRef(null);
@@ -21,6 +23,9 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const [holidayEvents, setHolidayEvents] = useState([]);
     const fetchedYears = useRef(new Set());
     const fetchedEventKeys = useRef(new Set());
+
+    const [selectedEvent, setSelectedEvent] = useState();
+    const [isEventDetailsShown, setIsEventDetailsShown] = useState(false);
 
     useEffect(() => {
         const container = containerRef.current;
@@ -127,6 +132,13 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const handleDateClick = (info) => {
         const api = ref.current.getApi();
         api.changeView("timeGridDay", info.dateStr);
+    };
+
+    const handleEventClick = (clickInfo) => {
+        if (!clickInfo.event.extendedProps.isHoliday) {
+            setIsEventDetailsShown(true);
+            setSelectedEvent(clickInfo.event.extendedProps);
+        }
     };
 
     useEffect(() => {
@@ -240,6 +252,7 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
                     interactionPlugin,
                     multiMonthPlugin,
                 ]}
+                eventClick={handleEventClick}
                 initialView="dayGridMonth"
                 headerToolbar={false}
                 height="100%"
@@ -254,6 +267,14 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
                 }}
                 eventContent={renderEventContent}
             />
+            {isEventDetailsShown && (
+                <DetailsModal
+                    purpose={selectedEvent}
+                    views={eventDetailsAvailableViews}
+                    isOpen={isEventDetailsShown}
+                    onClose={() => setIsEventDetailsShown(false)}
+                />
+            )}
         </main>
     );
 });

@@ -4,9 +4,10 @@ import Input from "../../inputs/Input";
 import l from "../../forms/login.form.module.css";
 import s from "./details.modal.module.css";
 
-function Invitations() {
+function InvitationsForm({ onSubmit }) {
     const [email, setEmail] = useState("");
-    const [errors, setErrors] = useState({ email: "" });
+    const initialErrors = { email: "" };
+    const [errors, setErrors] = useState(initialErrors);
 
     function handleSubmit(e) {
         e.preventDefault();
@@ -19,6 +20,8 @@ function Invitations() {
             setErrors(errors);
             return;
         }
+        setErrors(initialErrors);
+        onSubmit(Object.fromEntries(new FormData(e.target)));
     }
 
     return (
@@ -41,4 +44,4 @@ function Invitations() {
     );
 }
 
-export default Invitations;
+export default InvitationsForm;
