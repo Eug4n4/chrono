@@ -1,5 +1,6 @@
 import express from "express";
 import {
+    acceptInviteToEvent,
     createCalendar,
     createEventToCalendar,
     deleteCalendar,
@@ -17,10 +18,12 @@ router.get(
     authenticate,
     validationErrors,
     getCalendarsEvents,
+    acceptInviteToEvent
 );
 
 router.post("/", authenticate, validationErrors, createCalendar);
 router.post("/:calendar_id/events", authenticate, validationErrors, createEventToCalendar);
+router.post("/add-shared-event", authenticate, validationErrors, acceptInviteToEvent);
 
 router.delete("/:calendar_id", authenticate, validationErrors, deleteCalendar);
 

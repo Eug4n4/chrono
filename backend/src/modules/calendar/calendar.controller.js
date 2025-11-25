@@ -5,9 +5,8 @@ import User from "../../db/models/User.js";
 import Calendar from "../../db/models/Calendar.js";
 import Event from "../../db/models/Event.js";
 import { createTag } from "../event/event.utils.js";
-import TagDto from "../../db/dto/TagDto.js";
 import EventDto from "../../db/dto/EventDto.js";
-import Tag from "../../db/models/Tag.js";
+import EventGuest from "../../db/models/EventGuest.js";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -170,11 +169,11 @@ async function getCalendarsEvents(req, res) {
                                 let: { tagIds: "$tags" },
                                 pipeline: [
                                     { $match: { $expr: { $in: ["$_id", "$$tagIds"] } } },
-                                    { $project: { _id: 1, name: 1 } }
+                                    { $project: { _id: 1, name: 1 } },
                                 ],
-                                as: "tags"
-                            }
-                        }
+                                as: "tags",
+                            },
+                        },
                     ],
                     as: "events",
                 },
@@ -199,7 +198,7 @@ async function createEventToCalendar(req, res) {
     const user = req.user;
     const body = req.body;
     try {
-        const tags = await Promise.all(body.tags.map(async (tag) => {
+        body.tags = await Promise.all(body.tags.map(async (tag) => {
             if (tag.value === tag.label) {
                 const tagInDB = await createTag(user.id, tag.value);
                 return tagInDB.id;
@@ -207,7 +206,7 @@ async function createEventToCalendar(req, res) {
                 return tag.value;
             }
         }));
-        body.tags = tags;
+        body.owner = new ObjectId(user.id);
         const event = await Event.create(body);
         const dto = new EventDto(event);
         await Calendar.updateOne(
@@ -221,7 +220,38 @@ async function createEventToCalendar(req, res) {
         }
         return res.status(500).json({ message: e?.message });
     }
-    return res.status(200).send({ message: "Success" });
 }
 
-export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents, createEventToCalendar };
+async function acceptInviteToEvent(req, res) {
+    const { eventId, calendarId } = req.body;
+    const user = req.user;
+    try {
+        await Event
+            .findOne({ _id: new ObjectId(eventId) });
+        const guest = await EventGuest
+            .findOne({ user: new ObjectId(user.id) });
+        if (!guest) {
+            return res.status(400).json({ message: "You haven't invite to this event" });
+        }
+        await EventGuest.updateOne(
+            { user: new ObjectId(user.id) },
+            { isInviteAccepted: true },
+        );
+        await Event.updateOne(
+            { _id: new ObjectId(eventId) },
+            { $addToSet: { guests: guest._id } },
+        );
+        await Calendar.updateOne(
+            { _id: new ObjectId(calendarId) },
+            { $addToSet: { events: eventId } },
+        );
+        return res.status(200).json({ message: "Successfully accepted invite" });
+    } catch (e) {
+        if (e instanceof mongoose.Error.ValidationError) {
+            return res.status(400).json({ message: e.message });
+        }
+        return res.status(500).json({ message: e?.message });
+    }
+}
+
+export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents, createEventToCalendar, acceptInviteToEvent };
