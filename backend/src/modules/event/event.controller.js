@@ -6,7 +6,7 @@ import { generateInviteLink } from "./event.utils.js";
 import { matchedData } from "express-validator";
 import EmailManager from "../mail/EmailManager.js";
 import User from "../../db/models/User.js";
-import Invitations from "../../db/models/Invitations.js";
+import EventGuest from "../../db/models/EventGuest.js";
 
 async function createEvent(req, res) {
     const { name, start, end, type, tags, calendarId } = req.body;
@@ -41,10 +41,22 @@ async function sendInvite(req, res) {
             .status(400)
             .json({ message: `There is no user with email ${email}` });
     }
+    if (email === req.user.email) {
+        return res.status(400).json({ message: "You can't invite yourself" });
+    }
     const link = generateInviteLink(eventId);
     EmailManager.getInstance().sendEventInvitation(link, email);
-    await new Invitations({ user: user._id, event: eventId }).save();
-    return res.sendStatus(204);
+    const invite = await EventGuest.findOne({
+        user: user._id,
+    });
+    if (invite === null) {
+        await new EventGuest({ user: user._id }).save();
+        return res.sendStatus(204);
+    } else {
+        return res.status(400).json({
+            message: `You have already sent invite to ${email}`,
+        });
+    }
 }
 
 export { createEvent, sendInvite };
