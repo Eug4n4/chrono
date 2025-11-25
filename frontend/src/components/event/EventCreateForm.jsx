@@ -12,6 +12,7 @@ import { useDispatch } from "react-redux";
 import { createEvent } from "../../features/state/event.slice.js";
 import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
 import { useNavigate } from "react-router-dom";
+import EventService from "../../api/services/EventService";
 
 const EventCreateForm = () => {
     const [calendarId, setCalendarId] = useState("");
@@ -83,7 +84,7 @@ const EventCreateForm = () => {
                 }
                 eventData.end = new Date(`${date.end.date}T${date.end.time}`);
             }
-            await dispatch(createEvent({ calendarId, eventData })).unwrap();
+            await EventService.createEvent(calendarId, eventData);
             showSuccessToast("Event created successfully");
             navigate("/calendar"); // ???
         } catch (error) {
