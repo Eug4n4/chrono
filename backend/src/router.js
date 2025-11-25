@@ -5,6 +5,7 @@ import calendarRouter from "./modules/calendar/router.js";
 import tagRouter from "./modules/tag/router.js";
 import eventRouter from "./modules/event/router.js";
 import usersRouter from "./modules/users/router.js";
+import guestsRouter from "./modules/guests/router.js";
 
 const router = express.Router();
 
@@ -14,5 +15,6 @@ router.use("/holidays", holidaysRouter);
 router.use("/calendar", calendarRouter);
 router.use("/event", eventRouter);
 router.use("/tag", tagRouter);
+router.use("/guests", guestsRouter);
 
 export default router;
