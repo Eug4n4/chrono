@@ -59,4 +59,8 @@ async function sendInvite(req, res) {
     }
 }
 
+async function AcceptInviteToEvent(req, res) {
+
+}
+
 export { createEvent, sendInvite };
