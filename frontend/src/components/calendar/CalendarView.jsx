@@ -131,7 +131,9 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
 
     const handleDateClick = (info) => {
         const api = ref.current.getApi();
-        api.changeView("timeGridDay", info.dateStr);
+        if (api.view.type !== "timeGridDay") {
+            api.changeView("timeGridDay", info.dateStr);
+        }
     };
 
     const handleEventClick = (clickInfo) => {

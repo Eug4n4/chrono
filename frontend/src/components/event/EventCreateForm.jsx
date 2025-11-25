@@ -7,7 +7,11 @@ import ArrangementForm from "./ArrangementForm.jsx";
 import ReminderForm from "./ReminderForm.jsx";
 import ColorChosen from "./ColorChosen.jsx";
 import styles from "./create.event.module.css";
-import { showErrorToast, showSuccessToast, showWarningToast } from "../../utils/toast.jsx";
+import {
+    showErrorToast,
+    showSuccessToast,
+    showWarningToast,
+} from "../../utils/toast.jsx";
 import { useDispatch } from "react-redux";
 import { createEvent } from "../../features/state/event.slice.js";
 import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
@@ -75,7 +79,9 @@ const EventCreateForm = () => {
                     setLoading(false);
                     return;
                 }
-                eventData.reminder = new Date(`${date.reminder.date}T${date.reminder.time}`);
+                eventData.reminder = new Date(
+                    `${date.reminder.date}T${date.reminder.time}`,
+                );
             } else {
                 if (!date.end.date || !date.end.time) {
                     showWarningToast("Input end date!");
@@ -97,7 +103,10 @@ const EventCreateForm = () => {
         <div>
             <div className={styles.create_container}>
                 <h2>Create event</h2>
-                <CalendarsSelector value={calendarId} onChange={setCalendarId} />
+                <CalendarsSelector
+                    value={calendarId}
+                    onChange={setCalendarId}
+                />
                 <div className={styles.wrapper}>
                     <Input
                         placeholder=""
@@ -113,7 +122,12 @@ const EventCreateForm = () => {
                     onChange={(e) => setType(e.target.value)}
                 />
                 {type === "task" && (
-                    <TaskForm date={date} setDate={setDate} setDescription={setDescription} />)}
+                    <TaskForm
+                        date={date}
+                        setDate={setDate}
+                        setDescription={setDescription}
+                    />
+                )}
                 {type === "arrangement" && (
                     <ArrangementForm date={date} setDate={setDate} />
                 )}
@@ -122,9 +136,7 @@ const EventCreateForm = () => {
                 )}
                 <div className={styles.wrapper}>
                     <p>Tags:</p>
-                    <TagsSelectors
-                        onChange={setTags}
-                    />
+                    <TagsSelectors onChange={setTags} />
                 </div>
                 <div className={styles.wrapper}>
                     <p>Color:</p>
@@ -132,7 +144,10 @@ const EventCreateForm = () => {
                 </div>
 
                 <div className={styles.wrapper}>
-                    <button className={styles.send_create} onClick={handleCreate}>
+                    <button
+                        className={styles.send_create}
+                        onClick={handleCreate}
+                    >
                         {loading ? "Saving..." : "Save"}
                     </button>
                 </div>
