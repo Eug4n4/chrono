@@ -12,15 +12,12 @@ import {
     showSuccessToast,
     showWarningToast,
 } from "../../utils/toast.jsx";
-import { useDispatch } from "react-redux";
-import { createEvent } from "../../features/state/event.slice.js";
 import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
 import { useNavigate } from "react-router-dom";
 import EventService from "../../api/services/EventService";
 
 const EventCreateForm = () => {
     const [calendarId, setCalendarId] = useState("");
-    const dispatch = useDispatch();
     const [name, setName] = useState("");
     const [date, setDate] = useState({
         start: { date: "", time: "" },
@@ -58,8 +55,9 @@ const EventCreateForm = () => {
             return;
         }
         try {
-            const start = new Date(`${date.start.date}T${date.start.time}`);
-            let eventData = { name, type, color, tags, start };
+            const startDate = new Date(`${date.start.date}T${date.start.time}`);
+            let eventData = { name, type, color, tags };
+            eventData.start = startDate;
             if (type === "task") {
                 if (!description) {
                     showWarningToast("Input description!");
@@ -72,27 +70,39 @@ const EventCreateForm = () => {
                     return;
                 }
                 eventData.description = description;
-                eventData.end = new Date(`${date.end.date}T${date.end.time}`);
+                const endDate = new Date(`${date.end.date}T${date.end.time}`);
+                if (startDate >= endDate) {
+                    showWarningToast("The start date cannot be later than the end date!");
+                    return;
+                }
+                eventData.end = endDate;
             } else if (type === "reminder") {
                 if (!date.start.date || !date.start.time) {
                     showWarningToast("Input reminder date!");
                     setLoading(false);
                     return;
                 }
-                eventData.reminder = new Date(
-                    `${date.reminder.date}T${date.reminder.time}`,
-                );
+                const reminderDate = new Date(`${date.reminder.date}T${date.reminder.time}`);
+                if (startDate <= reminderDate) {
+                    showWarningToast("The remainder date cannot be later than the start date!");
+                    return;
+                }
             } else {
                 if (!date.end.date || !date.end.time) {
                     showWarningToast("Input end date!");
                     setLoading(false);
                     return;
                 }
-                eventData.end = new Date(`${date.end.date}T${date.end.time}`);
+                const endDate = new Date(`${date.end.date}T${date.end.time}`);
+                if (startDate >= endDate) {
+                    showWarningToast("The start date cannot be later than the end date!");
+                    return;
+                }
+                eventData.end = endDate;
             }
             await EventService.createEvent(calendarId, eventData);
             showSuccessToast("Event created successfully");
-            navigate("/calendar"); // ???
+            navigate("/calendar");
         } catch (error) {
             showErrorToast(error || "Failed to save event");
         } finally {

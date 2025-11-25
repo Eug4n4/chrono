@@ -3,7 +3,22 @@ import styles from "./create.event.module.css";
 
 const ReminderForm = ({ date, setDate }) => {
     const handleStartChange = (newValue) => {
-        setDate(prev => ({ ...prev, start: newValue }));
+        const [hours, minutes] = newValue.time.split(":").map(Number);
+        const newHours = hours - 1;
+        let endTime;
+        if (newHours > 0) {
+            endTime = `${String(newHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+        } else {
+            endTime = newValue.time;
+        }
+        setDate(prev => ({
+            ...prev,
+            start: newValue,
+            reminder: {
+                date: newValue.date,
+                time: endTime
+            }
+        }));
     };
 
     const handleEndChange = (newValue) => {

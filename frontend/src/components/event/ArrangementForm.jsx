@@ -3,7 +3,22 @@ import styles from "./create.event.module.css";
 
 const ArrangementForm = ({ date, setDate }) => {
     const handleStartChange = (newValue) => {
-        setDate(prev => ({ ...prev, start: newValue }));
+        const [hours, minutes] = newValue.time.split(":").map(Number);
+        const newHours = hours + 1;
+        let endTime;
+        if (newHours < 24) {
+            endTime = `${String(newHours).padStart(2, "0")}:${String(minutes).padStart(2, "0")}`;
+        } else {
+            endTime = newValue.time;
+        }
+        setDate(prev => ({
+            ...prev,
+            start: newValue,
+            end: {
+                date: newValue.date,
+                time: endTime
+            }
+        }));
     };
 
     const handleEndChange = (newValue) => {
