@@ -8,6 +8,12 @@ const EventSchema = new mongoose.Schema(
         start: Date,
         color: String,
         tags: [{ type: mongoose.Schema.Types.ObjectId, ref: "Tag" }],
+        owner: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+            required: true,
+        },
+        guests: [{ type: mongoose.Schema.Types.ObjectId, ref: "EventGuest" }],
     },
     options,
 );
