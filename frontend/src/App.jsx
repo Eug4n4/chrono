@@ -86,6 +86,7 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
+                    <Route element={<SecondLayout />}>
                     <Route
                         path="/create-event"
                         element={
@@ -94,6 +95,7 @@ function App() {
                             </ProtectedRoute>
                         }
                     />
+                    </Route>
                 </Route>
             </Routes>
             <ToastContainer theme="dark" />
