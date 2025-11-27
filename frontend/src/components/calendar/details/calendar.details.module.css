@@ -1,0 +1,12 @@
+.calendar_details {
+    display: flex;
+    flex-direction: column;
+}
+
+.calendar_details > :first-child {
+    margin-bottom: 1.5rem;
+}
+
+.calendar_desc {
+    resize: vertical;
+}

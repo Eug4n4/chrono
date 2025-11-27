@@ -1,5 +1,51 @@
+import { useState } from "react";
+import LabeledInput from "../../inputs/LabeledInput";
+import LabeledTextarea from "../../common/textarea/LabeledTextarea";
+import Button from "../../common/buttons/Button";
+
+import s from "./calendar.details.module.css";
+import b from "../../common/buttons/button.module.css";
+
 function CalendarDetails({ purpose }) {
-    return <div>{purpose.name}</div>;
+    const [name, setName] = useState(purpose.name);
+    const [description, setDescription] = useState(purpose.description);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        setIsSubmitting(true);
+        console.log("submitted");
+    };
+
+    return (
+        <form className={s.calendar_details} onSubmit={handleSubmit}>
+            <p>Details</p>
+            <LabeledInput
+                id="calendar_name"
+                htmlFor="calendar_name"
+                label="Name"
+                placeholder=""
+                defaultValue={name}
+                onChange={(e) => setName(e.target.value)}
+            />
+            <LabeledTextarea
+                id="calendar_desc"
+                htmlFor="calendar_desc"
+                label="Description"
+                placeholder=""
+                className={s.calendar_desc}
+                rows={5}
+                defaultValue={description}
+                onChange={(e) => setDescription(e.target.value)}
+            />
+            <Button
+                type="submit"
+                className={b.button_submit}
+                disabled={isSubmitting}
+            >
+                Update
+            </Button>
+        </form>
+    );
 }
 
 export default CalendarDetails;

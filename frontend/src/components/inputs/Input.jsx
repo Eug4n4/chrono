@@ -3,7 +3,11 @@ function Input({ onChange, className, ...rest }) {
     return (
         <input
             onChange={onChange}
-            className={className == undefined ? `${s.input}` : className}
+            className={
+                className == undefined
+                    ? `${s.input}`
+                    : `${s.input} ${className}`
+            }
             autoComplete="off"
             {...rest}
         />

@@ -60,3 +60,36 @@
 .input::placeholder {
     color: var(--text-muted);
 }
+
+
+.wrapper {
+    display: flex;
+    position: relative;
+    flex-direction: column;
+    margin-bottom: 24px;
+}
+
+.wrapper > label {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    cursor: text;
+    transition: all 0.3s ease;
+    color: var(--text-muted);
+    font-size: 14px;
+    pointer-events: none;
+}
+
+.wrapper > input:focus ~ label,
+.wrapper > input:not(:placeholder-shown) ~ label,
+.wrapper > textarea:focus ~ label,
+.wrapper > textarea:not(:placeholder-shown) ~ label,
+.wrapper div:has(input:focus) ~ label,
+.wrapper div:has(input:not(:placeholder-shown)) ~ label {
+    top: -12px;
+    left: 12px;
+    font-size: 12px;
+    background-color: var(--surface-color);
+    padding: 0 4px;
+    color: var(--btn-bg-color);
+}
