@@ -1,4 +1,5 @@
 import styles from "../event/create.event.module.css";
+import Input from "./Input";
 
 function DateInput({ onChange, dateValue, timeValue, placeholder }) {
     const handleDateChange = (e) => {
@@ -11,18 +12,16 @@ function DateInput({ onChange, dateValue, timeValue, placeholder }) {
 
     return (
         <div className={styles.wrapper}>
-            <input
+            <Input
                 type="date"
                 value={dateValue}
                 onChange={handleDateChange}
-                autoComplete="off"
                 placeholder={placeholder}
             />
-            <input
+            <Input
                 type="time"
                 value={timeValue}
                 onChange={handleTimeChange}
-                autoComplete="off"
             />
         </div>
     );

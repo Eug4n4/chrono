@@ -24,32 +24,6 @@
     margin-bottom: 24px;
 }
 
-.wrapper > input,
-.wrapper > textarea,
-.wrapper > select,
-.wrapper > input[type="date"],
-.wrapper > input[type="time"] {
-    min-height: 44px;
-    background-color: rgba(52, 76, 149, 0.4);
-    padding: 12px 14px;
-    border: 2px solid rgba(100, 255, 218, 0.2);
-    border-radius: 8px;
-    outline: none;
-    color: var(--text-main);
-    font-size: 14px;
-    font-family: inherit;
-    transition: all 0.3s ease;
-}
-
-.wrapper > input:focus,
-.wrapper > textarea:focus,
-.wrapper > select:focus,
-.wrapper > input[type="date"]:focus,
-.wrapper > input[type="time"]:focus {
-    background-color: rgba(52, 76, 149, 0.6);
-    border-color: var(--btn-bg-color);
-    box-shadow: 0 0 12px rgba(100, 255, 218, 0.2);
-}
 
 .wrapper > input:focus ~ label,
 .wrapper > input:not(:placeholder-shown) ~ label,

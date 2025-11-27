@@ -16,6 +16,7 @@ import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { createEvent } from "../../features/state/event.slice.js";
+import Input from "../inputs/Input.jsx";
 
 const EventCreateFormModal =
     ({
@@ -123,7 +124,7 @@ const EventCreateFormModal =
                     <div className={styles.step}>
                         <CalendarsSelector value={calendarId} onChange={setCalendarId} />
                         <div className={styles.wrapper}>
-                            <input
+                            <Input
                                 type="text"
                                 placeholder="Name"
                                 value={name}
