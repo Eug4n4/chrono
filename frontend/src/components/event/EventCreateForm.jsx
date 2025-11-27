@@ -87,6 +87,7 @@ const EventCreateForm = () => {
                     showWarningToast("The remainder date cannot be later than the start date!");
                     return;
                 }
+                eventData.remindAfter = reminderDate;
             } else {
                 if (!date.end.date || !date.end.time) {
                     showWarningToast("Input end date!");

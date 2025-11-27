@@ -12,6 +12,7 @@ import { fetchHolidays } from "../../api/services/HolidayService";
 import { Bell, CheckSquare, Calendar as CalendarIcon } from "lucide-react";
 import DetailsModal from "../common/details/DetailsModal";
 import { eventDetailsAvailableViews } from "../common/details/available.views";
+import EventCreateFormModal from "../event/EventCreateFormModal.jsx";
 
 const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const containerRef = useRef(null);
@@ -26,6 +27,8 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
 
     const [selectedEvent, setSelectedEvent] = useState();
     const [isEventDetailsShown, setIsEventDetailsShown] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedDate, setSelectedInfo] = useState({ start: { date: "", time: "" } });
 
     useEffect(() => {
         const container = containerRef.current;
@@ -133,6 +136,23 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
         const api = ref.current.getApi();
         if (api.view.type !== "timeGridDay") {
             api.changeView("timeGridDay", info.dateStr);
+        } else {
+            const dateObj = new Date(info.dateStr);
+
+            const year = dateObj.getFullYear();
+            const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+            const day = String(dateObj.getDate()).padStart(2, "0");
+
+            const hours = String(dateObj.getHours()).padStart(2, "0");
+            const minutes = String(dateObj.getMinutes()).padStart(2, "0");
+
+            setSelectedInfo({
+                start: {
+                    date: `${year}-${month}-${day}`,
+                    time: `${hours}:${minutes}`
+                }
+            });
+            setIsModalOpen(true);
         }
     };
 
@@ -246,6 +266,13 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
 
     return (
         <main className={styles.calendarView} ref={containerRef}>
+            {isModalOpen && (
+                <EventCreateFormModal
+                    isOpen={isModalOpen}
+                    onClose={() => setIsModalOpen(false)}
+                    defaultDate={selectedDate}
+                />
+            )}
             <FullCalendar
                 ref={ref}
                 plugins={[

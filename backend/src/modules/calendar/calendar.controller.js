@@ -213,7 +213,29 @@ async function createEventToCalendar(req, res) {
             { _id: calendarId },
             { $addToSet: { events: dto.id } },
         );
-        return res.status(200).send({ message: "Success" });
+        const findEvent = await Event.aggregate([
+            {
+                $match: { _id: new ObjectId(dto.id) },
+            },
+            {
+                $lookup: {
+                    from: "tags",
+                    let: { tagIds: "$tags" },
+                    pipeline: [
+                        {
+                            $match: {
+                                $expr: { $in: ["$_id", "$$tagIds"] },
+                            },
+                        },
+                        {
+                            $project: { _id: 1, name: 1 },
+                        },
+                    ],
+                    as: "tags",
+                },
+            },
+        ]);
+        return res.status(200).send({ event: findEvent });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(400).json({ message: e.message });
