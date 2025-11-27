@@ -28,7 +28,9 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
     const [selectedEvent, setSelectedEvent] = useState();
     const [isEventDetailsShown, setIsEventDetailsShown] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [selectedDate, setSelectedInfo] = useState({ start: { date: "", time: "" } });
+    const [selectedDate, setSelectedInfo] = useState({
+        start: { date: "", time: "" },
+    });
 
     useEffect(() => {
         const container = containerRef.current;
@@ -149,8 +151,8 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
             setSelectedInfo({
                 start: {
                     date: `${year}-${month}-${day}`,
-                    time: `${hours}:${minutes}`
-                }
+                    time: `${hours}:${minutes}`,
+                },
             });
             setIsModalOpen(true);
         }
@@ -292,6 +294,14 @@ const CalendarView = React.forwardRef(({ onDatesSet }, ref) => {
                     multiMonthYear: {
                         type: "multiMonth",
                         duration: { years: 1 },
+                    },
+                    timeGridWeek: {
+                        scrollTime: "00:00:00",
+                        scrollTimeReset: false,
+                    },
+                    timeGridDay: {
+                        scrollTime: "00:00:00",
+                        scrollTimeReset: false,
                     },
                 }}
                 eventContent={renderEventContent}
