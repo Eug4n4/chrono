@@ -17,6 +17,14 @@ class CalendarService {
     static async addSharedEvent(calendarId, eventId) {
         return api.post("/calendar/add-shared-event", { calendarId, eventId });
     }
+
+    static async inviteUser(calendarId, email) {
+        return api.post("/calendar/invite", { calendarId, email });
+    }
+
+    static async respondToInvite(token, action) {
+        return api.post("/calendar/invite/respond", { token, action });
+    }
 }
 
 export default CalendarService;

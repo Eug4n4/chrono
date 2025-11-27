@@ -59,6 +59,13 @@ const calendarSlice = createSlice({
         },
         toggleCalendar: (state, action) => {
             const calendarId = action.payload;
+            if (
+                state.calendars.length > 0 &&
+                state.calendars[0]._id === calendarId
+            ) {
+                return;
+            }
+
             if (state.activeCalendars.includes(calendarId)) {
                 state.activeCalendars = state.activeCalendars.filter(
                     (id) => id !== calendarId,

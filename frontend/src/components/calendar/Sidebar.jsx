@@ -13,7 +13,9 @@ const Sidebar = ({ isOpen = true }) => {
     const [isOwnOpen, setIsOwnOpen] = useState(true);
     const [isGuestOpen, setIsGuestOpen] = useState(true);
     const [isDefaultOpen, setIsDefaultOpen] = useState(true);
-    const [isCalendarDetailsOpen, setIsCalendarDetailsOpen] = useState(false);
+    const [selectedCalendarId, setSelectedCalendarId] = useState(null);
+    const [isDefaultCalendarDetailsOpen, setIsDefaultCalendarDetailsOpen] =
+        useState(false);
     const dispatch = useDispatch();
     const { calendars, guestCalendars, activeCalendars, showHolidays } =
         useSelector((state) => state.calendars);
@@ -37,7 +39,7 @@ const Sidebar = ({ isOpen = true }) => {
 
             {isOwnOpen && (
                 <div className={styles.collapsibleContent}>
-                    {calendars.map((calendar) => (
+                    {calendars.slice(1).map((calendar) => (
                         <div className={styles.calendarItem} key={calendar._id}>
                             <input
                                 type="checkbox"
@@ -52,19 +54,23 @@ const Sidebar = ({ isOpen = true }) => {
                             </label>
                             <Settings
                                 className={styles.calendar_details}
-                                onClick={() => setIsCalendarDetailsOpen(true)}
+                                onClick={() =>
+                                    setSelectedCalendarId(calendar._id)
+                                }
                             />
-                            <DetailsModal
-                                views={calendarDetailsAvailableViews}
-                                purpose={calendar}
-                                isOpen={isCalendarDetailsOpen}
-                                onClose={() => setIsCalendarDetailsOpen(false)}
-                            />
+                            {selectedCalendarId === calendar._id && (
+                                <DetailsModal
+                                    views={calendarDetailsAvailableViews}
+                                    purpose={calendar}
+                                    isOpen={true}
+                                    onClose={() => setSelectedCalendarId(null)}
+                                />
+                            )}
                         </div>
                     ))}
-                    {calendars.length === 0 && (
+                    {calendars.length <= 1 && (
                         <div className={styles.emptyState}>
-                            No calendars found
+                            No other calendars found
                         </div>
                     )}
                 </div>
@@ -86,6 +92,30 @@ const Sidebar = ({ isOpen = true }) => {
 
             {isDefaultOpen && (
                 <div className={styles.collapsibleContent}>
+                    {calendars.length > 0 && (
+                        <div
+                            className={styles.calendarItem}
+                            key={calendars[0]._id}
+                        >
+                            <label style={{ marginLeft: 0 }}>
+                                {calendars[0].name}
+                            </label>
+                            <Settings
+                                className={styles.calendar_details}
+                                onClick={() =>
+                                    setIsDefaultCalendarDetailsOpen(true)
+                                }
+                            />
+                            <DetailsModal
+                                views={calendarDetailsAvailableViews}
+                                purpose={calendars[0]}
+                                isOpen={isDefaultCalendarDetailsOpen}
+                                onClose={() =>
+                                    setIsDefaultCalendarDetailsOpen(false)
+                                }
+                            />
+                        </div>
+                    )}
                     <div className={styles.calendarItem}>
                         <input
                             type="checkbox"
