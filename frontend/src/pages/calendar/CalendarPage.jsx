@@ -10,6 +10,7 @@ import { fetchCalendars } from "../../features/state/calendar.slice";
 import InviteConfirmationModal from "../../components/calendar/InviteConfirmationModal";
 import CalendarService from "../../api/services/CalendarService";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
+import { fetchTags } from "../../features/state/tag.slice";
 
 const CalendarPage = () => {
     const [currentView, setCurrentView] = useState("Monthly");
@@ -20,6 +21,13 @@ const CalendarPage = () => {
     const [inviteToken, setInviteToken] = useState(null);
     const calendarRef = useRef(null);
     const dispatch = useDispatch();
+
+    const [filterTypes, setFilterTypes] = useState([]);
+    const [filterTags, setFilterTags] = useState([]);
+
+    useEffect(() => {
+        dispatch(fetchTags());
+    }, [dispatch]);
 
     useEffect(() => {
         dispatch(fetchCalendars());
@@ -120,10 +128,19 @@ const CalendarPage = () => {
                 onToday={handleToday}
                 title={title}
                 onToggleSidebar={toggleSidebar}
+                filterTypes={filterTypes}
+                setFilterTypes={setFilterTypes}
+                filterTags={filterTags}
+                setFilterTags={setFilterTags}
             />
             <div className={styles.mainContent}>
                 <Sidebar isOpen={isSidebarOpen} />
-                <CalendarView ref={calendarRef} onDatesSet={handleDatesSet} />
+                <CalendarView
+                    ref={calendarRef}
+                    onDatesSet={handleDatesSet}
+                    filterTypes={filterTypes}
+                    filterTags={filterTags}
+                />
             </div>
             {sharedToken && (
                 <SharedEventModal

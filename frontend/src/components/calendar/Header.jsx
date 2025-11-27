@@ -5,6 +5,7 @@ import { logout } from "../../features/state/auth.slice";
 import { fetchCalendars } from "../../features/state/calendar.slice";
 import NewCalendarModal from "./NewCalendarModal";
 import { useNavigate } from "react-router-dom";
+import FilterDropdown from "./FilterDropdown";
 
 const Header = ({
     currentView,
@@ -14,6 +15,10 @@ const Header = ({
     onToday,
     title,
     onToggleSidebar,
+    filterTypes,
+    setFilterTypes,
+    filterTags,
+    setFilterTags,
 }) => {
     const navigate = useNavigate();
     const dispatch = useDispatch();
@@ -67,6 +72,12 @@ const Header = ({
                     ))}
                 </div>
                 <div className={styles.headerRight}>
+                    <FilterDropdown
+                        selectedTypes={filterTypes}
+                        setSelectedTypes={setFilterTypes}
+                        selectedTags={filterTags}
+                        setSelectedTags={setFilterTags}
+                    />
                     <div className={styles.createMenu}>
                         <button
                             className={styles.button}
