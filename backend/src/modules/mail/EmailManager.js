@@ -69,6 +69,16 @@ class EmailManager {
         <p>Follow this <a href="${link}">link</a> to accept this invite</p>`,
         );
     }
+
+    sendCalendarInvitation(email, token, calendarName) {
+        const link = `${process.env.FRONTEND_HOST}:${process.env.FRONTEND_PORT}/calendar?inviteToken=${token}`;
+        this.#sendMail(
+            email,
+            "Calendar Invitation",
+            `<h2>You have been invited to join the calendar "${calendarName}"!</h2>\
+        <p>Follow this <a href="${link}">link</a> to accept or decline this invitation.</p>`,
+        );
+    }
 }
 
 export default EmailManager;

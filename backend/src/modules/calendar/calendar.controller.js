@@ -7,6 +7,9 @@ import Event from "../../db/models/Event.js";
 import { createTag } from "../event/event.utils.js";
 import EventDto from "../../db/dto/EventDto.js";
 import EventGuest from "../../db/models/EventGuest.js";
+import CalendarGuest from "../../db/models/CalendarGuest.js";
+import EmailManager from "../mail/EmailManager.js";
+import jwt from "jsonwebtoken";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -168,7 +171,13 @@ async function getCalendarsEvents(req, res) {
                                 from: "tags",
                                 let: { tagIds: "$tags" },
                                 pipeline: [
-                                    { $match: { $expr: { $in: ["$_id", "$$tagIds"] } } },
+                                    {
+                                        $match: {
+                                            $expr: {
+                                                $in: ["$_id", "$$tagIds"],
+                                            },
+                                        },
+                                    },
                                     { $project: { _id: 1, name: 1 } },
                                 ],
                                 as: "tags",
@@ -198,14 +207,16 @@ async function createEventToCalendar(req, res) {
     const user = req.user;
     const body = req.body;
     try {
-        body.tags = await Promise.all(body.tags.map(async (tag) => {
-            if (tag.value === tag.label) {
-                const tagInDB = await createTag(user.id, tag.value);
-                return tagInDB.id;
-            } else {
-                return tag.value;
-            }
-        }));
+        body.tags = await Promise.all(
+            body.tags.map(async (tag) => {
+                if (tag.value === tag.label) {
+                    const tagInDB = await createTag(user.id, tag.value);
+                    return tagInDB.id;
+                } else {
+                    return tag.value;
+                }
+            }),
+        );
         body.owner = new ObjectId(user.id);
         const event = await Event.create(body);
         const dto = new EventDto(event);
@@ -248,12 +259,12 @@ async function acceptInviteToEvent(req, res) {
     const { eventId, calendarId } = req.body;
     const user = req.user;
     try {
-        await Event
-            .findOne({ _id: new ObjectId(eventId) });
-        const guest = await EventGuest
-            .findOne({ user: new ObjectId(user.id) });
+        await Event.findOne({ _id: new ObjectId(eventId) });
+        const guest = await EventGuest.findOne({ user: new ObjectId(user.id) });
         if (!guest) {
-            return res.status(400).json({ message: "You haven't invite to this event" });
+            return res
+                .status(400)
+                .json({ message: "You haven't invite to this event" });
         }
         await EventGuest.updateOne(
             { user: new ObjectId(user.id) },
@@ -267,7 +278,9 @@ async function acceptInviteToEvent(req, res) {
             { _id: new ObjectId(calendarId) },
             { $addToSet: { events: eventId } },
         );
-        return res.status(200).json({ message: "Successfully accepted invite" });
+        return res
+            .status(200)
+            .json({ message: "Successfully accepted invite" });
     } catch (e) {
         if (e instanceof mongoose.Error.ValidationError) {
             return res.status(400).json({ message: e.message });
@@ -276,4 +289,123 @@ async function acceptInviteToEvent(req, res) {
     }
 }
 
-export { createCalendar, deleteCalendar, getCalendars, getCalendarsEvents, createEventToCalendar, acceptInviteToEvent };
+async function inviteUserToCalendar(req, res) {
+    const { calendarId, email } = req.body;
+    const sender = req.user;
+
+    try {
+        const calendar = await Calendar.findById(calendarId);
+        if (!calendar) {
+            return res.status(404).json({ message: "Calendar not found" });
+        }
+
+        const userToInvite = await User.findOne({ email });
+        if (!userToInvite) {
+            return res
+                .status(404)
+                .json({ message: "User with this email not found" });
+        }
+
+        if (userToInvite._id.toString() === sender.id) {
+            return res
+                .status(400)
+                .json({ message: "You cannot invite yourself" });
+        }
+
+        const populatedCalendar =
+            await Calendar.findById(calendarId).populate("guests");
+        const existingGuest = populatedCalendar.guests.find(
+            (g) => g.user.toString() === userToInvite._id.toString(),
+        );
+
+        if (existingGuest) {
+            return res
+                .status(400)
+                .json({ message: "User is already invited to this calendar" });
+        }
+
+        const calendarGuest = await CalendarGuest.create({
+            user: userToInvite._id,
+            isInviteAccepted: false,
+        });
+
+        await Calendar.updateOne(
+            { _id: calendarId },
+            { $push: { guests: calendarGuest._id } },
+        );
+
+        const token = jwt.sign(
+            {
+                calendarGuestId: calendarGuest._id,
+                calendarId: calendarId,
+                userId: userToInvite._id,
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" },
+        );
+
+        EmailManager.getInstance().sendCalendarInvitation(
+            email,
+            token,
+            calendar.name,
+        );
+
+        return res
+            .status(200)
+            .json({ message: "Invitation sent successfully" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: e.message });
+    }
+}
+
+async function respondToCalendarInvite(req, res) {
+    const { token, action } = req.body;
+
+    try {
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        const { calendarGuestId, calendarId, userId } = decoded;
+
+        const calendarGuest = await CalendarGuest.findById(calendarGuestId);
+        if (!calendarGuest) {
+            return res.status(404).json({ message: "Invitation not found" });
+        }
+
+        if (action === "accept") {
+            await CalendarGuest.updateOne(
+                { _id: calendarGuestId },
+                { isInviteAccepted: true },
+            );
+
+            await User.updateOne(
+                { _id: userId },
+                { $addToSet: { calendarsGuestsId: calendarId } },
+            );
+
+            return res.status(200).json({ message: "Invitation accepted" });
+        } else if (action === "reject") {
+            await CalendarGuest.deleteOne({ _id: calendarGuestId });
+            await Calendar.updateOne(
+                { _id: calendarId },
+                { $pull: { guests: calendarGuestId } },
+            );
+            return res.status(200).json({ message: "Invitation rejected" });
+        } else {
+            return res.status(400).json({ message: "Invalid action" });
+        }
+    } catch (e) {
+        console.error(e);
+        return res.status(400).json({ message: "Invalid or expired token" });
+    }
+}
+
+export {
+    createCalendar,
+    deleteCalendar,
+    getCalendars,
+    getCalendarsEvents,
+    createEventToCalendar,
+    acceptInviteToEvent,
+    inviteUserToCalendar,
+    respondToCalendarInvite,
+};
