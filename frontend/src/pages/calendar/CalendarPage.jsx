@@ -7,6 +7,9 @@ import CalendarView from "../../components/calendar/CalendarView";
 import SharedEventModal from "../../components/calendar/SharedEventModal";
 import styles from "./CalendarPage.module.css";
 import { fetchCalendars } from "../../features/state/calendar.slice";
+import InviteConfirmationModal from "../../components/calendar/InviteConfirmationModal";
+import CalendarService from "../../api/services/CalendarService";
+import { showSuccessToast, showErrorToast } from "../../utils/toast";
 
 const CalendarPage = () => {
     const [currentView, setCurrentView] = useState("Monthly");
@@ -14,6 +17,7 @@ const CalendarPage = () => {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true);
     const [searchParams, setSearchParams] = useSearchParams();
     const [sharedToken, setSharedToken] = useState(null);
+    const [inviteToken, setInviteToken] = useState(null);
     const calendarRef = useRef(null);
     const dispatch = useDispatch();
 
@@ -26,11 +30,38 @@ const CalendarPage = () => {
         if (token) {
             setSharedToken(token);
         }
+        const iToken = searchParams.get("inviteToken");
+        if (iToken) {
+            setInviteToken(iToken);
+        }
     }, [searchParams]);
 
     const handleSharedModalClose = () => {
         setSharedToken(null);
         searchParams.delete("token");
+        setSearchParams(searchParams);
+    };
+
+    const handleInviteRespond = async (action) => {
+        try {
+            await CalendarService.respondToInvite(inviteToken, action);
+            showSuccessToast(`Invitation ${action}ed successfully`);
+            setInviteToken(null);
+            searchParams.delete("inviteToken");
+            setSearchParams(searchParams);
+            if (action === "accept") {
+                dispatch(fetchCalendars());
+            }
+        } catch (e) {
+            showErrorToast(
+                e.response?.data?.message || "Failed to respond to invitation",
+            );
+        }
+    };
+
+    const handleInviteClose = () => {
+        setInviteToken(null);
+        searchParams.delete("inviteToken");
         setSearchParams(searchParams);
     };
 
@@ -99,6 +130,13 @@ const CalendarPage = () => {
                     isOpen={!!sharedToken}
                     onClose={handleSharedModalClose}
                     token={sharedToken}
+                />
+            )}
+            {inviteToken && (
+                <InviteConfirmationModal
+                    isOpen={!!inviteToken}
+                    onClose={handleInviteClose}
+                    onRespond={handleInviteRespond}
                 />
             )}
         </div>
