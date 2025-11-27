@@ -2,6 +2,8 @@ import { useState } from "react";
 import LabeledInput from "../../inputs/LabeledInput";
 import LabeledTextarea from "../../common/textarea/LabeledTextarea";
 import Button from "../../common/buttons/Button";
+import CalendarService from "../../../api/services/CalendarService";
+import { showSuccessToast } from "../../../utils/toast";
 
 import s from "./calendar.details.module.css";
 import b from "../../common/buttons/button.module.css";
@@ -13,7 +15,12 @@ function CalendarDetails({ purpose }) {
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        console.log("submitted");
+        CalendarService.updateCalendar(purpose._id, {
+            name: name,
+            description: description,
+        })
+            .then(() => showSuccessToast("Updated successfully!"))
+            .finally(() => setIsSubmitting(false));
     };
 
     return (
