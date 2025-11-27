@@ -54,7 +54,9 @@ const CalendarPage = () => {
             const currentApiView = calendarApi.view.type;
             const targetView = viewMap[currentView];
             if (currentApiView !== targetView) {
-                calendarApi.changeView(targetView);
+                setTimeout(() => {
+                    calendarApi.changeView(targetView);
+                }, 0);
             }
         }
     }, [currentView]);
@@ -64,11 +66,13 @@ const CalendarPage = () => {
     const handleToday = () => calendarRef.current?.getApi().today();
 
     const handleDatesSet = (arg) => {
-        setTitle(arg.view.title);
-        const newView = reverseViewMap[arg.view.type];
-        if (newView && newView !== currentView) {
-            setCurrentView(newView);
-        }
+        setTimeout(() => {
+            setTitle(arg.view.title);
+            const newView = reverseViewMap[arg.view.type];
+            if (newView && newView !== currentView) {
+                setCurrentView(newView);
+            }
+        }, 0);
     };
 
     const toggleSidebar = () => {
