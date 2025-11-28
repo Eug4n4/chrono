@@ -1,3 +1,4 @@
+import Textarea from "../common/textarea/Textarea.jsx";
 import DateInput from "../inputs/DateInput.jsx";
 import styles from "./create.event.module.css";
 
@@ -27,7 +28,7 @@ const TaskForm = ({ date, setDate, setDescription }) => {
     return (
         <div>
             <div className={styles.wrapper}>
-                <textarea
+                <Textarea
                     placeholder=""
                     name="description"
                     id="description"

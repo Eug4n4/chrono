@@ -1,4 +1,3 @@
-// frontend/src/api/services/CalendarService.js
 import api from "../api";
 
 class CalendarService {
@@ -8,6 +7,10 @@ class CalendarService {
 
     static async getCalendars() {
         return api.get("/calendar");
+    }
+
+    static async updateCalendar(id, data) {
+        return api.patch(`/calendar/${id}`, data);
     }
 
     static async deleteCalendar(calendarId) {
