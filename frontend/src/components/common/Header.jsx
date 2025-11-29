@@ -1,19 +1,17 @@
 import { useDispatch, useSelector } from "react-redux";
 import { Link, NavLink } from "react-router-dom";
-import { useState } from "react";
 import { logout } from "../../features/state/auth.slice";
 import AuthService from "../../api/services/AuthService";
 
 import s from "./header.module.css";
 import Logo from "./Logo.jsx";
+import UserIcon from "./UserIcon.jsx";
 
 function Header() {
     const dispatch = useDispatch();
     const { user, isAuthenticated, loading } = useSelector(
         (state) => state.auth,
     );
-    const [isUserActionsShown, showUserActions] = useState(false);
-
     function handleLogout() {
         AuthService.logout();
         dispatch(logout());
@@ -26,31 +24,7 @@ function Header() {
         if (isAuthenticated) {
             return (
                 <>
-                    <div
-                        className={s.avatar}
-                        onClick={() => showUserActions(!isUserActionsShown)}
-                    >
-                        <div className={s.user_section}>
-                            <div>
-                                <img
-                                    src={`${import.meta.env.VITE_API_URL}/${user.avatar}`}
-                                    alt="avatar"
-                                />
-                            </div>
-                            <div>
-                                <p>{user.login}</p>
-                            </div>
-                            {isUserActionsShown && (
-                                <div className={s.user_actions}>
-                                    <Link to={"/settings"}>Settings</Link>
-                                    <button onClick={handleLogout}>
-                                        Logout
-                                    </button>
-                                </div>
-                            )}
-                        </div>
-                    </div>
-
+                    <UserIcon user={user}  handleLogout={handleLogout} />
                     <Link className={s.nav_link} to={"/calendar"}>
                         GO TO CALENDAR
                     </Link>
