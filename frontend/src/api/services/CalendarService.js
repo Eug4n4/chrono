@@ -28,6 +28,18 @@ class CalendarService {
     static async respondToInvite(token, action) {
         return api.post("/calendar/invite/respond", { token, action });
     }
+
+    static async getGuests(calendarId) {
+        return api.get(`/calendar/${calendarId}/guests`);
+    }
+
+    static async removeGuest(calendarId, userId) {
+        return api.delete(`/calendar/${calendarId}/guests/${userId}`);
+    }
+
+    static async leaveCalendar(calendarId) {
+        return api.post(`/calendar/${calendarId}/leave`);
+    }
 }
 
 export default CalendarService;

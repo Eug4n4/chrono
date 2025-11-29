@@ -8,15 +8,14 @@ import {
     getCalendarsEvents,
     inviteUserToCalendar,
     respondToCalendarInvite,
-    updateCalendar,
+    getCalendarGuests,
+    removeUserFromCalendar,
+    leaveCalendar,
 } from "./calendar.controller.js";
 import validationErrors from "../../shared/validators/catch.errors.js";
 import { authenticate } from "../auth/auth.middleware.js";
-import {
-    idValidator,
-    nameValidator,
-    descriptionValidator,
-} from "./calendar.validators.js";
+import { calendarIdValidator, userIdValidator } from "./calendar.validators.js";
+
 const router = express.Router();
 
 router.get("/", authenticate, validationErrors, getCalendars);
@@ -44,14 +43,29 @@ router.post(
 router.post("/invite", authenticate, validationErrors, inviteUserToCalendar);
 router.post("/invite/respond", validationErrors, respondToCalendarInvite);
 
-router.patch(
-    "/:id",
+router.get(
+    "/:calendar_id/guests",
     authenticate,
-    idValidator,
-    nameValidator,
-    descriptionValidator,
+    calendarIdValidator,
     validationErrors,
-    updateCalendar,
+    getCalendarGuests,
+);
+
+router.delete(
+    "/:calendar_id/guests/:user_id",
+    authenticate,
+    calendarIdValidator,
+    userIdValidator,
+    validationErrors,
+    removeUserFromCalendar,
+);
+
+router.post(
+    "/:calendar_id/leave",
+    authenticate,
+    calendarIdValidator,
+    validationErrors,
+    leaveCalendar,
 );
 
 router.delete("/:calendar_id", authenticate, validationErrors, deleteCalendar);

@@ -10,7 +10,6 @@ import EventGuest from "../../db/models/EventGuest.js";
 import CalendarGuest from "../../db/models/CalendarGuest.js";
 import EmailManager from "../mail/EmailManager.js";
 import jwt from "jsonwebtoken";
-import { matchedData } from "express-validator";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -260,20 +259,21 @@ async function acceptInviteToEvent(req, res) {
     const { eventId, calendarId } = req.body;
     const user = req.user;
     try {
-        const event = await Event.findOne({ _id: eventId }).populate("guests");
-        const guest = event.guests.find(
-            (guest) => guest.user.toString() === user.id,
-        );
+        await Event.findOne({ _id: new ObjectId(eventId) });
+        const guest = await EventGuest.findOne({ user: new ObjectId(user.id) });
         if (!guest) {
             return res
                 .status(400)
                 .json({ message: "You haven't invite to this event" });
         }
         await EventGuest.updateOne(
-            { _id: guest._id, user: user.id },
+            { user: new ObjectId(user.id) },
             { isInviteAccepted: true },
         );
-
+        await Event.updateOne(
+            { _id: new ObjectId(eventId) },
+            { $addToSet: { guests: guest._id } },
+        );
         await Calendar.updateOne(
             { _id: new ObjectId(calendarId) },
             { $addToSet: { events: eventId } },
@@ -294,6 +294,18 @@ async function inviteUserToCalendar(req, res) {
     const sender = req.user;
 
     try {
+        const owner = await User.findOne({
+            _id: new ObjectId(sender.id),
+            calendarsId: new ObjectId(calendarId),
+        });
+
+        if (!owner) {
+            return res.status(403).json({
+                message:
+                    "You do not have permission to invite users to this calendar",
+            });
+        }
+
         const calendar = await Calendar.findById(calendarId);
         if (!calendar) {
             return res.status(404).json({ message: "Calendar not found" });
@@ -399,18 +411,120 @@ async function respondToCalendarInvite(req, res) {
     }
 }
 
-async function updateCalendar(req, res) {
-    const { id, name, description } = matchedData(req);
-    const calendar = await Calendar.findByIdAndUpdate(
-        { _id: id },
-        { name: name, description: description },
-        { new: true },
-    );
-    if (calendar === null) {
-        return res.status(400).json({ message: "Can't find this calendar" });
-    }
+async function getCalendarGuests(req, res) {
+    const calendarId = req.params.calendar_id;
+    try {
+        const calendar = await Calendar.findById(calendarId).populate({
+            path: "guests",
+            populate: {
+                path: "user",
+                select: "login email avatar",
+            },
+        });
 
-    return res.json(calendar);
+        if (!calendar) {
+            return res.status(404).json({ message: "Calendar not found" });
+        }
+
+        return res.status(200).json({ guests: calendar.guests });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Failed to fetch guests" });
+    }
+}
+
+async function removeUserFromCalendar(req, res) {
+    const { calendar_id, user_id } = req.params;
+    const requesterId = req.user.id;
+
+    try {
+        const owner = await User.findOne({
+            _id: new ObjectId(requesterId),
+            calendarsId: new ObjectId(calendar_id),
+        });
+
+        if (!owner) {
+            return res.status(403).json({
+                message:
+                    "You do not have permission to remove guests from this calendar",
+            });
+        }
+
+        const calendar =
+            await Calendar.findById(calendar_id).populate("guests");
+        if (!calendar) {
+            return res.status(404).json({ message: "Calendar not found" });
+        }
+
+        const guestEntry = calendar.guests.find(
+            (g) => g.user.toString() === user_id,
+        );
+
+        if (!guestEntry) {
+            return res
+                .status(404)
+                .json({ message: "Guest not found in this calendar" });
+        }
+
+        await CalendarGuest.deleteOne({ _id: guestEntry._id });
+
+        await Calendar.updateOne(
+            { _id: new ObjectId(calendar_id) },
+            { $pull: { guests: guestEntry._id } },
+        );
+
+        await User.updateOne(
+            { _id: new ObjectId(user_id) },
+            { $pull: { calendarsGuestsId: new ObjectId(calendar_id) } },
+        );
+
+        return res.status(200).json({ message: "User removed from calendar" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Failed to remove user" });
+    }
+}
+
+async function leaveCalendar(req, res) {
+    const { calendar_id } = req.params;
+    const userId = req.user.id;
+
+    try {
+        const calendar =
+            await Calendar.findById(calendar_id).populate("guests");
+        if (!calendar) {
+            return res.status(404).json({ message: "Calendar not found" });
+        }
+
+        const guestEntry = calendar.guests.find(
+            (g) => g.user.toString() === userId,
+        );
+
+        if (!guestEntry) {
+            return res
+                .status(404)
+                .json({ message: "You are not a guest in this calendar" });
+        }
+
+        await CalendarGuest.deleteOne({ _id: guestEntry._id });
+
+        await Calendar.updateOne(
+            { _id: new ObjectId(calendar_id) },
+            { $pull: { guests: guestEntry._id } },
+        );
+
+        await User.updateOne(
+            { _id: new ObjectId(userId) },
+            { $pull: { calendarsGuestsId: new ObjectId(calendar_id) } },
+        );
+
+        return res
+            .status(200)
+            .json({ message: "Successfully left the calendar" });
+    } catch (e) {
+        console.error(e);
+        return res.status(500).json({ message: "Failed to leave calendar" });
+    }
 }
 
 export {
@@ -418,9 +532,11 @@ export {
     deleteCalendar,
     getCalendars,
     getCalendarsEvents,
-    updateCalendar,
     createEventToCalendar,
     acceptInviteToEvent,
     inviteUserToCalendar,
     respondToCalendarInvite,
+    getCalendarGuests,
+    removeUserFromCalendar,
+    leaveCalendar,
 };

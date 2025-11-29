@@ -337,6 +337,7 @@ const CalendarView = React.forwardRef(
                         views={eventDetailsAvailableViews}
                         isOpen={isEventDetailsShown}
                         onClose={() => setIsEventDetailsShown(false)}
+                        type="event"
                     />
                 )}
             </main>

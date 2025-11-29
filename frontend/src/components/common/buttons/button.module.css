@@ -26,3 +26,33 @@
     opacity: 0.6;
     cursor: not-allowed;
 }
+
+.button_danger {
+    padding: 12px 28px;
+    border-radius: 8px;
+    background-color: #ff4d4d;
+    color: white;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    width: 100%;
+}
+
+.button_danger:hover:not(:disabled) {
+    background-color: #ff3333;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 16px rgba(255, 77, 77, 0.3);
+}
+
+.button_danger:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+.button_danger:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
