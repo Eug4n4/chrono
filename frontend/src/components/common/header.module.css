@@ -99,6 +99,7 @@ button.nav_link,
     background-color: var(--input-bg-color);
     border: 1px solid var(--border-color);
     border-radius: 4%;
+    z-index: 10;
 }
 
 .user_actions > button, .user_actions > a {

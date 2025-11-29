@@ -1,6 +1,8 @@
-function Button({ className, disabled, children, ...rest }) {
+import styles from "./button.module.css";
+
+function Button({ disabled, children, ...rest }) {
     return (
-        <button className={className} disabled={disabled} {...rest}>
+        <button className={styles.button_submit} disabled={disabled} {...rest}>
             {children}
         </button>
     );

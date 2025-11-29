@@ -5,6 +5,7 @@ import { logout } from "../../features/state/auth.slice";
 import AuthService from "../../api/services/AuthService";
 
 import s from "./header.module.css";
+import Logo from "./Logo.jsx";
 
 function Header() {
     const dispatch = useDispatch();
@@ -75,9 +76,7 @@ function Header() {
         <header className={s.header}>
             <ul className={s.header_list}>
                 <li>
-                    <Link to={"/"} className={`${s.nav_link} ${s.logo}`}>
-                        CHRONOS
-                    </Link>
+                    <Logo/>
                 </li>
                 <li className={s.header_right}>{displayHeaderActions()}</li>
             </ul>

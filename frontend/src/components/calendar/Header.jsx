@@ -1,25 +1,31 @@
 import React, { useState } from "react";
 import styles from "./Header.module.css";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../../features/state/auth.slice";
 import { fetchCalendars } from "../../features/state/calendar.slice";
 import NewCalendarModal from "./NewCalendarModal";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import FilterDropdown from "./FilterDropdown";
+import s from "../common/header.module.css";
+import Logo from "../common/Logo.jsx";
 
 const Header = ({
-    currentView,
-    setCurrentView,
-    onNext,
-    onPrev,
-    onToday,
-    title,
-    onToggleSidebar,
-    filterTypes,
-    setFilterTypes,
-    filterTags,
-    setFilterTags,
-}) => {
+                    currentView,
+                    setCurrentView,
+                    onNext,
+                    onPrev,
+                    onToday,
+                    title,
+                    onToggleSidebar,
+                    filterTypes,
+                    setFilterTypes,
+                    filterTags,
+                    setFilterTags,
+                }) => {
+    const { user } = useSelector(
+        (state) => state.auth,
+    );
+    const [isUserActionsShown, showUserActions] = useState(false);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showCreateMenu, setShowCreateMenu] = useState(false);
@@ -40,6 +46,7 @@ const Header = ({
         <>
             <header className={styles.header}>
                 <div className={styles.headerLeft}>
+                    <Logo />
                     <button
                         className={styles.button}
                         onClick={onToggleSidebar}
@@ -105,6 +112,32 @@ const Header = ({
                         )}
                     </div>
                 </div>
+                <>
+                    <div
+                        className={s.avatar}
+                        onClick={() => showUserActions(!isUserActionsShown)}
+                    >
+                        <div className={s.user_section}>
+                            <div>
+                                <img
+                                    src={`${import.meta.env.VITE_API_URL}/${user.avatar}`}
+                                    alt="avatar"
+                                />
+                            </div>
+                            <div>
+                                <p>{user.login}</p>
+                            </div>
+                            {isUserActionsShown && (
+                                <div className={s.user_actions}>
+                                    <Link to={"/settings"}>Settings</Link>
+                                    <button onClick={handleLogout}>
+                                        Logout
+                                    </button>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                </>
             </header>
             <NewCalendarModal
                 isOpen={isNewCalendarModalOpen}

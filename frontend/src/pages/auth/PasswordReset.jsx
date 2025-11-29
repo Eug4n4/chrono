@@ -9,6 +9,7 @@ import {
 } from "../../utils/toast.jsx";
 import styles from "./Auth.module.css";
 import formStyles from "../../components/forms/login.form.module.css";
+import Button from "../../components/common/buttons/Button.jsx";
 
 function PasswordReset() {
     const [submitting, setSubmitting] = useState(false);
@@ -81,16 +82,13 @@ function PasswordReset() {
                                     <label htmlFor="email">Email</label>
                                     {errors.email && <p>{errors.email}</p>}
                                 </div>
-
-                                <button
-                                    type="submit"
-                                    disabled={submitting}
-                                    className={formStyles.submit_login}
-                                >
+                                <Button type="submit"
+                                        disabled={submitting}
+                                        className={formStyles.submit_login}>
                                     {submitting
                                         ? "Submitting..."
                                         : "Send recovery email"}
-                                </button>
+                                </Button>
                                 {success && (
                                     <div className={formStyles.wrapper}>
                                         <p
