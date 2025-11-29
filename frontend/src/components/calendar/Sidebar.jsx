@@ -61,9 +61,10 @@ const Sidebar = ({ isOpen = true }) => {
                             {selectedCalendarId === calendar._id && (
                                 <DetailsModal
                                     views={calendarDetailsAvailableViews}
-                                    purpose={calendar}
+                                    purpose={{ ...calendar, isOwner: true }}
                                     isOpen={true}
                                     onClose={() => setSelectedCalendarId(null)}
+                                    type="calendar"
                                 />
                             )}
                         </div>
@@ -108,11 +109,12 @@ const Sidebar = ({ isOpen = true }) => {
                             />
                             <DetailsModal
                                 views={calendarDetailsAvailableViews}
-                                purpose={calendars[0]}
+                                purpose={{ ...calendars[0], isOwner: true }}
                                 isOpen={isDefaultCalendarDetailsOpen}
                                 onClose={() =>
                                     setIsDefaultCalendarDetailsOpen(false)
                                 }
+                                type="calendar"
                             />
                         </div>
                     )}
@@ -157,6 +159,21 @@ const Sidebar = ({ isOpen = true }) => {
                             <label htmlFor={`cal-${calendar._id}`}>
                                 {calendar.name}
                             </label>
+                            <Settings
+                                className={styles.calendar_details}
+                                onClick={() =>
+                                    setSelectedCalendarId(calendar._id)
+                                }
+                            />
+                            {selectedCalendarId === calendar._id && (
+                                <DetailsModal
+                                    views={calendarDetailsAvailableViews}
+                                    purpose={{ ...calendar, isOwner: false }}
+                                    isOpen={true}
+                                    onClose={() => setSelectedCalendarId(null)}
+                                    type="calendar"
+                                />
+                            )}
                         </div>
                     ))}
                     {guestCalendars.length === 0 && (

@@ -26,7 +26,7 @@ function InvitationsForm({ onSubmit, invitationError }) {
 
     return (
         <form className={s.invite_form} onSubmit={handleSubmit}>
-            <p>Invitations</p>
+            <h3>Invitations</h3>
             <div className={l.wrapper}>
                 <Input
                     type="email"

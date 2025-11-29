@@ -25,7 +25,7 @@ function CalendarDetails({ purpose }) {
 
     return (
         <form className={s.calendar_details} onSubmit={handleSubmit}>
-            <p>Details</p>
+            <h3>Details</h3>
             <LabeledInput
                 id="calendar_name"
                 htmlFor="calendar_name"

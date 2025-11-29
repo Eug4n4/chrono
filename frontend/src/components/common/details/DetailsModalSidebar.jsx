@@ -1,21 +1,40 @@
 import s from "./details.modal.module.css";
 
-function DetailsModalSidebar({ views, currentViewName, onViewChange }) {
+function DetailsModalSidebar({
+    views,
+    currentViewName,
+    onViewChange,
+    isOwner,
+}) {
     return (
         <aside className={s.details_sidebar}>
-            {Object.keys(views).map((property) => (
-                <button
-                    className={
-                        currentViewName === views[property].viewName
-                            ? s.active
-                            : ""
-                    }
-                    key={property}
-                    onClick={() => onViewChange(views[property].viewName)}
-                >
-                    {views[property].viewName}
-                </button>
-            ))}
+            {Object.keys(views).map((property) => {
+                const view = views[property];
+                if (view.viewName === "Delete" && !isOwner) {
+                    return (
+                        <button
+                            className={
+                                currentViewName === "Leave" ? s.active : ""
+                            }
+                            key="Leave"
+                            onClick={() => onViewChange("Leave")}
+                        >
+                            Leave
+                        </button>
+                    );
+                }
+                return (
+                    <button
+                        className={
+                            currentViewName === view.viewName ? s.active : ""
+                        }
+                        key={property}
+                        onClick={() => onViewChange(view.viewName)}
+                    >
+                        {view.viewName}
+                    </button>
+                );
+            })}
         </aside>
     );
 }
