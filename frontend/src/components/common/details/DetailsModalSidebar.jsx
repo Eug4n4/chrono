@@ -6,23 +6,17 @@ function DetailsModalSidebar({
     onViewChange,
     isOwner,
 }) {
+    const getButtonTitle = (view) => {
+        if (view.viewName !== "Delete") {
+            return view.viewName;
+        }
+        return isOwner ? view.viewName : "Leave";
+    };
+
     return (
         <aside className={s.details_sidebar}>
             {Object.keys(views).map((property) => {
                 const view = views[property];
-                if (view.viewName === "Delete" && !isOwner) {
-                    return (
-                        <button
-                            className={
-                                currentViewName === "Leave" ? s.active : ""
-                            }
-                            key="Leave"
-                            onClick={() => onViewChange("Leave")}
-                        >
-                            Leave
-                        </button>
-                    );
-                }
                 return (
                     <button
                         className={
@@ -31,7 +25,7 @@ function DetailsModalSidebar({
                         key={property}
                         onClick={() => onViewChange(view.viewName)}
                     >
-                        {view.viewName}
+                        {getButtonTitle(view)}
                     </button>
                 );
             })}

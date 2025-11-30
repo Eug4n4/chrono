@@ -1,7 +1,9 @@
 import { useState, useEffect } from "react";
+import { useSelector } from "react-redux";
 import Modal from "../Modal";
 import DetailsModalSidebar from "./DetailsModalSidebar";
 import CalendarService from "../../../api/services/CalendarService";
+import EventService from "../../../api/services/EventService";
 
 import s from "./details.modal.module.css";
 /**
@@ -12,6 +14,7 @@ import s from "./details.modal.module.css";
  * @param type // "calendar" | "event"
  */
 function DetailsModal({ views, purpose, isOpen, onClose, type }) {
+    const { user } = useSelector((state) => state.auth);
     const [currentViewName, setCurrentViewName] = useState(
         views.invitations.viewName,
     );
@@ -27,8 +30,25 @@ function DetailsModal({ views, purpose, isOpen, onClose, type }) {
                     console.error("Failed to fetch guests", error);
                 });
         } else if (type === "event") {
-            // TODO: Implement getGuests for EventService
+            EventService.getGuests(purpose._id)
+                .then((response) => {
+                    setGuests(response.data.guests);
+                })
+                .catch(console.error);
         }
+    };
+
+    const isOwner = () => {
+        if (!user) {
+            return false;
+        }
+        let owner;
+        if (Object.hasOwn(purpose, "isOwner")) {
+            owner = purpose.isOwner;
+        } else if (Object.hasOwn(purpose, "owner")) {
+            owner = purpose.owner === user.id;
+        }
+        return owner;
     };
 
     useEffect(() => {
@@ -45,28 +65,10 @@ function DetailsModal({ views, purpose, isOpen, onClose, type }) {
                     views={views}
                     currentViewName={currentViewName}
                     onViewChange={setCurrentViewName}
-                    isOwner={purpose.isOwner}
+                    isOwner={isOwner()}
                 />
                 <div className={s.details_section}>
                     {Object.keys(views).map((key) => {
-                        if (
-                            views[key].viewName === "Delete" &&
-                            !purpose.isOwner &&
-                            currentViewName === "Leave"
-                        ) {
-                            const Component = views[key].component;
-                            return (
-                                <Component
-                                    key={key}
-                                    purpose={purpose}
-                                    guests={guests}
-                                    onUpdate={fetchGuests}
-                                    isOwner={purpose.isOwner}
-                                    onClose={onClose}
-                                />
-                            );
-                        }
-
                         if (views[key].viewName === currentViewName) {
                             const Component = views[key].component;
                             return (
@@ -75,8 +77,9 @@ function DetailsModal({ views, purpose, isOpen, onClose, type }) {
                                     purpose={purpose}
                                     guests={guests}
                                     onUpdate={fetchGuests}
-                                    isOwner={purpose.isOwner}
+                                    isOwner={isOwner()}
                                     onClose={onClose}
+                                    type={type}
                                 />
                             );
                         }

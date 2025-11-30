@@ -8,29 +8,29 @@ import { useNavigate } from "react-router-dom";
 import FilterDropdown from "./FilterDropdown";
 import Logo from "../common/Logo.jsx";
 import UserIcon from "../common/UserIcon.jsx";
+import AuthService from "../../api/services/AuthService.js";
 
 const Header = ({
-                    currentView,
-                    setCurrentView,
-                    onNext,
-                    onPrev,
-                    onToday,
-                    title,
-                    onToggleSidebar,
-                    filterTypes,
-                    setFilterTypes,
-                    filterTags,
-                    setFilterTags,
-                }) => {
-    const { user } = useSelector(
-        (state) => state.auth,
-    );
+    currentView,
+    setCurrentView,
+    onNext,
+    onPrev,
+    onToday,
+    title,
+    onToggleSidebar,
+    filterTypes,
+    setFilterTypes,
+    filterTags,
+    setFilterTags,
+}) => {
+    const { user } = useSelector((state) => state.auth);
     const navigate = useNavigate();
     const dispatch = useDispatch();
     const [showCreateMenu, setShowCreateMenu] = useState(false);
     const [isNewCalendarModalOpen, setIsNewCalendarModalOpen] = useState(false);
 
     const handleLogout = () => {
+        AuthService.logout();
         dispatch(logout());
     };
 
@@ -110,8 +110,10 @@ const Header = ({
                             </div>
                         )}
                     </div>
+                    {user && (
+                        <UserIcon user={user} handleLogout={handleLogout} />
+                    )}
                 </div>
-                <UserIcon user={user} handleLogout={handleLogout} />
             </header>
             <NewCalendarModal
                 isOpen={isNewCalendarModalOpen}

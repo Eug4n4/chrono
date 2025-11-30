@@ -13,7 +13,7 @@ class EventService {
         return api.post(`/calendar/${calendarId}/events`, data);
     }
 
-    static async sendInvite(email, eventId) {
+    static async sendInvite(eventId, email) {
         return api.post(`event/invite`, { email: email, eventId: eventId });
     }
 
