@@ -60,7 +60,28 @@ async function deleteGuest(req, res) {
 }
 
 async function deleteEvent(req, res) {
-    return res.json({});
+    const { eventId } = matchedData(req);
+    const event = await Event.findById(eventId).populate("guests");
+    if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+    }
+    const owner = event.get("owner");
+    if (owner.toString() !== req.user.id) {
+        return res.status(403).json({
+            message: "You do not have permission to remove this event",
+        });
+    }
+
+    await EventGuest.deleteMany({ _id: { $in: event.guests } });
+    await Calendar.updateMany(
+        { events: event._id },
+        { $pull: { events: event._id } },
+    );
+    await event.deleteOne();
+    return res.json({
+        id: event.id,
+        message: "Successfully deleted the event",
+    });
 }
 
 async function sendInvite(req, res) {
