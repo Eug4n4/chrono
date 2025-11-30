@@ -5,6 +5,22 @@ import User from "../../db/models/User.js";
 import EventGuest from "../../db/models/EventGuest.js";
 import Event from "../../db/models/Event.js";
 
+async function getGuests(req, res) {
+    const { eventId } = matchedData(req);
+
+    const event = await Event.findById(eventId).populate({
+        path: "guests",
+        populate: {
+            path: "user",
+            select: "login email avatar",
+        },
+    });
+    if (!event) {
+        return res.status(404).json({ message: "Event not found" });
+    }
+    return res.json({ guests: event.guests });
+}
+
 async function sendInvite(req, res) {
     const { eventId, email } = matchedData(req);
     const user = await User.findOne({ email: email });
@@ -34,4 +50,4 @@ async function sendInvite(req, res) {
     return res.sendStatus(204);
 }
 
-export { sendInvite };
+export { getGuests, sendInvite };

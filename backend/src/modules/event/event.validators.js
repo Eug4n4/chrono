@@ -1,5 +1,5 @@
-import { body } from "express-validator";
+import { body, param } from "express-validator";
 
 const idValidator = body("eventId").exists().isString();
-
-export { idValidator };
+const paramIdValidator = param("eventId").exists().isMongoId();
+export { paramIdValidator, idValidator };
