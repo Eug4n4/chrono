@@ -259,21 +259,20 @@ async function acceptInviteToEvent(req, res) {
     const { eventId, calendarId } = req.body;
     const user = req.user;
     try {
-        await Event.findOne({ _id: new ObjectId(eventId) });
-        const guest = await EventGuest.findOne({ user: new ObjectId(user.id) });
+        const event = await Event.findOne({ _id: eventId }).populate("guests");
+        const guest = event.guests.find(
+            (guest) => guest.user.toString() === user.id,
+        );
         if (!guest) {
             return res
                 .status(400)
                 .json({ message: "You haven't invite to this event" });
         }
         await EventGuest.updateOne(
-            { user: new ObjectId(user.id) },
+            { _id: guest._id, user: user.id },
             { isInviteAccepted: true },
         );
-        await Event.updateOne(
-            { _id: new ObjectId(eventId) },
-            { $addToSet: { guests: guest._id } },
-        );
+
         await Calendar.updateOne(
             { _id: new ObjectId(calendarId) },
             { $addToSet: { events: eventId } },
