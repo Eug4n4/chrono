@@ -4,8 +4,9 @@
 
 .filterButton {
     padding: 8px 12px;
-    border: 1px solid #ccc;
-    background-color: #f0f0f0;
+    border: 1px solid var(--border-color);
+    background-color: var(--surface-color);
+    color: var(--btn-bg-color);
     border-radius: 4px;
     cursor: pointer;
     display: flex;
@@ -14,8 +15,8 @@
 }
 
 .filterButton.active {
-    background-color: #e0e0e0;
-    border-color: #999;
+    background-color: var(--border-color);
+    border-color: var(--btn-bg-color);
 }
 
 .dropdownMenu {
