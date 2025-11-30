@@ -21,10 +21,10 @@ function Header() {
         if (loading) {
             return null;
         }
-        if (isAuthenticated) {
+        if (user) {
             return (
                 <>
-                    <UserIcon user={user}  handleLogout={handleLogout} />
+                    <UserIcon user={user} handleLogout={handleLogout} />
                     <Link className={s.nav_link} to={"/calendar"}>
                         GO TO CALENDAR
                     </Link>
@@ -50,7 +50,7 @@ function Header() {
         <header className={s.header}>
             <ul className={s.header_list}>
                 <li>
-                    <Logo/>
+                    <Logo />
                 </li>
                 <li className={s.header_right}>{displayHeaderActions()}</li>
             </ul>

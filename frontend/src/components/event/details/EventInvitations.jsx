@@ -1,8 +1,14 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import EventService from "../../../api/services/EventService";
 import InvitationsForm from "../../common/details/InvitationsForm";
 import { showSuccessToast } from "../../../utils/toast";
-function EventInvitations({ purpose }) {
+import GuestList from "../../calendar/details/GuestList";
+
+function EventInvitations({ purpose, guests, onUpdate, isOwner }) {
+    const invites = useMemo(
+        () => guests.filter((guest) => !guest.isInviteAccepted),
+        [guests],
+    );
     const initialErrors = { invitation: "" };
     const [error, setError] = useState(initialErrors);
     function handleSubmit(formData) {
@@ -15,7 +21,17 @@ function EventInvitations({ purpose }) {
                 setError({ invitation: `${reason.response.data?.message}` });
             });
     }
-    return <InvitationsForm onSubmit={handleSubmit} invitationError={error} />;
+
+    const handleRemove = async (guest) => {
+        console.log("remove");
+    };
+
+    return (
+        <>
+            <InvitationsForm onSubmit={handleSubmit} invitationError={error} />
+            <GuestList guests={invites} onRemove={handleRemove} />
+        </>
+    );
 }
 
 export default EventInvitations;
