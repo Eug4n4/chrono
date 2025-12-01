@@ -12,8 +12,14 @@ import {
     removeUserFromCalendar,
     leaveCalendar,
     getCalendarByEventId,
+    updateCalendar,
 } from "./calendar.controller.js";
 import validationErrors from "../../shared/validators/catch.errors.js";
+import {
+    idValidator,
+    nameValidator,
+    descriptionValidator,
+} from "./calendar.validators.js";
 import { authenticate } from "../auth/auth.middleware.js";
 import { calendarIdValidator, userIdValidator } from "./calendar.validators.js";
 import { mongoIdValidator } from "../../shared/validators/id.validator.js";
@@ -52,6 +58,16 @@ router.post(
 );
 router.post("/invite", authenticate, validationErrors, inviteUserToCalendar);
 router.post("/invite/respond", validationErrors, respondToCalendarInvite);
+
+router.patch(
+    "/:id",
+    authenticate,
+    idValidator,
+    nameValidator,
+    descriptionValidator,
+    validationErrors,
+    updateCalendar,
+);
 
 router.get(
     "/:calendar_id/guests",

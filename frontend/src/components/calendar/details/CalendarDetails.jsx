@@ -1,24 +1,32 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
 import LabeledInput from "../../inputs/LabeledInput";
 import LabeledTextarea from "../../common/textarea/LabeledTextarea";
 import Button from "../../common/buttons/Button";
-import CalendarService from "../../../api/services/CalendarService";
+import { updateCalendar } from "../../../features/state/calendar.slice";
 import { showSuccessToast } from "../../../utils/toast";
 
 import s from "./calendar.details.module.css";
 import b from "../../common/buttons/button.module.css";
 
 function CalendarDetails({ purpose }) {
+    const dispatch = useDispatch();
     const [name, setName] = useState(purpose.name);
     const [description, setDescription] = useState(purpose.description);
     const [isSubmitting, setIsSubmitting] = useState(false);
     const handleSubmit = (e) => {
         e.preventDefault();
         setIsSubmitting(true);
-        CalendarService.updateCalendar(purpose._id, {
-            name: name,
-            description: description,
-        })
+        dispatch(
+            updateCalendar({
+                id: purpose._id,
+                data: {
+                    name: name,
+                    description: description,
+                },
+            }),
+        )
+            .unwrap()
             .then(() => showSuccessToast("Updated successfully!"))
             .finally(() => setIsSubmitting(false));
     };

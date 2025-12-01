@@ -109,7 +109,11 @@ const Sidebar = ({ isOpen = true }) => {
                             />
                             <DetailsModal
                                 views={calendarDetailsAvailableViews}
-                                purpose={{ ...calendars[0], isOwner: true }}
+                                purpose={{
+                                    ...calendars[0],
+                                    isOwner: true,
+                                    isDefault: true,
+                                }}
                                 isOpen={isDefaultCalendarDetailsOpen}
                                 onClose={() =>
                                     setIsDefaultCalendarDetailsOpen(false)

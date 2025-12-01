@@ -43,6 +43,20 @@ export const deleteCalendar = createAsyncThunk(
     },
 );
 
+export const updateCalendar = createAsyncThunk(
+    "calendars/updateCalendar",
+    async ({ id, data }, { rejectWithValue }) => {
+        try {
+            const response = await CalendarService.updateCalendar(id, data);
+            return response.data;
+        } catch (error) {
+            return rejectWithValue(
+                error.response?.data?.message || "Failed to update calendar",
+            );
+        }
+    },
+);
+
 const calendarSlice = createSlice({
     name: "calendars",
     initialState: {
@@ -116,6 +130,21 @@ const calendarSlice = createSlice({
                 state.activeCalendars = state.activeCalendars.filter(
                     (id) => id !== action.payload,
                 );
+            })
+            .addCase(updateCalendar.fulfilled, (state, action) => {
+                const updatedCalendar = action.payload;
+                const index = state.calendars.findIndex(
+                    (c) => c._id === updatedCalendar._id,
+                );
+                if (index !== -1) {
+                    state.calendars[index] = updatedCalendar;
+                }
+                const guestIndex = state.guestCalendars.findIndex(
+                    (c) => c._id === updatedCalendar._id,
+                );
+                if (guestIndex !== -1) {
+                    state.guestCalendars[guestIndex] = updatedCalendar;
+                }
             });
     },
 });

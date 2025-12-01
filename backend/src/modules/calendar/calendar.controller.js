@@ -137,6 +137,20 @@ async function getCalendars(req, res) {
     }
 }
 
+async function updateCalendar(req, res) {
+    const { id, name, description } = matchedData(req);
+    const calendar = await Calendar.findByIdAndUpdate(
+        { _id: id },
+        { name: name, description: description },
+        { new: true },
+    );
+    if (calendar === null) {
+        return res.status(400).json({ message: "Can't find this calendar" });
+    }
+
+    return res.json(calendar);
+}
+
 async function getCalendarsEvents(req, res) {
     try {
         const year = parseInt(req.query.year) || 2025;
@@ -550,4 +564,5 @@ export {
     getCalendarGuests,
     removeUserFromCalendar,
     leaveCalendar,
+    updateCalendar,
 };
