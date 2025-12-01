@@ -11,10 +11,12 @@ import {
     getCalendarGuests,
     removeUserFromCalendar,
     leaveCalendar,
+    getCalendarByEventId,
 } from "./calendar.controller.js";
 import validationErrors from "../../shared/validators/catch.errors.js";
 import { authenticate } from "../auth/auth.middleware.js";
 import { calendarIdValidator, userIdValidator } from "./calendar.validators.js";
+import { mongoIdValidator } from "../../shared/validators/id.validator.js";
 
 const router = express.Router();
 
@@ -25,6 +27,14 @@ router.get(
     validationErrors,
     getCalendarsEvents,
     acceptInviteToEvent,
+);
+
+router.get(
+    "/:eventId",
+    authenticate,
+    mongoIdValidator("eventId", "param"),
+    validationErrors,
+    getCalendarByEventId,
 );
 
 router.post("/", authenticate, validationErrors, createCalendar);

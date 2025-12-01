@@ -9,6 +9,10 @@ class CalendarService {
         return api.get("/calendar");
     }
 
+    static async getCalendarByEventId(eventId) {
+        return api.get(`calendar/${eventId}`);
+    }
+
     static async updateCalendar(id, data) {
         return api.patch(`/calendar/${id}`, data);
     }
