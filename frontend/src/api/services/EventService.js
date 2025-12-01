@@ -17,6 +17,10 @@ class EventService {
         return api.post(`event/invite`, { email: email, eventId: eventId });
     }
 
+    static async leave(eventId) {
+        return api.post(`event/${eventId}/leave`);
+    }
+
     static async updateEvent(eventId, data) {
         return api.put(`/event/${eventId}`, data);
     }

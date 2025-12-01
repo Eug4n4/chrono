@@ -3,6 +3,7 @@ import {
     deleteEvent,
     deleteGuest,
     getGuests,
+    leaveEvent,
     sendInvite,
 } from "./event.controller.js";
 import validationErrors from "../../shared/validators/catch.errors.js";
@@ -27,6 +28,14 @@ router.post(
     emailValidator,
     validationErrors,
     sendInvite,
+);
+
+router.post(
+    "/:eventId/leave",
+    authenticate,
+    mongoIdValidator("eventId", "param"),
+    validationErrors,
+    leaveEvent,
 );
 
 router.delete(
