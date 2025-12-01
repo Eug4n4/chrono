@@ -2,8 +2,8 @@ import React, { useState, useEffect } from "react";
 import CreatableSelect from "react-select/creatable";
 import CreateEventService from "../../api/services/TagService.js";
 
-function TagsSelectors({ onChange }) {
-    const [selectedOptions, setSelectedOptions] = useState([]);
+function TagsSelectors({ onChange, defaultTags }) {
+    const [selectedOptions, setSelectedOptions] = useState(Array.isArray(defaultTags) ? defaultTags : []);
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -17,8 +17,8 @@ function TagsSelectors({ onChange }) {
             }));
 
             setOptions(formatted);
-            setSelectedOptions([]);
-            onChange && onChange([]);
+            // setSelectedOptions([]); у тебе й так початковий стан це пустий масив
+            // onChange && onChange([]);
         })();
     }, [onChange]);
 

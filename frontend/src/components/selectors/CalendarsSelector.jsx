@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import Selector from "../common/selectors/Selector";
 import styles from "../event/create.event.module.css";
 import { useSelector } from "react-redux";
@@ -5,7 +6,9 @@ import { useSelector } from "react-redux";
 function CalendarsSelector({ value, onChange }) {
     const { calendars, guestCalendars } =
         useSelector((state) => state.calendars);
-    onChange(calendars[0]._id);
+    useEffect(() => {
+        onChange?.(calendars[0]._id);
+    }, [onChange])
     return (
         <div className={styles.wrapper}>
             <p>Calendar: </p>
