@@ -1,19 +1,19 @@
 import React, { useState } from "react";
 
-const ColorChosen = ({setColor}) => {
+const ColorChosen = ({ setColor }) => {
     const colors = [
         "#6043ee",
         "#7949d0",
         "#01abdb",
-        "#e67b86",
-        "#e6b078",
-        "#e6e67b",
-        "#7bcfa0",
-        "#7bb4e6",
-        "#bfa0e6",
-        "#e6a8c2",
+        "#d95361",
+        "#d99b4a",
+        "#4fae86",
+        "#4f96d9",
+        "#9a7ad9",
+        "#d979a8",
     ];
-    const [selectedColor, setSelectedColor] = useState(null);
+    setColor(colors[0]);
+    const [selectedColor, setSelectedColor] = useState(colors[0]);
 
     const handleSelect = (color) => {
         setSelectedColor(color);
