@@ -10,6 +10,7 @@ import EventGuest from "../../db/models/EventGuest.js";
 import CalendarGuest from "../../db/models/CalendarGuest.js";
 import EmailManager from "../mail/EmailManager.js";
 import jwt from "jsonwebtoken";
+import { matchedData } from "express-validator";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -124,6 +125,20 @@ async function getCalendars(req, res) {
         }
         return res.status(500).json({ message: e?.message });
     }
+}
+
+async function updateCalendar(req, res) {
+    const { id, name, description } = matchedData(req);
+    const calendar = await Calendar.findByIdAndUpdate(
+        { _id: id },
+        { name: name, description: description },
+        { new: true },
+    );
+    if (calendar === null) {
+        return res.status(400).json({ message: "Can't find this calendar" });
+    }
+
+    return res.json(calendar);
 }
 
 async function getCalendarsEvents(req, res) {
@@ -538,4 +553,5 @@ export {
     getCalendarGuests,
     removeUserFromCalendar,
     leaveCalendar,
+    updateCalendar
 };
