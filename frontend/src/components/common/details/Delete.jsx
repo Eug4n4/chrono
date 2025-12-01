@@ -10,11 +10,15 @@ function Delete({ purpose, isOwner, onClose, type }) {
     const dispatch = useDispatch();
 
     const handleDelete = async () => {
-        if (
-            window.confirm(
-                "Are you sure you want to delete this calendar? This action cannot be undone.",
-            )
-        ) {
+        let message = "";
+        if (type === "calendar") {
+            message =
+                "Are you sure you want to delete this calendar? This action cannot be undone.";
+        } else {
+            message =
+                "Are you sure you want to delete this event? This action cannot be undone.";
+        }
+        if (window.confirm(message)) {
             try {
                 if (type === "calendar") {
                     await CalendarService.deleteCalendar(purpose._id);
@@ -32,11 +36,14 @@ function Delete({ purpose, isOwner, onClose, type }) {
     };
 
     const handleLeave = async () => {
-        if (
-            window.confirm(
-                "Are you sure you want to leave this calendar? You will lose access to all events.",
-            )
-        ) {
+        let message = "";
+        if (type === "calendar") {
+            message =
+                "Are you sure you want to leave this calendar? You will lose access to all events.";
+        } else {
+            message = "Are you sure you want to leave this event?";
+        }
+        if (window.confirm(message)) {
             try {
                 if (type === "calendar") {
                     await CalendarService.leaveCalendar(purpose._id);

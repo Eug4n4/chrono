@@ -84,6 +84,17 @@ async function deleteEvent(req, res) {
     });
 }
 
+async function leaveEvent(req, res) {
+    const { eventId } = matchedData(req);
+    const event = await Event.findById(eventId).populate("guests");
+    const guest = event?.guests.find(
+        (guest) => guest.user.toString() === req.user.id,
+    );
+    await event.updateOne({ $pull: { guests: guest._id } });
+    await EventGuest.findByIdAndDelete(guest._id);
+    return res.json({ id: event.id, message: "You have left this event" });
+}
+
 async function sendInvite(req, res) {
     const { eventId, email } = matchedData(req);
     const user = await User.findOne({ email: email });
@@ -113,4 +124,4 @@ async function sendInvite(req, res) {
     return res.sendStatus(204);
 }
 
-export { getGuests, deleteGuest, deleteEvent, sendInvite };
+export { getGuests, deleteGuest, deleteEvent, leaveEvent, sendInvite };
