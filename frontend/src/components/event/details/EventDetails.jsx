@@ -8,6 +8,8 @@ import ArrangementForm from "../ArrangementForm";
 import ColorChosen from "../ColorChosen";
 import CalendarService from "../../../api/services/CalendarService";
 import TagsSelectors from "../../selectors/TagsSelectors";
+import EventService from "../../../api/services/EventService";
+import { showSuccessToast } from "../../../utils/toast";
 
 import styles from "../create.event.module.css";
 import s from "./event.details.module.css";
@@ -37,6 +39,19 @@ function EventDetails({ purpose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        const formData = { name, type, tags, color, description };
+        formData.start = new Date(`${date.start.date}T${date.start.time}`);
+        if (date.end.date) {
+            formData.end = new Date(`${date.end.date}T${date.end.time}`);
+        } else if (date.reminder.date) {
+            formData.remindAfter = new Date(
+                `${date.reminder.date}T${date.reminder.time}`,
+            );
+        }
+        console.log(formData);
+        EventService.updateEvent(purpose._id, formData).then(() =>
+            showSuccessToast("Updated successfully!"),
+        );
     };
     useEffect(() => {
         CalendarService.getCalendarByEventId(purpose._id)
@@ -77,9 +92,12 @@ function EventDetails({ purpose }) {
                 defaultValue={name}
                 onChange={(e) => setName(e.target.value)}
             />
-            <TypeSelector
-                value={type}
-                onChange={(e) => setType(e.target.value)}
+            <LabeledInput
+                id="event_type"
+                htmlFor="event_type"
+                label="Type"
+                disabled={true}
+                defaultValue={type}
             />
             <LabeledInput
                 id="event_calendar"
