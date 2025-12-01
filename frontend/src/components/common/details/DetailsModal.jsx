@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useSelector } from "react-redux";
 import Modal from "../Modal";
 import DetailsModalSidebar from "./DetailsModalSidebar";
@@ -57,20 +57,29 @@ function DetailsModal({ views, purpose, isOpen, onClose, type }) {
         }
     }, [isOpen, purpose._id]);
 
+    const availableViews = useMemo(() => {
+        if (purpose.isDefault) {
+            const newViews = { ...views };
+            delete newViews.delete;
+            return newViews;
+        }
+        return views;
+    }, [views, purpose]);
+
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
             <h2>{purpose.name}</h2>
             <div className={s.content}>
                 <DetailsModalSidebar
-                    views={views}
+                    views={availableViews}
                     currentViewName={currentViewName}
                     onViewChange={setCurrentViewName}
                     isOwner={isOwner()}
                 />
                 <div className={s.details_section}>
-                    {Object.keys(views).map((key) => {
-                        if (views[key].viewName === currentViewName) {
-                            const Component = views[key].component;
+                    {Object.keys(availableViews).map((key) => {
+                        if (availableViews[key].viewName === currentViewName) {
+                            const Component = availableViews[key].component;
                             return (
                                 <Component
                                     key={key}
