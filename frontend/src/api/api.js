@@ -1,4 +1,5 @@
 import axios from "axios";
+import { jwtDecode } from "jwt-decode";
 import store from "../features/state/store";
 import { loginSuccess, logout } from "../features/state/auth.slice";
 import { getCookie } from "../utils/cookies";
@@ -22,12 +23,10 @@ api.interceptors.response.use(
                     {},
                     { withCredentials: true },
                 );
-                const { user } = refreshResponse.data;
+                const { accessToken } = refreshResponse.data;
+                const user = jwtDecode(accessToken);
                 store.dispatch(loginSuccess({ user }));
                 const newToken = getCookie("access");
-                if (newToken) {
-                    originalRequest.headers.Authorization = `Bearer ${newToken}`;
-                }
                 return api.request(originalRequest);
             } catch (refreshError) {
                 store.dispatch(logout());
