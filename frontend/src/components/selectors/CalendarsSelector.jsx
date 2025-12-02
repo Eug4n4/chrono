@@ -7,8 +7,10 @@ function CalendarsSelector({ value, onChange }) {
     const { calendars, guestCalendars } =
         useSelector((state) => state.calendars);
     useEffect(() => {
-        onChange?.(calendars[0]._id);
-    }, [onChange])
+        if (!value && calendars && calendars.length > 0) {
+            onChange(calendars[0]._id);
+        }
+    }, [calendars, value, onChange]);
     return (
         <div className={styles.wrapper}>
             <p>Calendar: </p>
