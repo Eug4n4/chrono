@@ -5,6 +5,7 @@ import router from "./router.js";
 import connectDB from "./db/connection.js";
 import path, { dirname } from "path";
 import { fileURLToPath } from "url";
+import SchedulerService from "./modules/scheduler/SchedulerService.js";
 
 const HOST = "http://localhost";
 const PORT = 5000;
@@ -32,6 +33,7 @@ function main() {
 
     app.listen(PORT, () => {
         console.log(`Listening on ${HOST}:${PORT}`);
+        SchedulerService.init();
     });
 }
 connectDB()

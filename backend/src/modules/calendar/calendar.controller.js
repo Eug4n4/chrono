@@ -12,6 +12,7 @@ import EmailManager from "../mail/EmailManager.js";
 import jwt from "jsonwebtoken";
 import { matchedData } from "express-validator";
 import CalendarDto from "../../db/dto/CalendarDto.js";
+import SchedulerService from "../scheduler/SchedulerService.js";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -38,6 +39,14 @@ async function deleteCalendar(req, res) {
         if (calendars.calendarsId[0].toString() === calendar_id.toString()) {
             return res.status(404).json({ message: "It's default calendar" });
         }
+
+        const calendar = await Calendar.findById(calendar_id);
+        if (calendar && calendar.events) {
+            for (const eventId of calendar.events) {
+                SchedulerService.cancelEvent(eventId.toString());
+            }
+        }
+
         await Calendar.deleteOne({ _id: new ObjectId(calendar_id) });
         await User.updateOne(
             { _id: new ObjectId(user.id) },
@@ -249,6 +258,11 @@ async function createEventToCalendar(req, res) {
             { _id: calendarId },
             { $addToSet: { events: dto.id } },
         );
+
+        if (body.type === "reminder") {
+            SchedulerService.scheduleEvent(event);
+        }
+
         const findEvent = await Event.aggregate([
             {
                 $match: { _id: new ObjectId(dto.id) },
