@@ -79,6 +79,10 @@ class EmailManager {
         <p>Follow this <a href="${link}">link</a> to accept or decline this invitation.</p>`,
         );
     }
+
+    sendNotification(to, subject, html) {
+        this.#sendMail(to, subject, html);
+    }
 }
 
 export default EmailManager;

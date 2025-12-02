@@ -26,7 +26,10 @@ const ArrangementEvent = Event.discriminator(
 );
 const ReminderEvent = Event.discriminator(
     "reminder",
-    new mongoose.Schema({ remindAfter: Date }),
+    new mongoose.Schema({
+        remindAfter: Date,
+        isNotified: { type: Boolean, default: false },
+    }),
     options,
 );
 const TaskEvent = Event.discriminator(
