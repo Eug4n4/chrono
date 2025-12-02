@@ -11,6 +11,7 @@ import CalendarGuest from "../../db/models/CalendarGuest.js";
 import EmailManager from "../mail/EmailManager.js";
 import jwt from "jsonwebtoken";
 import { matchedData } from "express-validator";
+import CalendarDto from "../../db/dto/CalendarDto.js";
 
 async function createCalendar(req, res) {
     const user = req.user;
@@ -50,6 +51,15 @@ async function deleteCalendar(req, res) {
         console.error(e);
         return res.status(500).json({ error: "Failed to delete calendar" });
     }
+}
+
+async function getCalendarByEventId(req, res) {
+    const { eventId } = matchedData(req);
+    const calendar = await Calendar.findOne({ events: eventId });
+    if (!calendar) {
+        return res.status(404).json({ message: "Can't find calendar" });
+    }
+    return res.json(new CalendarDto(calendar));
 }
 
 async function getCalendars(req, res) {
@@ -545,6 +555,7 @@ export {
     createCalendar,
     deleteCalendar,
     getCalendars,
+    getCalendarByEventId,
     getCalendarsEvents,
     createEventToCalendar,
     acceptInviteToEvent,
@@ -553,5 +564,5 @@ export {
     getCalendarGuests,
     removeUserFromCalendar,
     leaveCalendar,
-    updateCalendar
+    updateCalendar,
 };

@@ -22,7 +22,7 @@ class EventService {
     }
 
     static async updateEvent(eventId, data) {
-        return api.put(`/event/${eventId}`, data);
+        return api.patch(`/event/${eventId}`, data);
     }
 
     static async deleteEvent(eventId) {

@@ -2,7 +2,7 @@ import Textarea from "../common/textarea/Textarea.jsx";
 import DateInput from "../inputs/DateInput.jsx";
 import styles from "./create.event.module.css";
 
-const TaskForm = ({ date, setDate, setDescription }) => {
+const TaskForm = ({ date, setDate, setDescription, defaultDescription }) => {
     const handleStartChange = (newValue) => {
         const [hours, minutes] = newValue.time.split(":").map(Number);
         const newHours = hours + 1;
@@ -32,6 +32,7 @@ const TaskForm = ({ date, setDate, setDescription }) => {
                     placeholder=""
                     name="description"
                     id="description"
+                    defaultValue={defaultDescription}
                     onChange={e => setDescription(e.target.value)}
                     required
                 />

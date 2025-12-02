@@ -1,9 +1,13 @@
-import { generateInviteLink } from "./event.utils.js";
+import { createTag, generateInviteLink } from "./event.utils.js";
 import { matchedData } from "express-validator";
 import EmailManager from "../mail/EmailManager.js";
 import User from "../../db/models/User.js";
 import EventGuest from "../../db/models/EventGuest.js";
-import Event from "../../db/models/Event.js";
+import Event, {
+    ArrangementEvent,
+    ReminderEvent,
+    TaskEvent,
+} from "../../db/models/Event.js";
 import Calendar from "../../db/models/Calendar.js";
 
 async function getGuests(req, res) {
@@ -57,6 +61,54 @@ async function deleteGuest(req, res) {
     await event.updateOne({ $pull: { guests: guestEntry._id } });
 
     return res.json({ message: "User removed from event" });
+}
+
+async function updateEvent(req, res) {
+    let {
+        eventId,
+        name,
+        description,
+        tags,
+        type,
+        color,
+        start,
+        end,
+        remindAfter,
+    } = matchedData(req);
+    const user = req.user;
+    let Model;
+    tags = await Promise.all(
+        tags.map(async (tag) => {
+            if (tag.value === tag.label) {
+                const tagInDB = await createTag(user.id, tag.value);
+                return tagInDB.id;
+            } else {
+                return tag.value;
+            }
+        }),
+    );
+    if (type === "reminder") {
+        Model = ReminderEvent;
+    } else if (type === "task") {
+        Model = TaskEvent;
+    } else {
+        Model = ArrangementEvent;
+    }
+    const event = await Model.findByIdAndUpdate(
+        eventId,
+        {
+            name: name,
+            description: description,
+            tags: tags,
+            color: color,
+            start: start,
+            end: end,
+            remindAfter: remindAfter,
+        },
+        { new: true },
+    ).populate("tags");
+
+    return res.json({ event, message: "Successfully updated the event" });
 }
 
 async function deleteEvent(req, res) {
@@ -124,4 +176,11 @@ async function sendInvite(req, res) {
     return res.sendStatus(204);
 }
 
-export { getGuests, deleteGuest, deleteEvent, leaveEvent, sendInvite };
+export {
+    getGuests,
+    deleteGuest,
+    deleteEvent,
+    leaveEvent,
+    updateEvent,
+    sendInvite,
+};

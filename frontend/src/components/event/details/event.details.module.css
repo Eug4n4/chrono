@@ -1,0 +1,29 @@
+.event_details {
+    display: flex;
+    flex-direction: column;
+}
+
+.event_details > :first-child {
+    margin-bottom: 1.5rem;
+}
+
+.event_desc {
+    resize: vertical;
+}
+
+.date_selector_wrapper > div:has(> div:nth-of-type(2)):not(:has(> div:nth-of-type(3))) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+
+
+.date_selector_wrapper > div:has(> div:nth-of-type(3)):not(:has(> div:nth-of-type(4))) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    column-gap: 10px;
+}
+
+.date_selector_wrapper > div:has(> div:nth-of-type(3)):not(:has(> div:nth-of-type(4))) > div:first-child {
+    grid-column: span 2;
+}
