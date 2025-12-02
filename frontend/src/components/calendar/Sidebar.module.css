@@ -1,7 +1,7 @@
 .sidebar {
   width: 200px;
   padding: 16px;
-  border-right: 1px solid #ddd;
+  border-right: rgba(34, 211, 238, 0.3) 1px solid;
   transition: all 0.3s ease-in-out;
   overflow: hidden;
 }

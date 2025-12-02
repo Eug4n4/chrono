@@ -53,6 +53,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendar.name}
                             </label>
                             <Settings
+                                size={16}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setSelectedCalendarId(calendar._id)
@@ -102,6 +103,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendars[0].name}
                             </label>
                             <Settings
+                                size={16}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setIsDefaultCalendarDetailsOpen(true)
@@ -164,6 +166,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendar.name}
                             </label>
                             <Settings
+                                size={16}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setSelectedCalendarId(calendar._id)

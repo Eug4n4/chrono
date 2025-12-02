@@ -3,6 +3,7 @@
     padding: 16px;
     min-width: 0;
     --fc-today-bg-color: rgba(34, 211, 238, 0.15);
+    --fc-border-color: rgba(255, 255, 255, 0.1);
 }
 
 .calendarView :global(.fc-dayGridMonth-view .fc-day:hover),
@@ -17,10 +18,21 @@
 }
 
 
+.calendarView :global(.fc-cell-shaded) {
+    background: none;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .calendarView :global(.fc-timeGridWeek-view .fc-col-header-cell:hover),
 .calendarView :global(.fc-timeGridWeek-view .fc-daygrid-day:hover),
 .calendarView :global(.fc-timeGridWeek-view .fc-timegrid-col:hover) {
     background-color: rgba(255, 255, 255, 0.05);
     cursor: pointer;
     transition: background-color 0.2s ease;
+}
+
+.calendarView :global(.fc-timegrid-event),
+.calendarView :global(.fc-v-event) {
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: none !important;
 }

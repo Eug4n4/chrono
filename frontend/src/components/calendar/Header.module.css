@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: rgba(34, 211, 238, 0.3) 2px solid;
     gap: 24px;
 }
 
