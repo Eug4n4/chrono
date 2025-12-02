@@ -33,7 +33,7 @@ function EventDetails({ purpose }) {
 
     const getDateTimeParts = (datetime) => {
         const date = datetime.toISOString().split("T")[0];
-        const time = datetime.toLocaleTimeString();
+        const time = datetime.toTimeString().split(" ")[0];
         return { date: date, time: time };
     };
 
@@ -48,7 +48,6 @@ function EventDetails({ purpose }) {
                 `${date.reminder.date}T${date.reminder.time}`,
             );
         }
-        console.log(formData);
         EventService.updateEvent(purpose._id, formData).then(() =>
             showSuccessToast("Updated successfully!"),
         );
