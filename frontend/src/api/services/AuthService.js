@@ -28,6 +28,12 @@ class AuthService {
     static async resendVerificationEmail(email) {
         return api.post("auth/resend-verification", { email });
     }
+
+    static async updateUser(data) {
+        return api.patch(`users`, data, {
+            headers: { "Content-Type": "multipart/form-data" },
+        });
+    }
 }
 
 export default AuthService;
