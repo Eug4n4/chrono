@@ -9,6 +9,7 @@ import Event, {
     TaskEvent,
 } from "../../db/models/Event.js";
 import Calendar from "../../db/models/Calendar.js";
+import SchedulerService from "../scheduler/SchedulerService.js";
 
 async function getGuests(req, res) {
     const { eventId } = matchedData(req);
@@ -108,6 +109,12 @@ async function updateEvent(req, res) {
         { new: true },
     ).populate("tags");
 
+    if (type === "reminder") {
+        SchedulerService.scheduleEvent(event);
+    } else {
+        SchedulerService.cancelEvent(eventId);
+    }
+
     return res.json({ event, message: "Successfully updated the event" });
 }
 
@@ -130,6 +137,9 @@ async function deleteEvent(req, res) {
         { $pull: { events: event._id } },
     );
     await event.deleteOne();
+
+    SchedulerService.cancelEvent(eventId);
+
     return res.json({
         id: event.id,
         message: "Successfully deleted the event",
