@@ -2,6 +2,7 @@
     flex-grow: 1;
     padding: 16px;
     min-width: 0;
+    --fc-today-bg-color: rgba(34, 211, 238, 0.15);
 }
 
 .calendarView :global(.fc-dayGridMonth-view .fc-day:hover),
@@ -10,6 +11,11 @@
     cursor: pointer;
     transition: background-color 0.2s ease;
 }
+
+.calendarView :global(.fc-popover) {
+    background-color: var(--surface-color);
+}
+
 
 .calendarView :global(.fc-timeGridWeek-view .fc-col-header-cell:hover),
 .calendarView :global(.fc-timeGridWeek-view .fc-daygrid-day:hover),

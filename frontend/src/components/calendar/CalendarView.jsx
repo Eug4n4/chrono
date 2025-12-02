@@ -308,6 +308,7 @@ const CalendarView = React.forwardRef(
                         interactionPlugin,
                         multiMonthPlugin,
                     ]}
+                    dayMaxEvents={true}
                     eventClick={handleEventClick}
                     initialView="dayGridMonth"
                     headerToolbar={false}
