@@ -56,11 +56,12 @@ const colorStyles = {
  * @param {Function} props.onChange
  *
  */
-function CountrySelector({ onChange }) {
+function CountrySelector({ onChange, startingValue, disabled }) {
     const { countries } = useSelector((state) => state.countriesList);
     return (
         <Select
-            defaultValue={null}
+            isDisabled={disabled}
+            value={startingValue}
             onChange={onChange}
             options={countries}
             styles={colorStyles}

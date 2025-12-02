@@ -52,7 +52,18 @@
     transform: translateY(0);
 }
 
-.button_danger:disabled {
+.button_danger:disabled,
+.button_camera:disabled {
     opacity: 0.6;
     cursor: not-allowed;
+}
+
+.button_camera {
+    background: transparent;
+    border: none;
+    color: var(--text-main);
+    position: absolute;
+    right: -5%;
+    bottom: 0%;
+    cursor: pointer;
 }
