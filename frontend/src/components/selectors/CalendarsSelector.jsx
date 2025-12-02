@@ -4,7 +4,6 @@ import styles from "../event/create.event.module.css";
 import { useSelector } from "react-redux";
 
 function CalendarsSelector({ value, onChange, token }) {
-    console.log(token);
     const { calendars, guestCalendars } =
         useSelector((state) => state.calendars);
     useEffect(() => {
