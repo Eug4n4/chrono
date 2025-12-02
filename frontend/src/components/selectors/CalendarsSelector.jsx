@@ -3,7 +3,8 @@ import Selector from "../common/selectors/Selector";
 import styles from "../event/create.event.module.css";
 import { useSelector } from "react-redux";
 
-function CalendarsSelector({ value, onChange }) {
+function CalendarsSelector({ value, onChange, token }) {
+    console.log(token);
     const { calendars, guestCalendars } =
         useSelector((state) => state.calendars);
     useEffect(() => {
@@ -21,12 +22,16 @@ function CalendarsSelector({ value, onChange }) {
                         {calendar.name}
                     </option>
                 ))}
-                <option value="" disabled>Shared Calendars</option>
-                {guestCalendars.map((calendar) => (
-                    <option key={calendar._id} value={calendar._id}>
-                        {calendar.name}
-                    </option>
-                ))}
+                {(guestCalendars.length > 0 && !token) && (
+                    <>
+                        <option value="" disabled>Shared Calendars</option>
+                        {guestCalendars.map((calendar) => (
+                            <option key={calendar._id} value={calendar._id}>
+                                {calendar.name}
+                            </option>
+                        ))}
+                    </>
+                )}
             </Selector>
         </div>
     );

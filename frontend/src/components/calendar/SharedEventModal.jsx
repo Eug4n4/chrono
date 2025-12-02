@@ -68,6 +68,7 @@ const SharedEventModal = ({ isOpen, onClose, token }) => {
                 <CalendarsSelector
                     value={selectedCalendarId}
                     onChange={setSelectedCalendarId}
+                    token={token}
                 />
                 <div
                     style={{
