@@ -34,7 +34,11 @@ const ReminderEvent = Event.discriminator(
 );
 const TaskEvent = Event.discriminator(
     "task",
-    new mongoose.Schema({ end: Date, description: String }),
+    new mongoose.Schema({
+        end: Date,
+        isCompleted: { type: Boolean, default: false },
+        description: String,
+    }),
     options,
 );
 
