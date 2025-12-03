@@ -1,9 +1,12 @@
-import s from "./header.module.css";
-import { Link } from "react-router-dom";
 import { useState } from "react";
+import SettingsModal from "../settings/SettingsModal";
+import Button from "./buttons/Button";
+
+import s from "./header.module.css";
 
 export default function UserIcon({ user, handleLogout }) {
     const [isUserActionsShown, showUserActions] = useState(false);
+    const [isSettingsShown, setIsSettingsShown] = useState(false);
 
     return (
         <div
@@ -23,11 +26,21 @@ export default function UserIcon({ user, handleLogout }) {
 
                 {isUserActionsShown && (
                     <div className={s.user_actions}>
-                        <Link to="/settings">Settings</Link>
+                        <Button
+                            className=""
+                            onClick={() => setIsSettingsShown(true)}
+                        >
+                            Settings
+                        </Button>
                         <button onClick={handleLogout}>Logout</button>
                     </div>
                 )}
             </div>
+            <SettingsModal
+                user={user}
+                isOpen={isSettingsShown}
+                onClose={() => setIsSettingsShown(false)}
+            />
         </div>
     );
 }

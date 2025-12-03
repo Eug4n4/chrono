@@ -152,6 +152,11 @@ async function leaveEvent(req, res) {
     const guest = event?.guests.find(
         (guest) => guest.user.toString() === req.user.id,
     );
+    if (!guest) {
+        return res
+            .status(404)
+            .json({ message: "You are not a member of this event" });
+    }
     await event.updateOne({ $pull: { guests: guest._id } });
     await EventGuest.findByIdAndDelete(guest._id);
     return res.json({ id: event.id, message: "You have left this event" });

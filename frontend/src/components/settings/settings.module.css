@@ -1,0 +1,19 @@
+.preview_wrapper, .buttons {
+    display: flex;
+    column-gap: 10px;
+}
+
+.preview_wrapper {
+    justify-content: center;
+    margin-bottom: 24px;
+}
+
+.preview_wrapper > input[type="file"] {
+    display: none;
+}
+
+.preview {
+    width: 128px;
+    height: 128px;
+    position: relative;
+}
