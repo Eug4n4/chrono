@@ -39,7 +39,11 @@ function SettingsModal({ user, isOpen, onClose }) {
                 dispatch(updateUser(response.data));
                 showSuccessToast("Updated successfully!");
             })
-            .catch(() => showErrorToast("Error while updating your profile!"));
+            .catch((response) => {
+                showErrorToast(
+                    `Error while updating your profile!: ${response?.response.data?.message}`,
+                );
+            });
     };
 
     const handleChange = (e) => {

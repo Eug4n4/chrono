@@ -23,6 +23,12 @@ async function uploadAvatar(req, res) {
 async function updateUser(req, res) {
     const { login, countryCode } = matchedData(req);
     const file = req.file;
+    const withLogin = await User.findOne({ login: login });
+    if (withLogin) {
+        return res
+            .status(400)
+            .json({ message: `User with login ${login} already exists` });
+    }
     const user = await User.findByIdAndUpdate(
         req.user.id,
         {
@@ -37,7 +43,7 @@ async function updateUser(req, res) {
     res.cookie("access", access["token"], {
         expires: new Date(access["expires"]),
     });
-    return res.json(new UserDto(user));
+    return res.json(dto);
 }
 
 export { uploadAvatar, updateUser };
