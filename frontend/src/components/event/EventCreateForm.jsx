@@ -72,7 +72,9 @@ const EventCreateForm = () => {
                 eventData.description = description;
                 const endDate = new Date(`${date.end.date}T${date.end.time}`);
                 if (startDate >= endDate) {
-                    showWarningToast("The start date cannot be later than the end date!");
+                    showWarningToast(
+                        "The start date cannot be later than the end date!",
+                    );
                     return;
                 }
                 eventData.end = endDate;
@@ -82,9 +84,13 @@ const EventCreateForm = () => {
                     setLoading(false);
                     return;
                 }
-                const reminderDate = new Date(`${date.reminder.date}T${date.reminder.time}`);
+                const reminderDate = new Date(
+                    `${date.reminder.date}T${date.reminder.time}`,
+                );
                 if (startDate <= reminderDate) {
-                    showWarningToast("The remainder date cannot be later than the start date!");
+                    showWarningToast(
+                        "The remainder date cannot be later than the start date!",
+                    );
                     return;
                 }
                 eventData.remindAfter = reminderDate;
@@ -96,7 +102,9 @@ const EventCreateForm = () => {
                 }
                 const endDate = new Date(`${date.end.date}T${date.end.time}`);
                 if (startDate >= endDate) {
-                    showWarningToast("The start date cannot be later than the end date!");
+                    showWarningToast(
+                        "The start date cannot be later than the end date!",
+                    );
                     return;
                 }
                 eventData.end = endDate;
@@ -114,44 +122,47 @@ const EventCreateForm = () => {
         <div>
             <div className={styles.create_container}>
                 <h2>Create event</h2>
-                <CalendarsSelector
-                    value={calendarId}
-                    onChange={setCalendarId}
-                />
-                <div className={styles.wrapper}>
-                    <Input
-                        placeholder=""
-                        name="name"
-                        id="name"
-                        required
-                        onChange={(e) => setName(e.target.value)}
-                    />
-                    <label htmlFor="name">Name</label>
-                </div>
-                <TypeSelector
-                    value={type}
-                    onChange={(e) => setType(e.target.value)}
-                />
-                {type === "task" && (
-                    <TaskForm
-                        date={date}
-                        setDate={setDate}
-                        setDescription={setDescription}
-                    />
-                )}
-                {type === "arrangement" && (
-                    <ArrangementForm date={date} setDate={setDate} />
-                )}
-                {type === "reminder" && (
-                    <ReminderForm date={date} setDate={setDate} />
-                )}
-                <div className={styles.wrapper}>
-                    <p>Tags:</p>
-                    <TagsSelectors onChange={setTags} />
-                </div>
-                <div className={styles.wrapper}>
-                    <p>Color:</p>
-                    <ColorChosen setColor={setColor} />
+                <div className={styles.form_grid}>
+                    <div className={styles.column}>
+                        <CalendarsSelector
+                            value={calendarId}
+                            onChange={setCalendarId}
+                        />
+                        <div className={styles.wrapper}>
+                            <Input
+                                placeholder=""
+                                name="name"
+                                id="name"
+                                required
+                                onChange={(e) => setName(e.target.value)}
+                            />
+                            <label htmlFor="name">Name</label>
+                        </div>
+                        <TypeSelector value={type} onChange={setType} />
+                        <div className={styles.wrapper}>
+                            <p>Tags:</p>
+                            <TagsSelectors onChange={setTags} />
+                        </div>
+                        <div className={styles.wrapper}>
+                            <p>Color:</p>
+                            <ColorChosen setColor={setColor} />
+                        </div>
+                    </div>
+                    <div className={styles.column}>
+                        {type === "task" && (
+                            <TaskForm
+                                date={date}
+                                setDate={setDate}
+                                setDescription={setDescription}
+                            />
+                        )}
+                        {type === "arrangement" && (
+                            <ArrangementForm date={date} setDate={setDate} />
+                        )}
+                        {type === "reminder" && (
+                            <ReminderForm date={date} setDate={setDate} />
+                        )}
+                    </div>
                 </div>
 
                 <div className={styles.wrapper}>

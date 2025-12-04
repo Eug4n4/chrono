@@ -10,6 +10,14 @@ function DateInput({ onChange, dateValue, timeValue, placeholder }) {
         onChange?.({ date: dateValue, time: e.target.value });
     };
 
+    const handleInputClick = (e) => {
+        try {
+            if (e.target.showPicker) {
+                e.target.showPicker();
+            }
+        } catch (error) {}
+    };
+
     return (
         <div className={styles.wrapper}>
             <Input
@@ -17,11 +25,13 @@ function DateInput({ onChange, dateValue, timeValue, placeholder }) {
                 value={dateValue}
                 onChange={handleDateChange}
                 placeholder={placeholder}
+                onClick={handleInputClick}
             />
             <Input
                 type="time"
                 value={timeValue}
                 onChange={handleTimeChange}
+                onClick={handleInputClick}
             />
         </div>
     );
