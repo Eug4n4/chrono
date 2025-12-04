@@ -10,13 +10,15 @@ import CalendarService from "../../../api/services/CalendarService";
 import TagsSelectors from "../../selectors/TagsSelectors";
 import EventService from "../../../api/services/EventService";
 import { showSuccessToast } from "../../../utils/toast";
+import { Check, X } from "lucide-react";
 
 import styles from "../create.event.module.css";
 import s from "./event.details.module.css";
 
 function EventDetails({ purpose }) {
     const [name, setName] = useState(purpose.name);
-    const [type, setType] = useState(purpose.type);
+    const [isCompleted, setIsCompleted] = useState(purpose.isCompleted);
+    const type = purpose.type;
     const [tags, setTags] = useState(() => {
         return purpose.tags.map((tag) => {
             return { label: tag.name, value: tag._id };
@@ -91,20 +93,21 @@ function EventDetails({ purpose }) {
                 defaultValue={name}
                 onChange={(e) => setName(e.target.value)}
             />
-            <LabeledInput
-                id="event_type"
-                htmlFor="event_type"
-                label="Type"
-                disabled={true}
-                defaultValue={type}
-            />
-            <LabeledInput
-                id="event_calendar"
-                htmlFor="event_calendar"
-                label="Calendar"
-                disabled={true}
-                defaultValue={calendar}
-            />
+            <div className={s.event_info}>
+                <p>Type:</p>
+                <p>{purpose.type}</p>
+                <p>Calendar:</p>
+                <p>{calendar}</p>
+                {type === "task" && (
+                    <Button
+                        type="button"
+                        onClick={() => setIsCompleted(!isCompleted)}
+                    >
+                        {isCompleted ? <X /> : <Check />}
+                        {isCompleted ? "Undone" : "Mark as done"}
+                    </Button>
+                )}
+            </div>
             {type === "task" && (
                 <div className={s.date_selector_wrapper}>
                     <TaskForm

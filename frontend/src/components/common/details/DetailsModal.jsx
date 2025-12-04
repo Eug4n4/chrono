@@ -16,7 +16,7 @@ import s from "./details.modal.module.css";
 function DetailsModal({ views, purpose, isOpen, onClose, type }) {
     const { user } = useSelector((state) => state.auth);
     const [currentViewName, setCurrentViewName] = useState(
-        views.invitations.viewName,
+        views.details.viewName,
     );
     const [guests, setGuests] = useState([]);
 

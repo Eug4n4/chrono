@@ -2,6 +2,21 @@
     display: flex;
     flex-direction: column;
 }
+.event_info {
+    display: grid;
+    grid-template-columns: 2fr 3fr;
+    margin-bottom: 24px;
+    row-gap: 10px;
+}
+
+.event_info > button {
+    grid-column: span 2;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    max-height: 41px;
+    margin: 0;
+}
 
 .event_details > :first-child {
     margin-bottom: 1.5rem;
