@@ -50,6 +50,7 @@ router.patch(
     stringValidator("description", "body").optional(),
     body("color").exists().isHexColor(),
     body("tags").exists().isArray(),
+    body("isCompleted").optional().isBoolean(),
     stringValidator("start", "body"),
     stringValidator("end", "body").optional(),
     stringValidator("remindAfter", "body").optional(),

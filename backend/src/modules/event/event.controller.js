@@ -75,6 +75,7 @@ async function updateEvent(req, res) {
         start,
         end,
         remindAfter,
+        isCompleted,
     } = matchedData(req);
     const user = req.user;
     let Model;
@@ -105,6 +106,7 @@ async function updateEvent(req, res) {
             start: start,
             end: end,
             remindAfter: remindAfter,
+            isCompleted: isCompleted,
         },
         { new: true },
     ).populate("tags");
