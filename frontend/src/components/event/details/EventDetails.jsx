@@ -41,7 +41,7 @@ function EventDetails({ purpose }) {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        const formData = { name, type, tags, color, description };
+        const formData = { name, type, tags, color, description, isCompleted };
         formData.start = new Date(`${date.start.date}T${date.start.time}`);
         if (date.end.date) {
             formData.end = new Date(`${date.end.date}T${date.end.time}`);
