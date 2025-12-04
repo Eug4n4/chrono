@@ -59,5 +59,5 @@ POST /api/tag
 - Event
   - Create event (The backend receives a request to create an event and checks whether the calendar belongs to the user and if they have permission to add events. If the check passes, the event is stored in the database and notifications are sent to other users with access to the calendar. The server returns a confirmation to the frontend about the successful creation of the event.)
   - Share event (The backend receives a request to create an event and checks whether the calendar belongs to the user and if they have permission to add events. If the check passes, the event is stored in the database and notifications are sent to other users with access to the calendar. The server then returns a confirmation to the frontend about the successful creation of the event.)
-- Settings
-- Notification
+- Settings (The backend receives a request to update user settings and checks the validity of the data and avatar. If the data is valid, the backend stores the new avatar and region in the database. After successful storage, the server returns a confirmation to the frontend about the profile update.)
+- Notification (When the server starts, it creates a message queue for users using a CRON. The backend then processes the queue and sends emails to the respective users. After successful sending, the server updates the message status in the database.)

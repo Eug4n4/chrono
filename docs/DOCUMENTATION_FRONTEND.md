@@ -10,5 +10,5 @@
 - Event
   - Create event (The user can create an event in two ways: by navigating to the create-event page or by clicking on the calendar, which opens a modal form. The frontend collects the event data from the form and sends it to the backend for validation and storage. After receiving a response from the server, the frontend closes the modal or shows a confirmation on the page and updates the event list.)
   - Share event (The user selects a calendar and adds a new event through a form. The frontend collects the event data and sends it to the backend for validation and storage. After receiving a response from the server, the frontend shows a confirmation or an error message.)
-- Settings
-- Notification
+- Settings (The user can change their avatar and select a holiday region through the profile settings form. The frontend collects the new data and sends it to the backend for validation and storage. After receiving a response from the server, the frontend updates the avatar and region display on the profile and shows a success message.)
+- Notification (The user creates an event and selects the “reminder” type through a form or modal window. The frontend sends the event data to the backend for storage and notification scheduling. After receiving confirmation from the server, the frontend displays information about the created event and any reminders.)
