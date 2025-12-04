@@ -55,4 +55,9 @@ POST /api/tag
     - Log out (The backend receives a logout request and deletes or deactivates the user's token. It returns a confirmation of a successful logout.)
 - Calendar
   - Create calendar (Before creation, the backend validates the input data (title, description). After successful validation, a new calendar with these fields is created in the database. Then the backend sends a confirmation or the new calendar data to the frontend.)
-  - Share calendar ()
+  - Share calendar (The backend receives a request from the frontend to add a user to a calendar and checks whether the user is already joined and has access rights. If the check passes, the backend stores the joining information in the database and sends an email notification to the user. After a successful operation, the server returns a confirmation to the frontend about the successful invitation.)
+- Event
+  - Create event (The backend receives a request to create an event and checks whether the calendar belongs to the user and if they have permission to add events. If the check passes, the event is stored in the database and notifications are sent to other users with access to the calendar. The server returns a confirmation to the frontend about the successful creation of the event.)
+  - Share event (The backend receives a request to create an event and checks whether the calendar belongs to the user and if they have permission to add events. If the check passes, the event is stored in the database and notifications are sent to other users with access to the calendar. The server then returns a confirmation to the frontend about the successful creation of the event.)
+- Settings
+- Notification
