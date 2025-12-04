@@ -1,6 +1,6 @@
 .calendarView {
     flex-grow: 1;
-    padding: 16px;
+    padding: 3px;
     min-width: 0;
     --fc-today-bg-color: rgba(34, 211, 238, 0.15);
     --fc-border-color: rgba(255, 255, 255, 0.1);

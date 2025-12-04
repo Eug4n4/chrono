@@ -58,6 +58,10 @@
     border-color: var(--btn-bg-color);
 }
 
+.button:hover, .navButton:hover {
+    background-color: var(--input-bg-color);
+}
+
 .createMenu {
     position: relative;
 }
@@ -67,18 +71,20 @@
     top: 100%;
     right: 0;
     background-color: var(--surface-color);
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 8px;
     z-index: 10;
     width: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .createDropdown div {
     padding: 8px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .createDropdown div:hover {
-    background-color: #f0f0f0;
+    background-color: var(--input-bg-color);
 }

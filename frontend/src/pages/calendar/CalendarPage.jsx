@@ -128,6 +128,7 @@ const CalendarPage = () => {
                 onToday={handleToday}
                 title={title}
                 onToggleSidebar={toggleSidebar}
+                isSidebarOpen={isSidebarOpen}
                 filterTypes={filterTypes}
                 setFilterTypes={setFilterTypes}
                 filterTags={filterTags}

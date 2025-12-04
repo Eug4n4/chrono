@@ -18,6 +18,7 @@ const Header = ({
     onToday,
     title,
     onToggleSidebar,
+    isSidebarOpen,
     filterTypes,
     setFilterTypes,
     filterTags,
@@ -47,7 +48,7 @@ const Header = ({
                 <div className={styles.headerLeft}>
                     <Logo />
                     <button
-                        className={styles.button}
+                        className={`${styles.button} ${isSidebarOpen ? styles.active : ""}`}
                         onClick={onToggleSidebar}
                         title="Toggle sidebar"
                     >
@@ -86,7 +87,7 @@ const Header = ({
                     />
                     <div className={styles.createMenu}>
                         <button
-                            className={styles.button}
+                            className={`${styles.button} ${showCreateMenu ? styles.active : ""}`}
                             onClick={() => setShowCreateMenu(!showCreateMenu)}
                         >
                             Create ▼
