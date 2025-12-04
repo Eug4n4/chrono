@@ -53,7 +53,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendar.name}
                             </label>
                             <Settings
-                                size={16}
+                                size={24}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setSelectedCalendarId(calendar._id)
@@ -78,8 +78,6 @@ const Sidebar = ({ isOpen = true }) => {
                 </div>
             )}
 
-            <div style={{ height: "16px" }} />
-
             <div
                 className={styles.collapsibleHeader}
                 onClick={() => setIsDefaultOpen(!isDefaultOpen)}
@@ -103,7 +101,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendars[0].name}
                             </label>
                             <Settings
-                                size={16}
+                                size={24}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setIsDefaultCalendarDetailsOpen(true)
@@ -136,8 +134,6 @@ const Sidebar = ({ isOpen = true }) => {
                 </div>
             )}
 
-            <div style={{ height: "16px" }} />
-
             <div
                 className={styles.collapsibleHeader}
                 onClick={() => setIsGuestOpen(!isGuestOpen)}
@@ -166,7 +162,7 @@ const Sidebar = ({ isOpen = true }) => {
                                 {calendar.name}
                             </label>
                             <Settings
-                                size={16}
+                                size={24}
                                 className={styles.calendar_details}
                                 onClick={() =>
                                     setSelectedCalendarId(calendar._id)
