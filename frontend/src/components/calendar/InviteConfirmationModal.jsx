@@ -1,6 +1,7 @@
 import React from "react";
 import Modal from "../common/Modal";
 import styles from "./InviteConfirmationModal.module.css";
+import btnStyles from "../common/buttons/button.module.css";
 
 const InviteConfirmationModal = ({ isOpen, onClose, onRespond }) => {
     return (
@@ -9,16 +10,16 @@ const InviteConfirmationModal = ({ isOpen, onClose, onRespond }) => {
             <p>You have been invited to join a calendar.</p>
             <div className={styles.actions}>
                 <button
-                    className={styles.acceptBtn}
-                    onClick={() => onRespond("accept")}
-                >
-                    Accept
-                </button>
-                <button
-                    className={styles.rejectBtn}
+                    className={btnStyles.cancel}
                     onClick={() => onRespond("reject")}
                 >
                     Decline
+                </button>
+                <button
+                    className={btnStyles.accept}
+                    onClick={() => onRespond("accept")}
+                >
+                    Accept
                 </button>
             </div>
         </Modal>
