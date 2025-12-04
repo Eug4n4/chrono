@@ -201,7 +201,10 @@ const CalendarView = React.forwardRef(
         }, [activeCalendars, dispatch, calendars, guestCalendars]);
 
         const combinedEvents = activeCalendars
-            .flatMap((calendarId) => eventsByCalendar[calendarId] || [])
+            .flatMap((calendarId) => {
+                const events = eventsByCalendar[calendarId] || [];
+                return events.map((event) => ({ ...event, calendarId }));
+            })
             .filter((event) => {
                 if (filterTypes && filterTypes.length > 0) {
                     if (!filterTypes.includes(event.type)) {
@@ -233,7 +236,7 @@ const CalendarView = React.forwardRef(
 
         const renderEventContent = (arg) => {
             const { event, view } = arg;
-            const { type, isHoliday } = event.extendedProps;
+            const { type, isHoliday, isCompleted } = event.extendedProps;
 
             if (isHoliday) {
                 return (
@@ -328,6 +331,15 @@ const CalendarView = React.forwardRef(
                             scrollTime: "00:00:00",
                             scrollTimeReset: false,
                         },
+                    }}
+                    eventClassNames={(arg) => {
+                        if (
+                            arg.event.extendedProps.type === "task" &&
+                            arg.event.extendedProps.isCompleted
+                        ) {
+                            return ["completed-task-opacity"];
+                        }
+                        return [];
                     }}
                     eventContent={renderEventContent}
                 />

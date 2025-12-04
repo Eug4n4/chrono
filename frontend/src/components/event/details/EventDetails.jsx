@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import Button from "../../common/buttons/Button";
 import LabeledInput from "../../inputs/LabeledInput";
 import TypeSelector from "../../selectors/TypeSelector";
@@ -6,9 +7,8 @@ import TaskForm from "../TaskForm";
 import ReminderForm from "../ReminderForm";
 import ArrangementForm from "../ArrangementForm";
 import ColorChosen from "../ColorChosen";
-import CalendarService from "../../../api/services/CalendarService";
 import TagsSelectors from "../../selectors/TagsSelectors";
-import EventService from "../../../api/services/EventService";
+import { updateEvent } from "../../../features/state/event.slice";
 import { showSuccessToast } from "../../../utils/toast";
 import { Check, X } from "lucide-react";
 
@@ -16,6 +16,10 @@ import styles from "../create.event.module.css";
 import s from "./event.details.module.css";
 
 function EventDetails({ purpose }) {
+    const dispatch = useDispatch();
+    const { calendars, guestCalendars } = useSelector(
+        (state) => state.calendars,
+    );
     const [name, setName] = useState(purpose.name);
     const [isCompleted, setIsCompleted] = useState(purpose.isCompleted);
     const type = purpose.type;
@@ -32,6 +36,18 @@ function EventDetails({ purpose }) {
     });
     const [description, setDescription] = useState(purpose.description);
     const [calendar, setCalendar] = useState("");
+    const [calendarId, setCalendarId] = useState(purpose.calendarId);
+
+    useEffect(() => {
+        if (calendarId) {
+            const found =
+                calendars.find((c) => c._id === calendarId) ||
+                guestCalendars.find((c) => c._id === calendarId);
+            if (found) {
+                setCalendar(found.name);
+            }
+        }
+    }, [calendarId, calendars, guestCalendars]);
 
     const getDateTimeParts = (datetime) => {
         const date = datetime.toISOString().split("T")[0];
@@ -39,7 +55,7 @@ function EventDetails({ purpose }) {
         return { date: date, time: time };
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const formData = { name, type, tags, color, description, isCompleted };
         formData.start = new Date(`${date.start.date}T${date.start.time}`);
@@ -50,14 +66,21 @@ function EventDetails({ purpose }) {
                 `${date.reminder.date}T${date.reminder.time}`,
             );
         }
-        EventService.updateEvent(purpose._id, formData).then(() =>
-            showSuccessToast("Updated successfully!"),
-        );
+
+        try {
+            await dispatch(
+                updateEvent({
+                    calendarId: calendarId,
+                    eventId: purpose._id,
+                    eventData: formData,
+                }),
+            ).unwrap();
+            showSuccessToast("Updated successfully!");
+        } catch (error) {
+            console.error("Failed to update event:", error);
+        }
     };
     useEffect(() => {
-        CalendarService.getCalendarByEventId(purpose._id)
-            .then((response) => setCalendar(response.data.name))
-            .catch(console.error);
         if (Object.hasOwn(purpose, "start")) {
             setDate((prev) => {
                 return {
