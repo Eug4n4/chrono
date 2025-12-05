@@ -1,6 +1,6 @@
 .container {
     padding: 20px;
-    min-width: 300px;
+    min-width: min(300px, 100%);
 }
 
 .title {

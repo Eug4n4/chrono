@@ -3,10 +3,44 @@
     gap: 3rem;
 }
 
+.title {
+    margin-bottom: 1rem;
+    word-break: break-word;
+}
+
+@media (max-width: 480px) {
+    .title {
+        font-size: 1.2rem;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .content {
+        flex-direction: column;
+        gap: 1.5rem;
+    }
+}
+
 .details_sidebar {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .details_sidebar {
+        flex-direction: row;
+        overflow-x: auto;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border-color);
+    }
+    
+    .details_sidebar button {
+        white-space: nowrap;
+        padding: 0.5rem 1rem;
+        font-size: 0.9rem;
+    }
 }
 
 .details_section {

@@ -155,6 +155,10 @@ const CalendarPage = () => {
                     onClose={() => setIsSidebarOpen(false)}
                     onToday={handleToday}
                     setIsNewCalendarModalOpen={setIsNewCalendarModalOpen}
+                    filterTypes={filterTypes}
+                    setFilterTypes={setFilterTypes}
+                    filterTags={filterTags}
+                    setFilterTags={setFilterTags}
                 />
                 <CalendarView
                     ref={calendarRef}

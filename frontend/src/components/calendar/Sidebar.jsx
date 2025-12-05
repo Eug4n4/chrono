@@ -9,7 +9,10 @@ import {
 import DetailsModal from "../common/details/DetailsModal";
 import { calendarDetailsAvailableViews } from "../common/details/available.views";
 import { useNavigate } from "react-router-dom";
-import Logo from "../common/Logo";
+import { Check } from "lucide-react";
+import AuthService from "../../api/services/AuthService";
+import { logout } from "../../features/state/auth.slice";
+import Logo from "../common/Logo.jsx";
 
 const Sidebar = ({
     isOpen = true,
@@ -18,9 +21,15 @@ const Sidebar = ({
     onClose,
     onToday,
     setIsNewCalendarModalOpen,
+    filterTypes = [],
+    setFilterTypes,
+    filterTags = [],
+    setFilterTags,
 }) => {
     const [isViewOpen, setIsViewOpen] = useState(true);
     const [isActionsOpen, setIsActionsOpen] = useState(true);
+    const [isFiltersOpen, setIsFiltersOpen] = useState(true);
+    const [isProfileOpen, setIsProfileOpen] = useState(true);
     const [isOwnOpen, setIsOwnOpen] = useState(true);
     const [isGuestOpen, setIsGuestOpen] = useState(true);
     const [isDefaultOpen, setIsDefaultOpen] = useState(true);
@@ -32,6 +41,34 @@ const Sidebar = ({
     const { calendars, guestCalendars, activeCalendars, showHolidays } =
         useSelector((state) => state.calendars);
     const { user } = useSelector((state) => state.auth);
+    const { tags } = useSelector((state) => state.tags);
+
+    const eventTypes = [
+        { label: "Task", value: "task" },
+        { label: "Arrangement", value: "arrangement" },
+        { label: "Reminder", value: "reminder" },
+    ];
+
+    const toggleType = (typeValue) => {
+        if (filterTypes.includes(typeValue)) {
+            setFilterTypes(filterTypes.filter((t) => t !== typeValue));
+        } else {
+            setFilterTypes([...filterTypes, typeValue]);
+        }
+    };
+
+    const toggleTag = (tagId) => {
+        if (filterTags.includes(tagId)) {
+            setFilterTags(filterTags.filter((t) => t !== tagId));
+        } else {
+            setFilterTags([...filterTags, tagId]);
+        }
+    };
+
+    const handleLogout = () => {
+        AuthService.logout();
+        dispatch(logout());
+    };
 
     return (
         <>
@@ -88,6 +125,98 @@ const Sidebar = ({
                             }}
                         >
                             New Calendar
+                        </div>
+                    </div>
+                )}
+
+                <div
+                    className={`${styles.collapsibleHeader} ${styles.mobileOnly}`}
+                    onClick={() => setIsFiltersOpen(!isFiltersOpen)}
+                >
+                    <span>Filters</span>
+                    <span
+                        className={`${styles.arrow} ${isFiltersOpen ? styles.arrowDown : ""}`}
+                    >
+                        ▼
+                    </span>
+                </div>
+
+                {isFiltersOpen && (
+                    <div className={`${styles.collapsibleContent} ${styles.mobileOnly}`}>
+                        <div className={styles.filterSectionTitle}>TYPE</div>
+                        {eventTypes.map((type) => (
+                            <div
+                                key={type.value}
+                                className={styles.calendarItem}
+                                onClick={() => toggleType(type.value)}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={filterTypes.includes(type.value)}
+                                    readOnly
+                                />
+                                <label>{type.label}</label>
+                            </div>
+                        ))}
+                        <div className={styles.filterSectionTitle} style={{marginTop: '8px'}}>TAGS</div>
+                        {tags.map((tag) => (
+                            <div
+                                key={tag._id}
+                                className={styles.calendarItem}
+                                onClick={() => toggleTag(tag._id)}
+                            >
+                                <input
+                                    type="checkbox"
+                                    checked={filterTags.includes(tag._id)}
+                                    readOnly
+                                />
+                                <label>{tag.name}</label>
+                            </div>
+                        ))}
+                    </div>
+                )}
+
+                <div
+                    className={`${styles.collapsibleHeader} ${styles.mobileOnly}`}
+                    onClick={() => setIsProfileOpen(!isProfileOpen)}
+                >
+                    <span>Profile</span>
+                    <span
+                        className={`${styles.arrow} ${isProfileOpen ? styles.arrowDown : ""}`}
+                    >
+                        ▼
+                    </span>
+                </div>
+
+                {isProfileOpen && user && (
+                    <div className={`${styles.collapsibleContent} ${styles.mobileOnly}`}>
+                        <div className={styles.calendarItem}>
+                            <div className={styles.userProfile}>
+                                <img
+                                    src={`${import.meta.env.VITE_API_URL}/${user.avatar}`}
+                                    alt="avatar"
+                                    className={styles.userAvatar}
+                                />
+                                <span>{user.login}</span>
+                            </div>
+                        </div>
+                        <div
+                            className={styles.calendarItem}
+                            onClick={() => {
+                                navigate("/settings");
+                                if (window.innerWidth < 1024 && onClose) onClose();
+                            }}
+                        >
+                            Settings
+                        </div>
+                        <div
+                            className={styles.calendarItem}
+                            onClick={() => {
+                                handleLogout();
+                                if (window.innerWidth < 1024 && onClose) onClose();
+                            }}
+                        >
+                            Logout
                         </div>
                     </div>
                 )}

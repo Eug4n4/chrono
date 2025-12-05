@@ -85,3 +85,19 @@
     color: var(--btn-bg-color);
     font-weight: bold;
 }
+
+@media (max-width: 480px) {
+    .calendarView :global(.fc-col-header-cell-cushion),
+    .calendarView :global(.fc-timegrid-slot-label-cushion),
+    .calendarView :global(.fc-timegrid-axis-cushion) {
+        font-size: 0.75em !important;
+    }
+
+    .calendarView :global(.fc-event) {
+        font-size: 0.75em !important;
+    }
+    
+    .calendarView :global(.fc-toolbar-title) {
+        font-size: 1em !important;
+    }
+}

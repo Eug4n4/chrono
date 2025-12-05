@@ -138,8 +138,44 @@ button.nav_link,
     padding: 10px;
 }
 
+.primary_action {
+    text-decoration: none;
+    background-color: var(--btn-bg-color);
+    color: var(--bg-color);
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: inherit;
+    font-family: inherit;
+    display: inline-block;
+}
+
+.primary_action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.3);
+}
+
 @media (max-width: 1224px) {
     .userName {
         display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header_list {
+        padding: 0.5rem;
+        gap: 10px;
+    }
+
+    .nav_link, .primary_action {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+
+    .user_section {
+        padding: 4px;
     }
 }

@@ -27,3 +27,15 @@
 .date_selector_wrapper > div:has(> div:nth-of-type(3)):not(:has(> div:nth-of-type(4))) > div:first-child {
     grid-column: span 2;
 }
+
+@media (max-width: 480px) {
+    .date_selector_wrapper > div:has(> div:nth-of-type(2)):not(:has(> div:nth-of-type(3))),
+    .date_selector_wrapper > div:has(> div:nth-of-type(3)):not(:has(> div:nth-of-type(4))) {
+        grid-template-columns: 1fr;
+        row-gap: 10px;
+    }
+
+    .date_selector_wrapper > div:has(> div:nth-of-type(3)):not(:has(> div:nth-of-type(4))) > div:first-child {
+        grid-column: span 1;
+    }
+}

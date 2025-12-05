@@ -16,8 +16,23 @@
     padding: 20px;
     border-radius: 8px;
     max-width: 600px;
-    width: 100%;
+    width: 95%;
     position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+@media (max-width: 480px) {
+    .modal {
+        padding: 15px;
+        width: 98%;
+    }
+}
+
+@media (min-width: 768px) {
+    .modal {
+        width: 100%;
+    }
 }
 
 .closeButton {
