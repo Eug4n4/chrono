@@ -86,6 +86,10 @@
     font-weight: bold;
 }
 
+.calendarView :global(.fc-multimonth-singlecol) {
+    background-color: var(--bg-color);
+}
+
 @media (max-width: 480px) {
     .calendarView :global(.fc-col-header-cell-cushion),
     .calendarView :global(.fc-timegrid-slot-label-cushion),

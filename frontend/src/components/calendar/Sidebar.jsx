@@ -142,7 +142,9 @@ const Sidebar = ({
                 </div>
 
                 {isFiltersOpen && (
-                    <div className={`${styles.collapsibleContent} ${styles.mobileOnly}`}>
+                    <div
+                        className={`${styles.collapsibleContent} ${styles.mobileOnly}`}
+                    >
                         <div className={styles.filterSectionTitle}>TYPE</div>
                         {eventTypes.map((type) => (
                             <div
@@ -158,7 +160,12 @@ const Sidebar = ({
                                 <label>{type.label}</label>
                             </div>
                         ))}
-                        <div className={styles.filterSectionTitle} style={{marginTop: '8px'}}>TAGS</div>
+                        <div
+                            className={styles.filterSectionTitle}
+                            style={{ marginTop: "8px" }}
+                        >
+                            TAGS
+                        </div>
                         {tags.map((tag) => (
                             <div
                                 key={tag._id}
@@ -189,7 +196,9 @@ const Sidebar = ({
                 </div>
 
                 {isProfileOpen && user && (
-                    <div className={`${styles.collapsibleContent} ${styles.mobileOnly}`}>
+                    <div
+                        className={`${styles.collapsibleContent} ${styles.mobileOnly}`}
+                    >
                         <div className={styles.calendarItem}>
                             <div className={styles.userProfile}>
                                 <img
@@ -204,7 +213,8 @@ const Sidebar = ({
                             className={styles.calendarItem}
                             onClick={() => {
                                 navigate("/settings");
-                                if (window.innerWidth < 1024 && onClose) onClose();
+                                if (window.innerWidth < 1024 && onClose)
+                                    onClose();
                             }}
                         >
                             Settings
@@ -213,7 +223,8 @@ const Sidebar = ({
                             className={styles.calendarItem}
                             onClick={() => {
                                 handleLogout();
-                                if (window.innerWidth < 1024 && onClose) onClose();
+                                if (window.innerWidth < 1024 && onClose)
+                                    onClose();
                             }}
                         >
                             Logout
