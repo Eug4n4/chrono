@@ -13,6 +13,7 @@ import { Check } from "lucide-react";
 import AuthService from "../../api/services/AuthService";
 import { logout } from "../../features/state/auth.slice";
 import Logo from "../common/Logo.jsx";
+import SettingsModal from "../settings/SettingsModal";
 
 const Sidebar = ({
     isOpen = true,
@@ -36,6 +37,7 @@ const Sidebar = ({
     const [selectedCalendarId, setSelectedCalendarId] = useState(null);
     const [isDefaultCalendarDetailsOpen, setIsDefaultCalendarDetailsOpen] =
         useState(false);
+    const [isSettingsModalOpen, setIsSettingsModalOpen] = useState(false);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const { calendars, guestCalendars, activeCalendars, showHolidays } =
@@ -212,7 +214,7 @@ const Sidebar = ({
                         <div
                             className={styles.calendarItem}
                             onClick={() => {
-                                navigate("/settings");
+                                setIsSettingsModalOpen(true);
                                 if (window.innerWidth < 1024 && onClose)
                                     onClose();
                             }}
@@ -450,6 +452,13 @@ const Sidebar = ({
                     </div>
                 )}
             </aside>
+            {user && (
+                <SettingsModal
+                    user={user}
+                    isOpen={isSettingsModalOpen}
+                    onClose={() => setIsSettingsModalOpen(false)}
+                />
+            )}
         </>
     );
 };
