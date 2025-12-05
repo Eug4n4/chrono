@@ -3,7 +3,9 @@ import CreatableSelect from "react-select/creatable";
 import CreateEventService from "../../api/services/TagService.js";
 
 function TagsSelectors({ onChange, defaultTags }) {
-    const [selectedOptions, setSelectedOptions] = useState(Array.isArray(defaultTags) ? defaultTags : []);
+    const [selectedOptions, setSelectedOptions] = useState(
+        Array.isArray(defaultTags) ? defaultTags : [],
+    );
     const [options, setOptions] = useState([]);
 
     useEffect(() => {
@@ -11,7 +13,7 @@ function TagsSelectors({ onChange, defaultTags }) {
             const res = await CreateEventService.getAllTags();
             const backendTags = res.data.tags;
 
-            const formatted = backendTags.map(tag => ({
+            const formatted = backendTags.map((tag) => ({
                 label: tag.name,
                 value: tag._id,
             }));
@@ -31,7 +33,10 @@ function TagsSelectors({ onChange, defaultTags }) {
 
     const handleCreate = (inputValue) => {
         if (selectedOptions.length >= 3) return;
-        const newOption = { value: inputValue.toLowerCase(), label: inputValue };
+        const newOption = {
+            value: inputValue.toLowerCase(),
+            label: inputValue,
+        };
         setOptions((prev) => [...prev, newOption]);
         const newSelected = [...selectedOptions, newOption];
         setSelectedOptions(newSelected);
@@ -46,6 +51,7 @@ function TagsSelectors({ onChange, defaultTags }) {
             onCreateOption={handleCreate}
             options={options}
             placeholder="Insert a tags"
+            classNamePrefix="react-select"
         />
     );
 }

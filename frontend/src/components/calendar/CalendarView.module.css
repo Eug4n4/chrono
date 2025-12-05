@@ -1,7 +1,9 @@
 .calendarView {
     flex-grow: 1;
-    padding: 16px;
+    padding: 3px;
     min-width: 0;
+    --fc-today-bg-color: rgba(34, 211, 238, 0.15);
+    --fc-border-color: rgba(255, 255, 255, 0.1);
 }
 
 .calendarView :global(.fc-dayGridMonth-view .fc-day:hover),
@@ -9,6 +11,21 @@
     background-color: var(--surface-color);
     cursor: pointer;
     transition: background-color 0.2s ease;
+}
+
+.calendarView :global(.fc-day-other),
+.calendarView :global(.fc-day-disabled) {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+.calendarView :global(.fc-popover) {
+    background-color: var(--surface-color);
+}
+
+
+.calendarView :global(.fc-cell-shaded) {
+    background: none;
+    background-color: rgba(255, 255, 255, 0.1);
 }
 
 .calendarView :global(.fc-timeGridWeek-view .fc-col-header-cell:hover),
@@ -21,4 +38,73 @@
 
 :global(.completed-task-opacity) {
     opacity: 0.6 !important;
+}
+.calendarView :global(.fc-timegrid-event),
+.calendarView :global(.fc-v-event) {
+    border: 2px solid rgba(255, 255, 255, 0.3) !important;
+    box-shadow: none !important;
+}
+
+.calendarView :global(.fc-multiMonthYear-view) {
+    background-color: var(--bg-color);
+}
+
+.calendarView :global(.fc-multimonth-daygrid) {
+    background-color: var(--bg-color);
+}
+
+.calendarView :global(.fc-multimonth-title) {
+    color: var(--text-main);
+    font-size: 1.1em;
+    font-weight: 600;
+    padding-bottom: 8px;
+}
+
+.calendarView :global(.fc-multimonth-header-table),
+.calendarView :global(.fc-multimonth-daygrid-table) {
+    background: transparent;
+}
+
+.calendarView :global(.fc-multiMonthYear-view .fc-col-header-cell-cushion) {
+    color: var(--text-muted);
+    font-weight: normal;
+    font-size: 0.9em;
+}
+
+.calendarView :global(.fc-multiMonthYear-view .fc-daygrid-day-number) {
+    color: var(--text-main);
+    font-size: 0.9em;
+}
+
+.calendarView :global(.fc-multiMonthYear-view .fc-daygrid-day:hover) {
+    background-color: rgba(100, 255, 218, 0.1) !important;
+}
+
+.calendarView :global(.fc-multiMonthYear-view .fc-day-today) {
+    background-color: rgba(100, 255, 218, 0.05) !important;
+}
+
+.calendarView :global(.fc-multiMonthYear-view .fc-day-today .fc-daygrid-day-number) {
+    color: var(--btn-bg-color);
+    font-weight: bold;
+}
+
+.calendarView :global(.fc-multimonth-singlecol) {
+    background-color: var(--bg-color);
+}
+
+@media (max-width: 480px) {
+    .calendarView :global(.fc-col-header-cell-cushion),
+    .calendarView :global(.fc-timegrid-slot-label-cushion),
+    .calendarView :global(.fc-timegrid-axis-cushion) {
+        font-size: 0.75em !important;
+    }
+
+    .calendarView :global(.fc-event) {
+        font-size: 0.75em !important;
+    }
+    
+    .calendarView :global(.fc-toolbar-title) {
+        font-size: 1em !important;
+    }
 }

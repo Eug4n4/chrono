@@ -9,6 +9,7 @@ import FilterDropdown from "./FilterDropdown";
 import Logo from "../common/Logo.jsx";
 import UserIcon from "../common/UserIcon.jsx";
 import AuthService from "../../api/services/AuthService.js";
+import { Plus, Calendar } from "lucide-react";
 
 const Header = ({
     currentView,
@@ -18,6 +19,7 @@ const Header = ({
     onToday,
     title,
     onToggleSidebar,
+    isSidebarOpen,
     filterTypes,
     setFilterTypes,
     filterTags,
@@ -45,16 +47,23 @@ const Header = ({
         <>
             <header className={styles.header}>
                 <div className={styles.headerLeft}>
-                    <Logo />
+                    <div className={styles.logoContainer}>
+                        <Logo />
+                    </div>
                     <button
-                        className={styles.button}
+                        className={`${styles.button} ${isSidebarOpen ? styles.active : ""}`}
                         onClick={onToggleSidebar}
                         title="Toggle sidebar"
                     >
                         ☰
                     </button>
-                    <button className={styles.button} onClick={onToday}>
-                        Today
+                    <button
+                        className={styles.button}
+                        onClick={onToday}
+                        title="Today"
+                    >
+                        <Calendar size={18} />
+                        <span className={styles.buttonText}>Today</span>
                     </button>
                     <h2 className={styles.headerTitle}>{title}</h2>
                     <button className={styles.navButton} onClick={onPrev}>
@@ -86,10 +95,12 @@ const Header = ({
                     />
                     <div className={styles.createMenu}>
                         <button
-                            className={styles.button}
+                            className={`${styles.button} ${showCreateMenu ? styles.active : ""}`}
                             onClick={() => setShowCreateMenu(!showCreateMenu)}
                         >
-                            Create ▼
+                            <Plus size={18} />
+                            <span className={styles.buttonText}>Create</span>
+                            <span className={styles.arrow}>▼</span>
                         </button>
                         {showCreateMenu && (
                             <div className={styles.createDropdown}>

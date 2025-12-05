@@ -1,6 +1,7 @@
 .header {
     max-width: 100vw;
     background-color: var(--surface-color);
+    border-bottom: rgba(34, 211, 238, 0.3) 2px solid;
 }
 
 
@@ -69,7 +70,8 @@ button.nav_link,
 .user_section {
     font-weight: 500;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
+    gap: 10px;
     align-items: center;
     font-family: inherit;
     font-size: 14px;
@@ -78,6 +80,13 @@ button.nav_link,
     cursor: pointer;
     border: none;
     position: relative;
+    padding: 4px 8px;
+    border-radius: 8px;
+    transition: background-color 0.2s;
+}
+
+.user_section:hover {
+    background-color: var(--input-bg-color);
 }
 
 .user_section > :first-child {
@@ -96,10 +105,12 @@ button.nav_link,
     right: 0;
     text-align: left;
     min-width: 100px;
-    background-color: var(--input-bg-color);
+    background-color: var(--surface-color);
     border: 1px solid var(--border-color);
-    border-radius: 4%;
+    border-radius: 8px;
     z-index: 10;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    padding: 8px;
 }
 
 .user_actions > button, .user_actions > a {
@@ -107,6 +118,7 @@ button.nav_link,
     background-color: transparent;
     border: 0;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .user_actions > a {
@@ -115,7 +127,7 @@ button.nav_link,
 }
 
 .user_actions *:hover {
-    background-color: var(--input-bg-color-hover);
+    background-color: var(--input-bg-color);
 }
 
 .user_actions * {
@@ -124,4 +136,46 @@ button.nav_link,
     font-family: inherit;
     font-size: inherit;
     padding: 10px;
+}
+
+.primary_action {
+    text-decoration: none;
+    background-color: var(--btn-bg-color);
+    color: var(--bg-color);
+    font-weight: 600;
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-size: inherit;
+    font-family: inherit;
+    display: inline-block;
+}
+
+.primary_action:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(100, 255, 218, 0.3);
+}
+
+@media (max-width: 1224px) {
+    .userName {
+        display: none;
+    }
+}
+
+@media (max-width: 480px) {
+    .header_list {
+        padding: 0.5rem;
+        gap: 10px;
+    }
+
+    .nav_link, .primary_action {
+        padding: 6px;
+        font-size: 0.8rem;
+    }
+
+    .user_section {
+        padding: 4px;
+    }
 }

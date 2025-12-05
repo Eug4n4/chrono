@@ -68,7 +68,7 @@ function DetailsModal({ views, purpose, isOpen, onClose, type }) {
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2>{purpose.name}</h2>
+            <h2 className={s.title}>{purpose.name}</h2>
             <div className={s.content}>
                 <DetailsModalSidebar
                     views={availableViews}

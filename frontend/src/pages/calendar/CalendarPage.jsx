@@ -11,6 +11,7 @@ import InviteConfirmationModal from "../../components/calendar/InviteConfirmatio
 import CalendarService from "../../api/services/CalendarService";
 import { showSuccessToast, showErrorToast } from "../../utils/toast";
 import { fetchTags } from "../../features/state/tag.slice";
+import NewCalendarModal from "../../components/calendar/NewCalendarModal";
 
 const CalendarPage = () => {
     const [currentView, setCurrentView] = useState("Monthly");
@@ -24,6 +25,7 @@ const CalendarPage = () => {
 
     const [filterTypes, setFilterTypes] = useState([]);
     const [filterTags, setFilterTags] = useState([]);
+    const [isNewCalendarModalOpen, setIsNewCalendarModalOpen] = useState(false);
 
     useEffect(() => {
         dispatch(fetchTags());
@@ -118,6 +120,15 @@ const CalendarPage = () => {
         setIsSidebarOpen(!isSidebarOpen);
     };
 
+    const handleCreateEvent = () => {
+        // Assuming navigation to create event page
+        // You might need to import useNavigate if not already available or pass a handler
+        // But CalendarPage uses useSearchParams, not useNavigate directly in the provided code.
+        // Wait, Header uses useNavigate. I should probably pass a handler that navigates.
+        // Let's check if I can use useNavigate here.
+        // Yes, I can import it.
+    };
+
     return (
         <div className={styles.calendarPage}>
             <Header
@@ -128,13 +139,27 @@ const CalendarPage = () => {
                 onToday={handleToday}
                 title={title}
                 onToggleSidebar={toggleSidebar}
+                isSidebarOpen={isSidebarOpen}
                 filterTypes={filterTypes}
                 setFilterTypes={setFilterTypes}
                 filterTags={filterTags}
                 setFilterTags={setFilterTags}
+                isNewCalendarModalOpen={isNewCalendarModalOpen}
+                setIsNewCalendarModalOpen={setIsNewCalendarModalOpen}
             />
             <div className={styles.mainContent}>
-                <Sidebar isOpen={isSidebarOpen} />
+                <Sidebar
+                    isOpen={isSidebarOpen}
+                    currentView={currentView}
+                    setCurrentView={setCurrentView}
+                    onClose={() => setIsSidebarOpen(false)}
+                    onToday={handleToday}
+                    setIsNewCalendarModalOpen={setIsNewCalendarModalOpen}
+                    filterTypes={filterTypes}
+                    setFilterTypes={setFilterTypes}
+                    filterTags={filterTags}
+                    setFilterTags={setFilterTags}
+                />
                 <CalendarView
                     ref={calendarRef}
                     onDatesSet={handleDatesSet}
@@ -154,6 +179,13 @@ const CalendarPage = () => {
                     isOpen={!!inviteToken}
                     onClose={handleInviteClose}
                     onRespond={handleInviteRespond}
+                />
+            )}
+            {isNewCalendarModalOpen && (
+                <NewCalendarModal
+                    isOpen={isNewCalendarModalOpen}
+                    onClose={() => setIsNewCalendarModalOpen(false)}
+                    onCreated={() => dispatch(fetchCalendars())}
                 />
             )}
         </div>

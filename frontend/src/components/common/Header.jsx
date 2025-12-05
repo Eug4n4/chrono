@@ -25,8 +25,8 @@ function Header() {
             return (
                 <>
                     <UserIcon user={user} handleLogout={handleLogout} />
-                    <Link className={s.nav_link} to={"/calendar"}>
-                        GO TO CALENDAR
+                    <Link className={s.primary_action} to={"/calendar"}>
+                        Go to Calendar
                     </Link>
                 </>
             );

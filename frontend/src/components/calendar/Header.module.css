@@ -3,7 +3,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 8px 16px;
-    border-bottom: 1px solid #ddd;
+    border-bottom: rgba(34, 211, 238, 0.3) 2px solid;
     gap: 24px;
 }
 
@@ -51,11 +51,22 @@
     color: var(--btn-bg-color);
     border-radius: 4px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.buttonText {
+    display: inline;
 }
 
 .button.active {
     background-color: var(--border-color);
     border-color: var(--btn-bg-color);
+}
+
+.button:hover, .navButton:hover {
+    background-color: var(--input-bg-color);
 }
 
 .createMenu {
@@ -67,18 +78,90 @@
     top: 100%;
     right: 0;
     background-color: var(--surface-color);
-    border: 1px solid #ccc;
+    border: 1px solid var(--border-color);
     border-radius: 4px;
     padding: 8px;
     z-index: 10;
     width: 150px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
 }
 
 .createDropdown div {
     padding: 8px;
     cursor: pointer;
+    border-radius: 4px;
 }
 
 .createDropdown div:hover {
-    background-color: #f0f0f0;
+    background-color: var(--input-bg-color);
+}
+
+@media (max-width: 520px) {
+    .headerRight {
+        display: none;
+    }
+}
+
+@media (max-width: 380px) {
+    .header {
+        padding: 8px 4px;
+        gap: 8px;
+    }
+
+    .headerLeft {
+        gap: 4px;
+    }
+
+    .navButton {
+        padding: 4px 6px;
+        font-size: 1em;
+    }
+
+    .button {
+        padding: 4px 6px;
+    }
+
+    .headerTitle {
+        font-size: 0.9em;
+    }
+}
+
+@media (max-width: 1024px) {
+    .headerCenter {
+        display: none;
+    }
+
+    .header {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    .headerTitle {
+        font-size: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .buttonText {
+        display: none;
+    }
+    
+    .button {
+        padding: 8px;
+    }
+    
+    .arrow {
+        display: none;
+    }
+
+    .mobileHidden {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1224px) {
+    .logoContainer {
+        display: none;
+    }
 }

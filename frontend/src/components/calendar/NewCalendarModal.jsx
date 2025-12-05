@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import Modal from "../common/Modal";
+import LabeledInput from "../inputs/LabeledInput";
+import LabeledTextarea from "../common/textarea/LabeledTextarea";
+import Button from "../common/buttons/Button";
+import buttonStyles from "../common/buttons/button.module.css";
 import { createCalendar } from "../../features/state/calendar.slice";
 import styles from "./NewCalendarModal.module.css";
 import {
@@ -51,35 +55,43 @@ const NewCalendarModal = ({ isOpen, onClose, onSuccess }) => {
 
     return (
         <Modal isOpen={isOpen} onClose={onClose}>
-            <h2>Create New Calendar</h2>
+            <h2 className={styles.title}>Create New Calendar</h2>
             <form onSubmit={handleSubmit} className={styles.form}>
-                <div className={styles.field}>
-                    <label htmlFor="name">Name *</label>
-                    <input
-                        type="text"
-                        id="name"
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        required
-                    />
-                </div>
-                <div className={styles.field}>
-                    <label htmlFor="description">Description</label>
-                    <textarea
-                        id="description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
-                        rows={3}
-                    />
-                </div>
+                <LabeledInput
+                    label="Name *"
+                    htmlFor="name"
+                    id="name"
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    required
+                    placeholder=" "
+                />
+                <LabeledTextarea
+                    label="Description"
+                    htmlFor="description"
+                    id="description"
+                    value={description}
+                    onChange={(e) => setDescription(e.target.value)}
+                    rows={3}
+                    placeholder=" "
+                />
                 {error && <p className={styles.error}>{error}</p>}
                 <div className={styles.actions}>
-                    <button type="button" onClick={onClose} disabled={loading}>
+                    <Button
+                        type="button"
+                        onClick={onClose}
+                        disabled={loading}
+                        className={buttonStyles.cancel}
+                    >
                         Cancel
-                    </button>
-                    <button type="submit" disabled={loading}>
+                    </Button>
+                    <Button
+                        type="submit"
+                        disabled={loading}
+                        className={buttonStyles.accept}
+                    >
                         {loading ? "Creating..." : "Create"}
-                    </button>
+                    </Button>
                 </div>
             </form>
         </Modal>

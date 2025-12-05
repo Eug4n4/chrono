@@ -15,7 +15,7 @@ import {
 import CalendarsSelector from "../selectors/CalendarsSelector.jsx";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-import { createEvent, fetchEventsForCalendars } from "../../features/state/event.slice.js";
+import { createEvent } from "../../features/state/event.slice.js";
 import Input from "../inputs/Input.jsx";
 
 const EventCreateFormModal =
@@ -107,12 +107,6 @@ const EventCreateFormModal =
                 }
                 await dispatch(createEvent({ calendarId, eventData })).unwrap();
                 showSuccessToast("Event created successfully");
-                dispatch(
-                    fetchEventsForCalendars({
-                        calendarIds: [calendarId],
-                        year: new Date().getFullYear(),
-                    }),
-                );
                 onClose();
                 navigate("/calendar");
             } catch (error) {
@@ -137,7 +131,7 @@ const EventCreateFormModal =
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        <TypeSelector value={type} onChange={(e) => setType(e.target.value)} />
+                        <TypeSelector value={type} onChange={setType} />
                     </div>
                 )}
 
