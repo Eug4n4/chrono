@@ -65,7 +65,7 @@ const FilterDropdown = ({
                 onClick={() => setIsOpen(!isOpen)}
             >
                 <Filter size={16} />
-                Filter
+                <span className={styles.filterText}>Filter</span>
                 {activeCount > 0 && (
                     <span className={styles.badge}>{activeCount}</span>
                 )}

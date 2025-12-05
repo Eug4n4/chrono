@@ -17,7 +17,7 @@ export default function UserIcon({ user, handleLogout }) {
                         alt="avatar"
                     />
                 </div>
-                <div>
+                <div className={s.userName}>
                     <p>{user.login}</p>
                 </div>
 

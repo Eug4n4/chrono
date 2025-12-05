@@ -51,6 +51,13 @@
     color: var(--btn-bg-color);
     border-radius: 4px;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.buttonText {
+    display: inline;
 }
 
 .button.active {
@@ -87,4 +94,44 @@
 
 .createDropdown div:hover {
     background-color: var(--input-bg-color);
+}
+
+@media (max-width: 1024px) {
+    .headerCenter {
+        display: none;
+    }
+
+    .header {
+        padding: 8px 12px;
+        gap: 8px;
+    }
+
+    .headerTitle {
+        font-size: 1rem;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+    }
+
+    .buttonText {
+        display: none;
+    }
+    
+    .button {
+        padding: 8px;
+    }
+    
+    .arrow {
+        display: none;
+    }
+
+    .mobileHidden {
+        display: none !important;
+    }
+}
+
+@media (max-width: 1224px) {
+    .logoContainer {
+        display: none;
+    }
 }

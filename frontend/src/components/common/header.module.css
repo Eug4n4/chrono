@@ -137,3 +137,9 @@ button.nav_link,
     font-size: inherit;
     padding: 10px;
 }
+
+@media (max-width: 1224px) {
+    .userName {
+        display: none;
+    }
+}

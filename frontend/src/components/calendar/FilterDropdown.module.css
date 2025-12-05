@@ -99,6 +99,16 @@
     opacity: 0.9;
 }
 
+@media (max-width: 1024px) {
+    .filterText {
+        display: none;
+    }
+    
+    .filterButton {
+        padding: 8px;
+    }
+}
+
 .optionItem.unchecked {
     background-color: transparent;
     border: 1px solid var(--text-muted);
