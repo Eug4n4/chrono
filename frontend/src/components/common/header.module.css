@@ -1,6 +1,7 @@
 .header {
     max-width: 100vw;
     background-color: var(--surface-color);
+    border-bottom: rgba(34, 211, 238, 0.3) 2px solid;
 }
 
 

@@ -14,31 +14,45 @@ function LandingPage() {
     }
 
     return (
-        <div className={s.padding}>
+        <div className={s.landingPage}>
             <section className={s.hero}>
                 <div className={s.container}>
-                    <div className={s.left}>
-                        <h1>Organize your life, simply.</h1>
-                        <div>
-                            <p>
-                                Welcome to Chronos. The ultimate tool to <br />
-                                manage your schedule, track events and <br />
-                                boost your productivity. All in one clean,
-                                <br />
-                                fast and beautiful interface.
-                            </p>
-                        </div>
-                        <div>
-                            <button className={s.button} onClick={handleClick}>
-                                Go to calendar
+                    <div className={s.content}>
+                        <h1 className={s.title}>
+                            Organize your life,{" "}
+                            <span className={s.highlight}>simply.</span>
+                        </h1>
+                        <p className={s.subtitle}>
+                            Welcome to Chronos. The ultimate tool to manage your
+                            schedule, track events and boost your productivity.
+                            All in one clean, fast and beautiful interface.
+                        </p>
+                        <div className={s.actions}>
+                            <button
+                                className={s.primaryButton}
+                                onClick={handleClick}
+                            >
+                                {isAuthenticated
+                                    ? "Go to Calendar"
+                                    : "Get Started"}
                             </button>
+                            {!isAuthenticated && (
+                                <button
+                                    className={s.secondaryButton}
+                                    onClick={() => navigate("/login")}
+                                >
+                                    Login
+                                </button>
+                            )}
                         </div>
                     </div>
-                    <div className={s.right}>
+                    <div className={s.imageWrapper}>
                         <img
                             src="https://marketplace.canva.com/EAGXNJg7R38/1/0/1600w/canva-elegant-monthly-planner-december-2025-calendar-ZfBc2hEnM5c.jpg"
-                            alt=""
+                            alt="Chronos Interface"
+                            className={s.heroImage}
                         />
+                        <div className={s.imageGlow}></div>
                     </div>
                 </div>
             </section>
