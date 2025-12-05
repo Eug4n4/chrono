@@ -131,7 +131,7 @@ const EventCreateFormModal =
                                 onChange={(e) => setName(e.target.value)}
                             />
                         </div>
-                        <TypeSelector value={type} onChange={(e) => setType(e.target.value)} />
+                        <TypeSelector value={type} onChange={setType} />
                     </div>
                 )}
 
