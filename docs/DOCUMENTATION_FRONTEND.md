@@ -12,3 +12,15 @@
   - Share event (The user selects a calendar and adds a new event through a form. The frontend collects the event data and sends it to the backend for validation and storage. After receiving a response from the server, the frontend shows a confirmation or an error message.)
 - Settings (The user can change their avatar and select a holiday region through the profile settings form. The frontend collects the new data and sends it to the backend for validation and storage. After receiving a response from the server, the frontend updates the avatar and region display on the profile and shows a success message.)
 - Notification (The user creates an event and selects the “reminder” type through a form or modal window. The frontend sends the event data to the backend for storage and notification scheduling. After receiving confirmation from the server, the frontend displays information about the created event and any reminders.)
+
+## Interface screenshots 📰
+### Login page
+![Login Page](images/1.png)
+### Calendar Page
+![Calendar Page](images/2.png)
+### Daily calendar
+![Daily calendar](images/5.png)
+### Setting modal
+![Setting modal](images/3.png)
+### Create Event
+![Create event](images/4.png)
