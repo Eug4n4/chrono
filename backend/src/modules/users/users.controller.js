@@ -24,7 +24,7 @@ async function updateUser(req, res) {
     const { login, countryCode } = matchedData(req);
     const file = req.file;
     const withLogin = await User.findOne({ login: login });
-    if (withLogin) {
+    if (login !== req.user.login && withLogin) {
         return res
             .status(400)
             .json({ message: `User with login ${login} already exists` });
