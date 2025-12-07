@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import Event from "../../db/models/Event.js";
+import Event, { ReminderEvent } from "../../db/models/Event.js";
 import NotificationService from "../notifications/NotificationService.js";
 
 class SchedulerService {
@@ -60,7 +60,9 @@ class SchedulerService {
         try {
             await NotificationService.sendReminderEmail(eventId);
 
-            await Event.findByIdAndUpdate(eventId, { isNotified: true });
+            await ReminderEvent.findByIdAndUpdate(eventId, {
+                isNotified: true,
+            });
 
             this.cancelEvent(eventId);
         } catch (error) {
