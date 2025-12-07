@@ -1,4 +1,4 @@
-import cron from "node-cron";
+import schedule from "node-schedule";
 import Event, { ReminderEvent } from "../../db/models/Event.js";
 import NotificationService from "../notifications/NotificationService.js";
 
@@ -37,19 +37,16 @@ class SchedulerService {
             return;
         }
 
-        const task = cron.schedule(
-            `${remindDate.getMinutes()} ${remindDate.getHours()} ${remindDate.getDate()} ${remindDate.getMonth() + 1} *`,
-            () => {
-                this.triggerNotification(event);
-            },
-        );
+        const task = schedule.scheduleJob(remindDate, () => {
+            this.triggerNotification(event);
+        });
 
         this.tasks.set(eventId, task);
     }
 
     static cancelEvent(eventId) {
         if (this.tasks.has(eventId)) {
-            this.tasks.get(eventId).stop();
+            this.tasks.get(eventId).cancel();
             this.tasks.delete(eventId);
         }
     }
