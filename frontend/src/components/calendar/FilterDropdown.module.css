@@ -4,6 +4,7 @@
 
 .filterButton {
     padding: 8px 12px;
+    font-family: inherit;
     border: 1px solid var(--border-color);
     background-color: var(--surface-color);
     color: var(--btn-bg-color);

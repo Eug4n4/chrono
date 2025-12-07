@@ -23,6 +23,14 @@
     box-sizing: border-box;
 }
 
+body {
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    font-family: var(--font-family);
+    color: var(--text-main);
+
+}
+
 .app {
     min-height: 100vh;
     background-color: var(--bg-color);
