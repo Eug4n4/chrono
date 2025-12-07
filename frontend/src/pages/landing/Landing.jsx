@@ -1,7 +1,6 @@
 import { useSelector } from "react-redux";
 import s from "./landing.module.css";
 import { useNavigate } from "react-router-dom";
-
 function LandingPage() {
     const { isAuthenticated } = useSelector((state) => state.auth);
     const navigate = useNavigate();
@@ -48,7 +47,7 @@ function LandingPage() {
                     </div>
                     <div className={s.imageWrapper}>
                         <img
-                            src="https://marketplace.canva.com/EAGXNJg7R38/1/0/1600w/canva-elegant-monthly-planner-december-2025-calendar-ZfBc2hEnM5c.jpg"
+                            src="/preview.png"
                             alt="Chronos Interface"
                             className={s.heroImage}
                         />
