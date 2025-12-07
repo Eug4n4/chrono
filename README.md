@@ -30,7 +30,7 @@ Chrono is a comprehensive calendar management application designed to help users
 - **Authentication**: JWT (jsonwebtoken v9.0.2)
 - **Password Security**: bcrypt (v6.0.0)
 - **Email Service**: Nodemailer (v7.0.10)
-- **Task Scheduling**: node-cron (v4.2.1)
+- **Task Scheduling**: node-schedule (v2.1.1)
 - **File Upload**: Multer (v2.0.2)
 - **Validation**: express-validator (v7.3.0)
 - **Others**: CORS, Cookie-parser
