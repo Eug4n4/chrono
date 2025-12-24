@@ -4,6 +4,9 @@
 
 Chrono is a comprehensive calendar management application designed to help users organize events, reminders, and tasks efficiently. The application provides a modern, intuitive interface for managing personal calendars, sharing calendars with other users, and organizing events with different categories.
 
+![preview](docs/images/landing.png)
+![preview](docs/images/1.png)
+
 ### Key Features
 
 - **Personal Calendar Management**: Create, edit, and delete multiple calendars
